@@ -13,9 +13,9 @@
                               <div class="row">
                                   <div class="col-3  mb-3 text-left">
                                       <div class="pull-left">
-                                          <select class="form-control" id="sports_filter" name="sports_filter" onchange="fetchData()"  >
-                                              <option value="-1" selected>   Select Sports </option>
-                                              @foreach ($sportsList as $obj)
+                                          <select class="form-control" id="account_filter" name="account_filter" onchange="fetchData()"  >
+                                              <option value="-1" selected>   Select Accounts </option>
+                                              @foreach ($accountsList as $obj)
                                                   <option value="{{ $obj->id }}"  {{ (isset($obj->id) && old('id')) ? "selected":"" }}>{{ $obj->name }}</option>
                                               @endforeach
                                           </select>
@@ -140,12 +140,12 @@
 <script type="text/javascript">
 
     $('#filter').click(function(){
-        var filter_sports_id = $('#sports_filter').val();
-        if(filter_sports_id != '')
+        var filter_accounts_id = $('#account_filter').val();
+        if(filter_accounts_id != '')
         {
             // $('#DataTbl').DataTable().destroy();
-            // if(filter_sports_id != '-1'){ // for all...
-            //     fetchData(filter_sports_id);
+            // if(filter_accounts_id != '-1'){ // for all...
+            //     fetchData(filter_accounts_id);
             // }
             // else{
                 fetchData();
@@ -165,12 +165,12 @@ var Table_obj = "";
 
 function getRemainingAppsForBlockedCountriesOptions(application_id){
 
-    let sports_id = $("#sports_filter").val();
+    let account_id = $("#account_filter").val();
 
     $.ajax({
         type:"POST",
         url: "{{ url('admin/remaining-block-apps-option') }}",
-        data: { id: application_id , sports_id : sports_id},
+        data: { id: application_id , account_id : account_id},
         success: function(response){
             $("#application_id").html(response);
         }
@@ -181,7 +181,7 @@ function getRemainingAppsForBlockedCountriesOptions(application_id){
 
 function fetchData()
 {
-    var filter_sports_id = $("#sports_filter").val();
+    var filter_accounts_id = $("#account_filter").val();
 
 	$.ajaxSetup({
 		headers: {
@@ -207,7 +207,7 @@ function fetchData()
             url:"{{ url('admin/fetch-blocked-apps') }}",
             type:"POST",
             data:{
-                filter_sports_id:filter_sports_id
+                filter_accounts_id:filter_accounts_id
             }
         },
 		columns: [

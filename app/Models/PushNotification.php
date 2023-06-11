@@ -14,7 +14,7 @@ class PushNotification extends Model
     ];
 
     protected $fillable = [
-        'sports_id',
+        'account_id',
         'app_detail_id',
         'title',
         'message',

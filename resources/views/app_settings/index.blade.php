@@ -13,9 +13,9 @@
                             <div class="row">
 
                                 <div class="col-sm-3">
-                                    <select class="form-control" id="sports_filter" name="sports_filter" onchange="setFilterDefaultValue();loadApplicationsCardView()" >
-                                        <option value="-1" selected>   Select Sports </option>
-                                        @foreach ($sportsList as $obj)
+                                    <select class="form-control" id="account_filter" name="account_filter" onchange="setFilterDefaultValue();loadApplicationsCardView()" >
+                                        <option value="-1" selected>   Select Accounts </option>
+                                        @foreach ($accountsList as $obj)
                                             <option value="{{ $obj->id }}"  {{ (isset($obj->id) && old('id')) ? "selected":"" }}>{{ $obj->name }}</option>
                                         @endforeach
                                     </select>
@@ -86,7 +86,7 @@
                                             <div class="card-header">
                                                 <div class="col-md-12">
                                                     <div class="text-center">
-                                                        <h5><strong>{{$obj->sports_name}}</strong></h5>
+                                                        <h5><strong>{{$obj->accounts_name}}</strong></h5>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12">
@@ -188,7 +188,7 @@
 
                 type:"POST",
                 url: "{{ url('admin/app-settings-card-view') }}",
-                data: { sportsId: $("#sports_filter").val() , searchKeywords : $("#searchBox").val()},
+                data: { accountsId: $("#account_filter").val() , searchKeywords : $("#searchBox").val()},
                 success: function(response){
                     $('#cover-spin').hide();
                     $("#app_settings_container").html(response);
@@ -207,7 +207,7 @@
         function fetchData(page)
         {
             $.ajax({
-                url:"pagination/fetch_data?page="+page+"&sportsId="+$("#sports_filter").val()+"&searchKeywords="+$("#searchBox").val(),
+                url:"pagination/fetch_data?page="+page+"&accountsId="+$("#account_filter").val()+"&searchKeywords="+$("#searchBox").val(),
                 success:function(data)
                 {
                     $("#app_settings_container").html(data);                }

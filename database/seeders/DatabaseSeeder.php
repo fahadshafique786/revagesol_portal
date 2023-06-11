@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
                 RoleHasApplication::create(
                     [
                         'role_id' => 1,
-                        'sports_id' => $obj->sports_id,
+                        'account_id' => $obj->account_id,
                         'application_id' => $obj->id,
                     ]
                 );                    
@@ -57,13 +57,13 @@ class DatabaseSeeder extends Seeder
 
 /*
 
-        $checkPermissionExist = Permission::where('name', 'view-manage-sync_sports_data')->exists();
+        $checkPermissionExist = Permission::where('name', 'view-manage-sync_accounts_data')->exists();
 
         if (!$checkPermissionExist) {
 
             $permission = Permission::create(
                 [
-                    'name' => 'view-manage-sync_sports_data'
+                    'name' => 'view-manage-sync_accounts_data'
                 ]
             );
 

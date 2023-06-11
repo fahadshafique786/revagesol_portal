@@ -13,9 +13,9 @@
                             <div class="row">
 
                                 <div class="col-sm-3">
-                                    <select class="form-control" id="sports_filter" name="sports_filter" onchange="setFilterDefaultValue();loadApplicationsCardView()" >
-                                        <option value="-1" selected>   Select Sports </option>
-                                        @foreach ($sportsList as $obj)
+                                    <select class="form-control" id="account_filter" name="account_filter" onchange="setFilterDefaultValue();loadApplicationsCardView()" >
+                                        <option value="-1" selected>   Select Accounts </option>
+                                        @foreach ($accountsList as $obj)
                                             <option value="{{ $obj->id }}"  {{ (isset($obj->id) && old('id')) ? "selected":"" }}>{{ $obj->name }}</option>
                                         @endforeach
                                     </select>
@@ -130,7 +130,7 @@
         function fetchData(page)
         {
             $.ajax({
-                url:"pagination/applications/fetch_data?page="+page+"&sportsId="+$("#sports_filter").val()+"&searchKeywords="+$("#searchBox").val(),
+                url:"pagination/applications/fetch_data?page="+page+"&accountsId="+$("#account_filter").val()+"&searchKeywords="+$("#searchBox").val(),
                 success:function(data)
                 {
                     $("#applications_container").html(data);                }
@@ -149,7 +149,7 @@
 
                 type:"POST",
                 url: "{{ url('admin/apps-card-view') }}",
-                data: { sportsId: $("#sports_filter").val() , searchKeywords : $("#searchBox").val()},
+                data: { accountsId: $("#account_filter").val() , searchKeywords : $("#searchBox").val()},
                 success: function(response){
                     $('#cover-spin').hide();
                     $("#applications_container").html(response);

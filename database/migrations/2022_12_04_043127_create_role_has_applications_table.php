@@ -16,7 +16,7 @@ class CreateRoleHasApplicationsTable extends Migration
         Schema::create('role_has_applications', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('role_id')->index();
-            $table->unsignedBigInteger('sports_id')->index();
+            $table->unsignedBigInteger('account_id')->index();
             $table->unsignedBigInteger('application_id')->index();
             $table->timestamps();
         });

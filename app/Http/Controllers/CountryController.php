@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AppDetails;
 use App\Models\Country;
 use App\Models\BlockedApplication;
-use App\Models\Sports;
+use App\Models\Accounts;
 use Illuminate\Http\Request;
 use Response;
 use DB;
@@ -63,7 +63,7 @@ class CountryController extends Controller
         $this->roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
 
         $appIdClause = "";
-        $sportsIdClause = "";
+        $accountsIdClause = "";
         $permissionAppIdClause = "";
 
         DB::enableQueryLog();
@@ -72,15 +72,15 @@ class CountryController extends Controller
             $appIdClause = " AND app.id != ". $request->id;
         }
 
-        if(!empty($request->sports_id) && $request->sports_id != "-1"){
-            $sportsIdClause = " AND app.sports_id = ". $request->sports_id;
+        if(!empty($request->account_id) && $request->account_id != "-1"){
+            $accountsIdClause = " AND app.account_id = ". $request->account_id;
         }
 
         if(!empty($this->roleAssignedApplications)){
             $permissionAppIdClause .= " AND app.id IN (".implode(",",$this->roleAssignedApplications).")";
         }
 
-        $remainingApplications = DB::select(DB::raw('SELECT * FROM app_details app WHERE NOT EXISTS (SELECT * FROM blocked_applications bap WHERE bap.application_id = app.id '.$appIdClause.' ) '.$permissionAppIdClause.' '.$sportsIdClause));
+        $remainingApplications = DB::select(DB::raw('SELECT * FROM app_details app WHERE NOT EXISTS (SELECT * FROM blocked_applications bap WHERE bap.application_id = app.id '.$appIdClause.' ) '.$permissionAppIdClause.' '.$accountsIdClause));
 
         $options = '<option value="">Select App </option>';
         if(!empty($remainingApplications)){
@@ -101,10 +101,10 @@ class CountryController extends Controller
         $remainingApplications = DB::select(DB::raw('SELECT * FROM app_details app WHERE NOT EXISTS (SELECT * FROM blocked_applications bap WHERE bap.application_id = app.id ) '));
 
         $countries = Country::all();
-        $sportsList = Sports::all();
+        $accountsList = Accounts::all();
         return view('application.blocked_applications')
             ->with('applications',$remainingApplications)
-            ->with('sportsList',$sportsList)
+            ->with('accountsList',$accountsList)
             ->with('countries',$countries);
     }
 
@@ -121,8 +121,8 @@ class CountryController extends Controller
                 $FilterData = $FilterData->whereIn('id',$this->roleAssignedApplications);
             }
 
-            if(isset($request->filter_sports_id) && !empty($request->filter_sports_id) && $request->filter_sports_id != '-1'){
-                $FilterData = $FilterData->where('app_details.sports_id',$request->filter_sports_id);
+            if(isset($request->filter_accounts_id) && !empty($request->filter_accounts_id) && $request->filter_accounts_id != '-1'){
+                $FilterData = $FilterData->where('app_details.account_id',$request->filter_accounts_id);
             }
 
             $FilterData = $FilterData->get();

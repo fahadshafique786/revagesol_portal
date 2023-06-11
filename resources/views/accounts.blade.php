@@ -12,21 +12,21 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-6 text-left">
-                                        @if(auth()->user()->hasRole('super-admin') || auth()->user()->can('manage-sports'))
+                                        @if(auth()->user()->hasRole('super-admin') || auth()->user()->can('manage-accounts'))
                                             <a class="btn btn-info d-inline-block" href="javascript:void(0)" id="addNew">
-                                                Add Sport
+                                                Add Account
                                             </a>
                                         @endif
 
-                                        @if(auth()->user()->hasRole('super-admin') || auth()->user()->can('manage-sports'))
-                                            <button class="btn btn-danger d-inline-block delete_all" data-table_id="DataTbl" data-url="{{ url('admin/sportsDeleteAll') }}">Delete All Selected</button>
+                                        @if(auth()->user()->hasRole('super-admin') || auth()->user()->can('manage-accounts'))
+                                            <button class="btn btn-danger d-inline-block delete_all" data-table_id="DataTbl" data-url="{{ url('admin/accountsDeleteAll') }}">Delete All Selected</button>
                                         @endif
 
 
                                 </div>
 
                                 <div class="col-6 text-right">
-                                        @if(auth()->user()->hasRole('super-admin') || auth()->user()->can('manage-sports'))
+                                        @if(auth()->user()->hasRole('super-admin') || auth()->user()->can('manage-accounts'))
                                             <a class="btn btn-warning" href="javascript:window.location.reload()" id="">
                                                 <i class="fa fa-spinner"></i> &nbsp; Refresh Screen
                                             </a>
@@ -96,19 +96,19 @@
                             <div class="form-group row">
 
                                 <div class="col-sm-12">
-                                    <label for="name" class="control-label d-block">  Sports Type </label>
-                                    <label for="sports_type_single" class="cursor-pointer">
-                                        <input type="radio" class="" id="sports_type_single" name="sports_type" value="single"  />
+                                    <label for="name" class="control-label d-block">  Accounts Type </label>
+                                    <label for="accounts_type_single" class="cursor-pointer">
+                                        <input type="radio" class="" id="accounts_type_single" name="accounts_type" value="single"  />
                                         Single
                                     </label>
 
                                     &nbsp;&nbsp;&nbsp;&nbsp;
-                                    <label for="sports_type_double" class="cursor-pointer">
-                                        <input type="radio" class="" id="sports_type_double" name="sports_type"  value="double" checked />
+                                    <label for="accounts_type_double" class="cursor-pointer">
+                                        <input type="radio" class="" id="accounts_type_double" name="accounts_type"  value="double" checked />
                                         Double
                                     </label>
 
-                                    <span class="text-danger" id="sports_typeError"></span>
+                                    <span class="text-danger" id="accounts_typeError"></span>
                                 </div>
 
                             </div>
@@ -161,7 +161,7 @@
                             <div class="form-group row">
 
                                 <div class="col-sm-12">
-                                    <label for="name" class="control-label d-block">Sport Logo</label>
+                                    <label for="name" class="control-label d-block">Account Logo</label>
 
                                         <input type="file" class="EnableDisableFileUpload-File" id="sport_logo" name="sport_logo" onchange="allowonlyImg(this); if(this.value !=''){ $('#sport_logoError').text('');}">
                                         <input type="hidden" readonly class="" id="sport_logo_hidden" name="sport_logo_hidden" >
@@ -226,13 +226,13 @@
                     },
                 ],
                 serverSide: true,
-                ajax: "{{ url('admin/fetchsportsdata') }}",
+                ajax: "{{ url('admin/fetchaccountsdata') }}",
                 columns: [
                     { data: 'checkbox', name: 'checkbox' , orderable:false , searchable:false},
                     { data: 'srno', name: 'srno' , searchable:false},
                     { data: 'icon', name: 'icon', searchable:false},
                     { data: 'name', name: 'name' },
-                    { data: 'sports_type', name: 'sports_type' },
+                    { data: 'accounts_type', name: 'accounts_type' },
                     { data: 'multi_league', name: 'multi_league' , searchable:false , render: function( data, type, full, meta,rowData ) {
                             if(data=='Yes'){
                                 return "<a href='javascript:void(0)' class='badge badge-success text-xs text-capitalize'>"+data+"</a>" +" ";
@@ -296,9 +296,9 @@
 
                 $('#addEditForm').trigger("reset");
 
-                $('#ajaxheadingModel').html("Add Sports");
+                $('#ajaxheadingModel').html("Add Accounts");
 
-                $("#sports_type_double").attr('checked','checked');
+                $("#accounts_type_double").attr('checked','checked');
 
                 $("#sport_logo_hidden").val('');
 
@@ -313,18 +313,18 @@
 
                 $('#sport_logoError').text('');
 
-                $("input[name=sports_type]").removeAttr('checked');
+                $("input[name=accounts_type]").removeAttr('checked');
 
                 $.ajax({
                     type:"POST",
-                    url: "{{ url('admin/edit-Sport') }}",
+                    url: "{{ url('admin/edit-Account') }}",
                     data: { id: id },
                     dataType: 'json',
                     success: function(res){
                         $("#password").prop("required",false);
                         $('#id').val("");
                         $('#addEditForm').trigger("reset");
-                        $('#ajaxheadingModel').html("Edit Sports");
+                        $('#ajaxheadingModel').html("Edit Accounts");
                         $('#ajax-model').modal('show');
                         $('#id').val(res.id);
                         $('#name').val(res.name);
@@ -341,7 +341,7 @@
                             $("#sport_logo").attr('disabled','disabled');
                         }
 
-                        $("#sports_type_"+res.sports_type).prop("checked",true);
+                        $("#accounts_type_"+res.accounts_type).prop("checked",true);
 
 
                     }
@@ -355,7 +355,7 @@
 
                     $.ajax({
                         type:"POST",
-                        url: "{{ url('admin/delete-sport') }}",
+                        url: "{{ url('admin/delete-account') }}",
                         data: { id: id },
                         dataType: 'json',
                         success: function(res){
@@ -387,7 +387,7 @@
 
                 $('#nameError').text('');
 
-                $('#sports_typeError').text('');
+                $('#accounts_typeError').text('');
 
                 $('#multi_leagueError').text('');
 
@@ -397,7 +397,7 @@
                     if($("#image_required1").prop('checked') && !$("#sport_logo_hidden").val()){
 
                         if(!$("#sport_logo").val()){
-                            alert("Please select sports logo!")
+                            alert("Please select accounts logo!")
                             $("#btn-save").html('Save');
                             $("#btn-save"). attr("disabled", false);
                             $('#sport_logoError').text('Please select logo!');
@@ -408,7 +408,7 @@
 
                 $.ajax({
                     type:"POST",
-                    url: "{{ url('admin/add-update-Sport') }}",
+                    url: "{{ url('admin/add-update-Account') }}",
                     data: Form_Data,
                     mimeType: "multipart/form-data",
                     contentType: false,
@@ -430,7 +430,7 @@
                         $("#btn-save").html(' Save');
                         $("#btn-save"). attr("disabled", false);
                         $('#nameError').text(response.responseJSON.errors.name);
-                        $('#sports_typeError').text(response.responseJSON.errors.sports_type);
+                        $('#accounts_typeError').text(response.responseJSON.errors.accounts_type);
                         $('#multi_leagueError').text(response.responseJSON.errors.multi_league);
                         $('#image_requiredError').text(response.responseJSON.errors.image_required);
                     }

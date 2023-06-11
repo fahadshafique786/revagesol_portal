@@ -13,9 +13,9 @@
                             <div class="row mb-3">
 
                                 <div class="col-sm-4">
-                                    <select class="form-control" id="sports_filter" name="sports_filter" onchange="getApplicationListOptionBySports(this.value,'filter_app_id');$('button#filter').trigger('click');"  >
-                                        <option value="-1" selected>   Select Sports </option>
-                                        @foreach ($sportsList as $obj)
+                                    <select class="form-control" id="account_filter" name="account_filter" onchange="getApplicationListOptionByAccounts(this.value,'filter_app_id');$('button#filter').trigger('click');"  >
+                                        <option value="-1" selected>   Select Accounts </option>
+                                        @foreach ($accountsList as $obj)
                                             <option value="{{ $obj->id }}"  {{ (isset($obj->id) && old('id')) ? "selected":"" }}>{{ $obj->name }}</option>
                                         @endforeach
                                     </select>
@@ -117,7 +117,7 @@
                                         @endforeach
                                     </select>
 
-                                    <span class="text-danger" id="sports_idError"></span>
+                                    <span class="text-danger" id="accounts_idError"></span>
 
                                 </div>
 
@@ -244,7 +244,7 @@
 
         function fetchData(filter_app_id= '-1')
         {
-            var filter_sports_id = $("#sports_filter").val();
+            var filter_accounts_id = $("#account_filter").val();
 
             $.ajaxSetup({
                 headers: {
@@ -274,7 +274,7 @@
                     url:"{{ url('admin/fetch-credentials-data/') }}",
                     type:"POST",
                     data:{
-                        filter_app_id:filter_app_id,filter_sports_id:filter_sports_id
+                        filter_app_id:filter_app_id,filter_accounts_id:filter_accounts_id
                     }
                 },
                 columns: [
@@ -305,7 +305,7 @@
             $.ajax({
                 type:"POST",
                 url: "{{ url('admin/get-applist-options') }}",
-                data: { appId: application_id , sportsId : $("#sports_filter").val()},
+                data: { appId: application_id , accountsId : $("#account_filter").val()},
                 success: function(response){
                     $("#app_detail_id").html(response);
                 }

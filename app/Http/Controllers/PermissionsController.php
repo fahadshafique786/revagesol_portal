@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
-use App\Models\Sports;
+use App\Models\Accounts;
 use Spatie\Permission\Models\Permission;
 
 class PermissionsController extends Controller

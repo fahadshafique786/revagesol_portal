@@ -127,7 +127,7 @@
 @php
 	$link_label_array['dashboard'] = "Dashboard";
 	$link_label_array['users'] = "User Administrator";
-	$link_label_array['sports'] = "Sports";
+	$link_label_array['accounts'] = "Accounts";
 	$link_label_array['teams'] = "Teams";
 	$link_label_array['schedules'] = "Schedules";
 	$link_label_array['leagues'] = "Leagues";
@@ -144,7 +144,7 @@
 	$link_label_array['country'] = "Countries";
 	$link_label_array['app_settings'] = "App Settings";
 
-	$link_label_array1['sports']['icon'] = "sports.png";
+	$link_label_array1['accounts']['icon'] = "accounts.png";
 	$link_label_array1['teams']['icon']  = "team.png";
 	$link_label_array1['schedules']['icon'] = "schedule.png";
 	$link_label_array1['leagues']['icon'] = "league.png";
@@ -169,8 +169,8 @@
 					<i class="d-inline fas fa-tachometer-alt  icon-bg nav-icon pl-1"></i>
 				@elseif(Request::segment(2) == 'teams')
 					<img src="{{ asset('dist/img/sidebar-icons/team.png') }}" class="elevation-2 icon-bg vertical-baseline"/>
-				@elseif(Request::segment(2) == 'sports')
-					<img src="{{ asset('dist/img/sidebar-icons/sports.png') }}" class="elevation-2 icon-bg vertical-baseline"/>
+				@elseif(Request::segment(2) == 'accounts')
+					<img src="{{ asset('dist/img/sidebar-icons/accounts.png') }}" class="elevation-2 icon-bg vertical-baseline"/>
 				@elseif(Request::segment(2) == 'schedules')
 					<img src="{{ asset('dist/img/sidebar-icons/schedule.png') }}" class="elevation-2 icon-bg vertical-baseline "/>
 				@elseif(Request::segment(2) == 'leagues')

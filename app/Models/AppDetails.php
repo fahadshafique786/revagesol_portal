@@ -11,12 +11,12 @@ class AppDetails extends Model
 
 //    protected $casts = [
 //        'id' => 'string',
-//        'sports_id' => 'string',
+//        'account_id' => 'string',
 //    ];
 
     protected $fillable = [
 
-        'sports_id',
+        'account_id',
         'packageId',
         'appName',
         'appLogo',

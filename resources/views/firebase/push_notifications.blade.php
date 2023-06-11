@@ -14,9 +14,9 @@
                             <div class="row mb-3">
                                 <div class="col-sm-4">
 
-                                    <select class="form-control" id="sports_filter" name="sports_filter" onchange="getAllAppListOptionBySportsNoPermission(this.value,'filter_app_id','app_detail_id');$('button#filter').trigger('click');"  >
-                                        <option value="-1" selected>   Select Sports </option>
-                                        @foreach ($sportsList as $obj)
+                                    <select class="form-control" id="account_filter" name="account_filter" onchange="getAllAppListOptionByAccountsNoPermission(this.value,'filter_app_id','app_detail_id');$('button#filter').trigger('click');"  >
+                                        <option value="-1" selected>   Select Accounts </option>
+                                        @foreach ($accountsList as $obj)
                                             <option value="{{ $obj->id }}"  {{ (isset($obj->id) && old('id')) ? "selected":"" }}>{{ $obj->name }}</option>
                                         @endforeach
                                     </select>
@@ -109,16 +109,16 @@
                             <div class="form-group row">
 
                                 <div class="col-sm-6">
-                                    <label for="sports_id" class="control-label">Sports</label>
-                                    <select required class="form-control" id="sports_id" name="sports_id" onchange="getAllApplicationListOptionBySports(this.value,'app_detail_id')"  >
-                                        <option value="" selected>   Select Sports </option>
-                                        @foreach ($sportsList as $obj)
+                                    <label for="account_id" class="control-label">Accounts</label>
+                                    <select required class="form-control" id="account_id" name="account_id" onchange="getAllApplicationListOptionByAccounts(this.value,'app_detail_id')"  >
+                                        <option value="" selected>   Select Accounts </option>
+                                        @foreach ($accountsList as $obj)
                                             <option value="{{ $obj->id }}"  {{ (isset($obj->id) && old('id')) ? "selected":"" }}>{{ $obj->name }}</option>
                                         @endforeach
                                     </select>
 
 
-                                    <span class="text-danger" id="sports_idError"></span>
+                                    <span class="text-danger" id="accounts_idError"></span>
 
                                 </div>
 
@@ -296,7 +296,7 @@
 
         function fetchData(filter_app_id= '-1')
         {
-            var filter_sports_id = $("#sports_filter").val();
+            var filter_accounts_id = $("#account_filter").val();
 
             $.ajaxSetup({
                 headers: {
@@ -329,7 +329,7 @@
                     url:"{{ url('admin/firebase/notifications/data') }}",
                     type:"POST",
                     data:{
-                        filter_app_id:filter_app_id,filter_sports_id:filter_sports_id
+                        filter_app_id:filter_app_id,filter_accounts_id:filter_accounts_id
                     }
                 },
                 columns: [
@@ -382,7 +382,7 @@
 
 
                 $('#id').val("");
-                $('#titleError,#messageError,#iconError,#sports_idError,#app_detail_idError,#imageError').text('');
+                $('#titleError,#messageError,#iconError,#accounts_idError,#app_detail_idError,#imageError').text('');
                 $('#addEditForm').trigger("reset");
                 $('#ajaxHeadingModal').html("Compose Push Notification");
                 $("form#addEditForm")[0].reset();
@@ -396,8 +396,8 @@
                     $("#app_detail_id").val($("#filter_app_id").val());
                 }
 
-                if($("#sports_filter").val() > 0) {
-                    $("#sports_id").val($("#sports_filter").val());
+                if($("#account_filter").val() > 0) {
+                    $("#account_id").val($("#account_filter").val());
                 }
 
                 $('#ajax-modal').modal('show');
@@ -524,7 +524,7 @@
                         $('#titleError').text(response.responseJSON.errors?.title);
                         $('#messageError').text(response.responseJSON.errors?.message);
                         $('#imageError').text(response.responseJSON.errors?.image);
-                        $('#sports_idError').text(response.responseJSON.errors?.sports_id);
+                        $('#accounts_idError').text(response.responseJSON.errors?.account_id);
                         $('#app_detail_idError').text(response.responseJSON.errors?.app_detail_id);
 
                     }
@@ -535,7 +535,7 @@
 
                 var id = $(this).data('id');
 
-                $('#titleError,#messageError,#iconError,#sports_idError,#app_detail_idError,#imageError').text('');
+                $('#titleError,#messageError,#iconError,#accounts_idError,#app_detail_idError,#imageError').text('');
 
                 $.ajax({
                     type:"POST",
@@ -549,7 +549,7 @@
                         $('#ajaxheadingModel').html("Compose Push Notification");
                         $('#id').val(res.id);
 
-                        getAllApplicationListOptionBySports(res.sports_id,'app_detail_id');
+                        getAllApplicationListOptionByAccounts(res.account_id,'app_detail_id');
 
                         if(res.app_detail_id == 0 ){
                             res.app_detail_id = "all";
@@ -571,7 +571,7 @@
                         }
 
                         $('#message').val(res.message);
-                        $('#sports_id').val(res.sports_id);
+                        $('#account_id').val(res.account_id);
 
                         if(res.additional_info.length > 0){
                             for(var i=0; i<res.additional_info.length;i++){

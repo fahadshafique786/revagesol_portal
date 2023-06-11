@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AppCredentials;
-use App\Models\Sports;
+use App\Models\Accounts;
 use Illuminate\Http\Request;
 use App\Models\AppDetails;
 use Response;
@@ -25,7 +25,7 @@ class AppCredentialsController extends Controller
     public function index()
     {
         $appsList = AppDetails::all();
-        $sportsList = Sports::orderBy('id','DESC')->get();
+        $accountsList = Accounts::orderBy('id','DESC')->get();
 
         $appListWithoutCredentials = DB::select(DB::raw('
         SELECT *
@@ -37,7 +37,7 @@ class AppCredentialsController extends Controller
         '));
 
         return view('credentials.index')
-            ->with('sportsList',$sportsList)
+            ->with('accountsList',$accountsList)
             ->with('appsList',$appsList)
             ->with('remainingAppsList',$appListWithoutCredentials);
     }
@@ -240,8 +240,8 @@ class AppCredentialsController extends Controller
                 $Filterdata = $Filterdata->whereIn('app_credentials.app_detail_id',$this->roleAssignedApplications);
             }
 
-            if($request->filter_app_id == '-1' && isset($request->filter_sports_id) && !empty($request->filter_sports_id) && ($request->filter_sports_id != '-1') ){
-                $Filterdata = $Filterdata->where('app_details.sports_id',$request->filter_sports_id);
+            if($request->filter_app_id == '-1' && isset($request->filter_accounts_id) && !empty($request->filter_accounts_id) && ($request->filter_accounts_id != '-1') ){
+                $Filterdata = $Filterdata->where('app_details.account_id',$request->filter_accounts_id);
             }
 
             $Filterdata = $Filterdata->orderBy('app_credentials.id','asc')->get();
@@ -296,8 +296,8 @@ class AppCredentialsController extends Controller
             $appIdClause = " OR app.id = ". $request->appId;
         }
 
-        if(isset($request->sportsId) && !empty($request->sportsId) && ($request->sportsId != "-1")){
-            $appIdClause .= " AND app.sports_id = ". $request->sportsId;
+        if(isset($request->accountsId) && !empty($request->accountsId) && ($request->accountsId != "-1")){
+            $appIdClause .= " AND app.account_id = ". $request->accountsId;
         }
 
         if(!empty($this->roleAssignedApplications)){

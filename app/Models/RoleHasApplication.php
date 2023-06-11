@@ -11,7 +11,7 @@ class RoleHasApplication extends Model
 
     protected $fillable = [
         'role_id',
-        'sports_id',
+        'account_id',
         'application_id',
     ];
 

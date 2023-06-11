@@ -13,9 +13,9 @@
 
                             <div class="row mb-3">
                                 <div class="col-sm-4">
-                                    <select class="form-control" id="sports_filter" name="sports_filter" onchange="getApplicationListOptionBySports(this.value,'filter_app_id','app_detail_id');$('button#filter').trigger('click');"  >
-                                        <option value="-1" selected>   Select Sports </option>
-                                        @foreach ($sportsList as $obj)
+                                    <select class="form-control" id="account_filter" name="account_filter" onchange="getApplicationListOptionByAccounts(this.value,'filter_app_id','app_detail_id');$('button#filter').trigger('click');"  >
+                                        <option value="-1" selected>   Select Accounts </option>
+                                        @foreach ($accountsList as $obj)
                                             <option value="{{ $obj->id }}"  {{ (isset($obj->id) && old('id')) ? "selected":"" }}>{{ $obj->name }}</option>
                                         @endforeach
                                     </select>
@@ -234,7 +234,7 @@
 
         function fetchData(filter_app_id= '-1')
         {
-            var filter_sports_id = $("#sports_filter").val();
+            var filter_accounts_id = $("#account_filter").val();
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -264,7 +264,7 @@
                     url:"{{ url('admin/fetch-sponsor-data/') }}",
                     type:"POST",
                     data:{
-                        filter_app_id:filter_app_id,filter_sports_id:filter_sports_id
+                        filter_app_id:filter_app_id,filter_accounts_id:filter_accounts_id
                     }
                 },
                 columns: [
