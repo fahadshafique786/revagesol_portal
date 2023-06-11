@@ -92,16 +92,16 @@
                     </div>
 
                     <div class="col-sm-12 applicationListRow">
-                        <label for="name" class="control-label">Sports</label><br/>
-                        <select required   multiple="multiple" class="form-control js-example-basic-multiple" id="sports_filter" name="sports_id[]" onchange="getRolesAppsListBySports('sports_filter','application_ids',false);$('#selectAllSportsData').prop('checked',false);"  >
-                            <option value="">   Select Sports </option>
-                            @foreach ($sportsList as $obj)
+                        <label for="name" class="control-label">Accounts</label><br/>
+                        <select required   multiple="multiple" class="form-control js-example-basic-multiple" id="account_filter" name="account_id[]" onchange="getRolesAppsListByAccounts('account_filter','application_ids',false);$('#selectAllAccountsData').prop('checked',false);"  >
+                            <option value="">   Select Accounts </option>
+                            @foreach ($accountsList as $obj)
                                 <option value="{{ $obj->id }}" >{{ $obj->name }}</option>
                             @endforeach
                         </select>
 
                         <br/>
-                        <span class="text-danger" id="sports_filterError"></span>
+                        <span class="text-danger" id="accounts_filterError"></span>
                     </div>
 
                     <div class="col-sm-10 applicationListRow">
@@ -115,8 +115,8 @@
                     </div>
 
                     <div class="col-sm-2 applicationListRow mt-4">
-                        <label for="selectAllSportsData" class="col-form-label">
-                            <input type="checkbox" id="selectAllSportsData" > &nbsp; Select All Apps
+                        <label for="selectAllAccountsData" class="col-form-label">
+                            <input type="checkbox" id="selectAllAccountsData" > &nbsp; Select All Apps
                         </label>
                     </div>                    
 
@@ -202,16 +202,16 @@
         });
 
 
-        $("#selectAllSportsData").click(function(){
+        $("#selectAllAccountsData").click(function(){
 
-            if($("#selectAllSportsData").is(':checked') ){
+            if($("#selectAllAccountsData").is(':checked') ){
                 $("#application_ids > option").prop("selected","selected");
                 $("#application_ids").trigger("change");
             }else{
 
-                // $('#sports_filter').trigger('change');
+                // $('#account_filter').trigger('change');
 
-                getRolesAppsListBySports("sports_filter","application_ids",true);                
+                getRolesAppsListByAccounts("account_filter","application_ids",true);                
 
                 // $("#application_ids > option").removeAttr("selected");
                 // $("#application_ids").select2("val", "");
@@ -239,18 +239,18 @@
             // $("#application_ids").trigger("change");
             
 
-            $('#sports_filter option:eq(1)').attr('selected', 'selected');
-            $("#sports_filter").trigger("change");
+            $('#account_filter option:eq(1)').attr('selected', 'selected');
+            $("#account_filter").trigger("change");
 
 
-            // getApplicationListOptionBySportsNoPermission($("#sports_filter").val(),'application_ids','-1');            
+            // getApplicationListOptionByAccountsNoPermission($("#account_filter").val(),'application_ids','-1');            
 
             enableDisableApplicationInput(1);
 
             setTimeout(function(){
                 // $('#application_ids').val(null).trigger('change');
                 // if($("#application_ids option").length > 1){
-                //     $("#selectAllSportsData").prop("checked",true);
+                //     $("#selectAllAccountsData").prop("checked",true);
                 // }
                 $('#ajax-model').modal('show');
             },2500);
@@ -325,7 +325,7 @@
 
         $('body').on('click', '.editRole', function () {
             
-            $('#sports_filter').val(null).trigger('change');
+            $('#account_filter').val(null).trigger('change');
 
             var id = $(this).data('id');
 
@@ -339,8 +339,8 @@
 
             $("#application_ids").select2();
             
-            $('#sports_filter option:eq(1)').removeAttr('selected');
-            $("#sports_filter").trigger("change");
+            $('#account_filter option:eq(1)').removeAttr('selected');
+            $("#account_filter").trigger("change");
 
             $.ajax({
                 type:"POST",
@@ -359,10 +359,10 @@
 
                     $('#name').val(res.name);
 
-                    // if(res?.sports_id){
-                    //     $('#sports_filter').val(res?.sports_id);
-                    //     $("#sports_filter").select2("val", $("#sports_filter").select2("val").concat(res?.sports_id));
-                    //     getApplicationListOptionBySportsNoPermission(res?.sports_id,'application_ids','-1');
+                    // if(res?.account_id){
+                    //     $('#account_filter').val(res?.account_id);
+                    //     $("#account_filter").select2("val", $("#account_filter").select2("val").concat(res?.account_id));
+                    //     getApplicationListOptionByAccountsNoPermission(res?.account_id,'application_ids','-1');
                     // }
 
                     setTimeout(() => {
@@ -388,9 +388,9 @@
                             $("#isShowAppList0").prop('checked','checked');
                         }
 
-                        if(res.role_has_sports_id?.length > 0){
-                            $.each(res.role_has_sports_id,function(key,obj){
-                                $("#sports_filter").select2("val", $("#sports_filter").select2("val").concat(obj.sports_id));
+                        if(res.role_has_accounts_id?.length > 0){
+                            $.each(res.role_has_accounts_id,function(key,obj){
+                                $("#account_filter").select2("val", $("#account_filter").select2("val").concat(obj.account_id));
                             });
                         }
 
@@ -410,7 +410,7 @@
                     setTimeout(() => {
                         var total_apps = $('#application_ids option').length - 1;
                         if(total_apps == $('#application_ids option:selected').length){
-                            $("#selectAllSportsData").prop("checked",true);
+                            $("#selectAllAccountsData").prop("checked",true);
                         }
 
                     }, 3000);
@@ -497,12 +497,12 @@
 
     });
 
-    function getRolesAppsListBySports(sports_id,application_id,unSelectAllOption,disableFirstOption = false){
+    function getRolesAppsListByAccounts(account_id,application_id,unSelectAllOption,disableFirstOption = false){
 
         $.ajax({
             type:"POST",
-            url: "{{ url('admin/roles/sports/apps-options') }}",
-            data: { sports_id : $("#"+sports_id).val() , un_select_all_option : unSelectAllOption  , role_id : $("#id").val() , applications : $("#application_ids").val()  , disable_first_option : disableFirstOption},
+            url: "{{ url('admin/roles/accounts/apps-options') }}",
+            data: { account_id : $("#"+account_id).val() , un_select_all_option : unSelectAllOption  , role_id : $("#id").val() , applications : $("#application_ids").val()  , disable_first_option : disableFirstOption},
             success: function(response){
                 $('#application_ids').val(null).trigger('change');
                 $("#"+application_id).html(response);
@@ -516,13 +516,13 @@
     function enableDisableApplicationInput(bool){
         if(bool == "1"){
             $(".applicationListRow").show();
-            $("select[name=sports_id]").prop("disabled",false);
+            $("select[name=account_id]").prop("disabled",false);
             $("#application_ids").select2("enable",true);
             $("input[name=isShowAppList]").prop("disabled",false);
         }
         else{
             $(".applicationListRow").hide();
-            $("select[name=sports_id]").prop("disabled",true);
+            $("select[name=account_id]").prop("disabled",true);
             $("#application_ids").select2("enable",false);
             $("input[name=isShowAppList]").prop("disabled",true);
             $("#application_ids").val(null).trigger("change");

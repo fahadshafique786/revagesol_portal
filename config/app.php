@@ -239,7 +239,7 @@ return [
     ],
 
     'usersImagePath' => env('APP_URL') . env('USERS_DIR_URL'),
-    'sportsImagePath' => env('APP_URL') .  env('SPORTS_DIR_URL'),
+    'accountsImagePath' => env('APP_URL') .  env('SPORTS_DIR_URL'),
     'leaguesImagePath' => env('APP_URL') .  env('LEAGUES_DIR_URL'),
     'teamsImagePath' => env('APP_URL') .  env('TEAMS_ADS_DIR_URL'),
     'schedulesImagePath' => env('APP_URL') .  env('SCHEDULES_DIR_URL'),

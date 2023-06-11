@@ -15,7 +15,7 @@ class CreatePushNotificationsTable extends Migration
     {
         Schema::create('push_notifications', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('sports_id')->index();
+            $table->unsignedInteger('account_id')->index();
             $table->unsignedInteger('app_detail_id')->index();
             $table->string('title')->nullable();
             $table->string('message')->index();

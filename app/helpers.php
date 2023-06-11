@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
-use App\Models\Sports;
+use App\Models\Accounts;
 use App\Models\AppDetails;
 use Illuminate\Support\Facades\DB;
 use App\Models\RoleHasApplication;
@@ -43,12 +43,12 @@ if ( ! function_exists('prepareNewVersionNumbers')) {
     }
 }
 
-if ( ! function_exists('getSportDetailsById')) {
-    function getSportDetailsById($sportsId)
+if ( ! function_exists('getAccountDetailsById')) {
+    function getAccountDetailsById($accountId)
     {
-        $sports = Sports::where('id',$sportsId)->first();
+        $accounts = Accounts::where('id',$accountId)->first();
 
-        return (!empty($sports)) ? $sports : null;
+        return (!empty($accounts)) ? $accounts : null;
     }
 }
 
@@ -61,12 +61,12 @@ if ( ! function_exists('getAppSettingDataByAppId')) {
     }
 }
 
-if ( ! function_exists('getAppListBySportsId')) {
-    function getAppListBySportsId($sportId,$applicationId = "")
+if ( ! function_exists('getAppListByAccountId')) {
+    function getAppListByAccountId($accountId,$applicationId = "")
     {
-        $applicationList = AppDetails::where('sports_id',$sportId)->select(['app_details.id as application_id','packageId','appName','sports.name as sportsName'])
-            ->join('sports', function($join){
-                $join->on('sports.id', '=', 'app_details.sports_id');
+        $applicationList = AppDetails::where('account_id',$accountId)->select(['app_details.id as application_id','packageId','appName','accounts.name as accountsName'])
+            ->join('accounts', function($join){
+                $join->on('accounts.id', '=', 'app_details.account_id');
             });
 
         if($applicationId){
@@ -286,10 +286,10 @@ if ( ! function_exists('get_server_memory_usage'))
 
 }
 
-if ( ! function_exists('getTotalSports'))
+if ( ! function_exists('getTotalAccounts'))
     {
-    function getTotalSports(){
-        $count = Sports::all()->count();
+    function getTotalAccounts(){
+        $count = Accounts::all()->count();
         return $count;
     }
 

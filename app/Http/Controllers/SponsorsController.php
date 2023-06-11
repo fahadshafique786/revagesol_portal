@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AppDetails;
 use App\Models\SponsorAds;
-use App\Models\Sports;
+use App\Models\Accounts;
 use Illuminate\Http\Request;
 use Response;
 use Illuminate\Support\Facades\DB;
@@ -39,10 +39,10 @@ class SponsorsController extends Controller
             $appsList = AppDetails::get();
         }
 
-        $sportsList = Sports::orderBy('id','DESC')->get();
+        $accountsList = Accounts::orderBy('id','DESC')->get();
 
         return view('sponsors')
-            ->with('sportsList',$sportsList)
+            ->with('accountsList',$accountsList)
             ->with('appsList',$appsList);
     }
 
@@ -195,8 +195,8 @@ class SponsorsController extends Controller
                 $Filterdata = $Filterdata->whereIn('sponsor_ads.app_detail_id',$this->roleAssignedApplications);
             }
 
-            if($request->filter_app_id == '-1' && isset($request->filter_sports_id) && !empty($request->filter_sports_id) && ($request->filter_sports_id != '-1') ){
-                $Filterdata = $Filterdata->where('app_details.sports_id',$request->filter_sports_id);
+            if($request->filter_app_id == '-1' && isset($request->filter_accounts_id) && !empty($request->filter_accounts_id) && ($request->filter_accounts_id != '-1') ){
+                $Filterdata = $Filterdata->where('app_details.account_id',$request->filter_accounts_id);
             }
 
             $Filterdata = $Filterdata->orderBy('sponsor_ads.id','asc')->get();

@@ -22,14 +22,14 @@
                             <form autocomplete="off" action="javascript:void(0)" id="addEditForm" name="addEditForm" class="form-horizontal" method="POST" enctype="multipart/form-data">
                                 <div class="form-group row">
 
-                                    <label for="staticEmail" class="col-sm-2 col-form-label">Sports</label>
+                                    <label for="staticEmail" class="col-sm-2 col-form-label">Accounts</label>
                                     <div class="col-sm-4">
 
-                                        <select class="form-control" id="sports_filter" name="sports_filter" {{ (isset($appSettingId) && ($appSettingId)) ? 'disabled' : '' }}
-                                                required onchange="getRemainingAppsOptionBySports(this.value,'app_detail_id')"  >
-                                            <option value="" selected>   Select Sports </option>
-                                            @foreach ($sportsList as $obj)
-                                                <option value="{{ $obj->id }}"  {{ (isset($obj->id) && (isset($sportsId)) && ($obj->id == $sportsId)) ? "selected":"" }}>{{ $obj->name }}</option>
+                                        <select class="form-control" id="account_filter" name="account_filter" {{ (isset($appSettingId) && ($appSettingId)) ? 'disabled' : '' }}
+                                                required onchange="getRemainingAppsOptionByAccounts(this.value,'app_detail_id')"  >
+                                            <option value="" selected>   Select Accounts </option>
+                                            @foreach ($accountsList as $obj)
+                                                <option value="{{ $obj->id }}"  {{ (isset($obj->id) && (isset($accountsId)) && ($obj->id == $accountsId)) ? "selected":"" }}>{{ $obj->name }}</option>
                                             @endforeach
                                         </select>
 

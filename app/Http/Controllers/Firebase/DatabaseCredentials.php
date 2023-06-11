@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Firebase;
 
-use App\Models\Sports;
+use App\Models\Accounts;
 use Illuminate\Http\Request;
 use App\Models\AppDetails;
 use App\Models\FirebaseCredentials;
@@ -26,10 +26,10 @@ class DatabaseCredentials extends BaseController
     public function index()
     {
         $appsList = AppDetails::all();
-        $sportsList = Sports::orderBy('id','DESC')->get();
+        $accountsList = Accounts::orderBy('id','DESC')->get();
 
         return view('firebase.credentials')
-            ->with('sportsList',$sportsList)
+            ->with('accountsList',$accountsList)
             ->with('appsList',$appsList);
     }
 
@@ -292,8 +292,8 @@ class DatabaseCredentials extends BaseController
                 $Filterdata = $Filterdata->whereIn('firebase_credentials.app_detail_id',$this->roleAssignedApplications);
             }
 
-            if($request->filter_app_id == '-1' && isset($request->filter_sports_id) && !empty($request->filter_sports_id) && ($request->filter_sports_id != '-1') ){
-                $Filterdata = $Filterdata->where('app_details.sports_id',$request->filter_sports_id);
+            if($request->filter_app_id == '-1' && isset($request->filter_accounts_id) && !empty($request->filter_accounts_id) && ($request->filter_accounts_id != '-1') ){
+                $Filterdata = $Filterdata->where('app_details.account_id',$request->filter_accounts_id);
             }
 
             $Filterdata = $Filterdata->orderBy('firebase_credentials.id','asc')->get();
@@ -340,7 +340,7 @@ class DatabaseCredentials extends BaseController
         $this->roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
 
         $appIdClause = "";
-        $sportsIdClause = "";
+        $accountsIdClause = "";
         $permissionAppIdClause = "";
 
         if(isset($request->appId) && !empty($request->appId)){
@@ -353,8 +353,8 @@ class DatabaseCredentials extends BaseController
         }
 
 
-        if(isset($request->sportsId) && !empty($request->sportsId) && ($request->sportsId != "-1")){
-            $sportsIdClause .= " AND app.sports_id = ". $request->sportsId;
+        if(isset($request->accountsId) && !empty($request->accountsId) && ($request->accountsId != "-1")){
+            $accountsIdClause .= " AND app.account_id = ". $request->accountsId;
         }
 
 
@@ -368,7 +368,7 @@ class DatabaseCredentials extends BaseController
                 '.$appIdClause.'
             ) 
             '.$permissionAppIdClause.'
-            '.$sportsIdClause.'
+            '.$accountsIdClause.'
         '));
 
         // dd(DB::getQueryLog());

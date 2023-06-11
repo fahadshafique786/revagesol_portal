@@ -22,11 +22,11 @@
 
 
                                 <div class="form-group row">
-                                    <label for="staticEmail" class="col-sm-2 col-form-label">Sports</label>
+                                    <label for="staticEmail" class="col-sm-2 col-form-label">Accounts</label>
                                     <div class="col-sm-4">
-                                        <select class="form-control" name="sports_id" id="sports_id" required>
+                                        <select class="form-control" name="account_id" id="account_id" required>
                                             <option value="">   Select </option>
-                                            @foreach($sportsList as $obj)
+                                            @foreach($accountsList as $obj)
                                                 <option value="{{$obj->id}}" >   {{   $obj->name }}    </option>
                                             @endforeach
                                         </select>

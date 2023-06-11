@@ -5,7 +5,7 @@
 <section class="content">
     <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
-        @if(auth()->user()->hasRole('super-admin') || auth()->user()->can('view-manage-sync_sports_data'))
+        @if(auth()->user()->hasRole('super-admin') || auth()->user()->can('view-manage-sync_accounts_data'))
         <div class="row">
             <div class="col-12">
                 <!-- Default box -->
@@ -16,19 +16,19 @@
                             <div class="row">
 
                                 <div class="col-sm-12">
-                                    <h3 class=""> Sync Sports </h3>
+                                    <h3 class=""> Sync Accounts </h3>
                                 </div>
 
                                 <div class="col-sm-12">
                                     <div class="row form-group">
 
-                                        <label for="sports_filter" class="col-sm-2 col-form-label mt-4">Sports</label>
+                                        <label for="account_filter" class="col-sm-2 col-form-label mt-4">Accounts</label>
 
                                         <div class="col-sm-4 pt-4">
 
-                                            <select class="form-control" id="sports_filter" name="sports_id" onchange="getApplicationListOptionBySportsNoPermission(this.value,'app_detail_id','-1',true);$('#app_detail_id').select2('val','');$('#selectAllSportsData').prop('checked',false);"  >
-                                                <option value="-1" selected>   Select Sports </option>
-                                                @foreach ($sportsList as $obj)
+                                            <select class="form-control" id="account_filter" name="account_id" onchange="getApplicationListOptionByAccountsNoPermission(this.value,'app_detail_id','-1',true);$('#app_detail_id').select2('val','');$('#selectAllAccountsData').prop('checked',false);"  >
+                                                <option value="-1" selected>   Select Accounts </option>
+                                                @foreach ($accountsList as $obj)
                                                     <option value="{{ $obj->id }}"  {{ (isset($obj->id) && old('id')) ? "selected":"" }}>{{ $obj->name }}</option>
                                                 @endforeach
                                             </select>
@@ -50,7 +50,7 @@
                                         </div>
 
                                         <div class="col-sm-3 pt-4 SyncrhonizationType-Block">
-                                            <select class="form-control" id="sync_sports_timer" name="sync_sports_timer">
+                                            <select class="form-control" id="sync_accounts_timer" name="sync_accounts_timer">
                                                 <option value="">   Select Sync Timer </option>
                                                 @php
                                                     $syncTypes = config('app.synchronizationTimer');
@@ -74,14 +74,14 @@
                                             <select  class="form-control js-example-basic-multiple"  multiple="multiple" id="app_detail_id" name="app_detail_id[]">
                                                 <option value="-1" disabled>   Select App </option>
                                                 @foreach ($appsList as $obj)
-                                                    <option value="{{ $obj->id }}" data-sports_id="{{ $obj->sports_id }}"  {{ (isset($obj->id) && old('id')) ? "selected":"" }}>{{ $obj->appName . ' - ' . $obj->packageId }}</option>
+                                                    <option value="{{ $obj->id }}" data-account_id="{{ $obj->account_id }}"  {{ (isset($obj->id) && old('id')) ? "selected":"" }}>{{ $obj->appName . ' - ' . $obj->packageId }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
 
                                         <div class="col-sm-4">
-                                            <label for="selectAllSportsData" class="col-form-label">
-                                                <input type="checkbox" id="selectAllSportsData" > &nbsp; Select All Apps
+                                            <label for="selectAllAccountsData" class="col-form-label">
+                                                <input type="checkbox" id="selectAllAccountsData" > &nbsp; Select All Apps
                                             </label>
                                         </div>
 
@@ -90,8 +90,8 @@
                                 </div>
 
                                 <div class="col-sm-6 col-md-6 pt-4">
-                                    @if(auth()->user()->hasRole('super-admin') || auth()->user()->can('view-manage-sync_sports_data'))
-                                        <button id="pushSportsDataSubmit" type="submit" class="btn btn-info"> <i class="fa fa-paper-plane"></i> <span class=""> Push Data to Firebase </span> </button>
+                                    @if(auth()->user()->hasRole('super-admin') || auth()->user()->can('view-manage-sync_accounts_data'))
+                                        <button id="pushAccountsDataSubmit" type="submit" class="btn btn-info"> <i class="fa fa-paper-plane"></i> <span class=""> Push Data to Firebase </span> </button>
                                     @endif
                                 </div>
 
@@ -104,16 +104,16 @@
 
                     <div class="card-body">
                         <div class="pull-right text-right closeButtonDiv" style="display:none" >
-                            <button type="submit" class="btn btn-danger" onclick="$('#syncSportsResultList,.closeButtonDiv').hide();$('#syncSportsResultList tbody').html('<tr></tr>');">
+                            <button type="submit" class="btn btn-danger" onclick="$('#syncAccountsResultList,.closeButtonDiv').hide();$('#syncAccountsResultList tbody').html('<tr></tr>');">
                                 <i class="fa fa-times"></i>
                                 <span class=""> &nbsp; Close </span>
                             </button>
                         </div>
 
-                        <table class="table table-bordered" style="display:none" id="syncSportsResultList">
+                        <table class="table table-bordered" style="display:none" id="syncAccountsResultList">
                             <thead>
                             <tr>
-                                <th scope="col" colspan="3" class="text-dark text-white custom-siderbar-dark">Sync Sports Data Result</th>
+                                <th scope="col" colspan="3" class="text-dark text-white custom-siderbar-dark">Sync Accounts Data Result</th>
                             </tr>
                             <tr>
                                 <th class="text-dark" scope="col">Application</th>
@@ -154,13 +154,13 @@
                                     <div class="col-sm-12">
                                         <div class="row form-group">
 
-                                            <label for="versionSportsId" class="col-sm-2 col-form-label mt-4">Sports</label>
+                                            <label for="versionAccountsId" class="col-sm-2 col-form-label mt-4">Accounts</label>
 
                                             <div class="col-sm-4 pt-4">
 
-                                                <select class="form-control" id="versionSportsId" name="versionSportsId" onchange="getApplicationListOptionBySportsNoPermission(this.value,'version_app_detail_id','-1',true);$('#version_app_detail_id').select2('val','');$('#selectAllVersionAppData').prop('checked',false);"  >
-                                                    <option value="-1" selected>   Select Sports </option>
-                                                    @foreach ($sportsList as $obj)
+                                                <select class="form-control" id="versionAccountsId" name="versionAccountsId" onchange="getApplicationListOptionByAccountsNoPermission(this.value,'version_app_detail_id','-1',true);$('#version_app_detail_id').select2('val','');$('#selectAllVersionAppData').prop('checked',false);"  >
+                                                    <option value="-1" selected>   Select Accounts </option>
+                                                    @foreach ($accountsList as $obj)
                                                         <option value="{{ $obj->id }}"  {{ (isset($obj->id) && old('id')) ? "selected":"" }}>{{ $obj->name }}</option>
                                                     @endforeach
                                                 </select>
@@ -208,7 +208,7 @@
                                                 <select  class="form-control js-example-basic-multiple"  multiple="multiple" id="version_app_detail_id" name="version_app_detail_id[]">
                                                     <option value="-1" disabled>   Select App </option>
                                                     @foreach ($appsList as $obj)
-                                                        <option value="{{ $obj->id }}" data-sports_id="{{ $obj->sports_id }}"  {{ (isset($obj->id) && old('id')) ? "selected":"" }}>{{ $obj->appName . ' - ' . $obj->packageId }}</option>
+                                                        <option value="{{ $obj->id }}" data-account_id="{{ $obj->account_id }}"  {{ (isset($obj->id) && old('id')) ? "selected":"" }}>{{ $obj->appName . ' - ' . $obj->packageId }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -224,7 +224,7 @@
                                     </div>
 
                                     <div class="col-sm-6 col-md-6 pt-4">
-                                        @if(auth()->user()->hasRole('super-admin') || auth()->user()->can('view-manage-sync_sports_data'))
+                                        @if(auth()->user()->hasRole('super-admin') || auth()->user()->can('view-manage-sync_accounts_data'))
                                             <button type="submit" class="btn btn-info" id="updateAppSettingVersions"> <i class="fa fa-paper-plane"></i> <span class="">Push Updated Version to Firebase </span> </button>
                                         @endif
                                     </div>
@@ -296,11 +296,11 @@
                                 <div class="col-sm-12">
                                     <div class="row form-group">
 
-                                        <label for="appKeySportsId" class="col-sm-2 col-form-label mt-4">Sports</label>
+                                        <label for="appKeyAccountsId" class="col-sm-2 col-form-label mt-4">Accounts</label>
                                         <div class="col-sm-4 pt-4">
-                                            <select class="form-control" id="appKeySportsId" name="appKeySportsId" onchange="getApplicationListOptionBySports(this.value,'app_key_app_detail_id','-1',true);$('#app_key_app_detail_id').select2('val','');$('#selectAllApp').prop('checked',false);"  >
-                                                <option value="-1" selected>   Select Sports </option>
-                                                @foreach ($sportsList as $obj)
+                                            <select class="form-control" id="appKeyAccountsId" name="appKeyAccountsId" onchange="getApplicationListOptionByAccounts(this.value,'app_key_app_detail_id','-1',true);$('#app_key_app_detail_id').select2('val','');$('#selectAllApp').prop('checked',false);"  >
+                                                <option value="-1" selected>   Select Accounts </option>
+                                                @foreach ($accountsList as $obj)
                                                     <option value="{{ $obj->id }}"  {{ (isset($obj->id) && old('id')) ? "selected":"" }}>{{ $obj->name }}</option>
                                                 @endforeach
                                             </select>
@@ -327,13 +327,13 @@
                                     </div>
 
                                     <div class="row form-group">
-                                        <label for="appKeySportsId" class="col-sm-2 col-form-label">Application</label>
+                                        <label for="appKeyAccountsId" class="col-sm-2 col-form-label">Application</label>
                                         <div class="col-sm-6">
 
                                             <select  class="form-control js-example-basic-multiple"  multiple="multiple" id="app_key_app_detail_id" name="app_key_app_detail_id[]">
                                                 <option value="-1" disabled >   Select App </option>
                                                 @foreach ($assignedAppsList as $obj)
-                                                    <option value="{{ $obj->id }}" data-sports_id="{{ $obj->sports_id }}"  {{ (isset($obj->id) && old('id')) ? "selected":"" }}>{{ $obj->appName . ' - ' . $obj->packageId }}</option>
+                                                    <option value="{{ $obj->id }}" data-account_id="{{ $obj->account_id }}"  {{ (isset($obj->id) && old('id')) ? "selected":"" }}>{{ $obj->appName . ' - ' . $obj->packageId }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -549,11 +549,11 @@
 
                                 <div class="col-sm-12">
                                     <div class="row form-group">
-                                        <label for="appCredentialsSportsId" class="col-sm-2 col-form-label mt-4">Sports</label>
+                                        <label for="appCredentialsAccountsId" class="col-sm-2 col-form-label mt-4">Accounts</label>
                                         <div class="col-sm-4 pt-4">
-                                            <select class="form-control" id="appCredentialsSportsId" name="appCredentialsSportsId" onchange="getApplicationListOptionBySports(this.value,'app_credentials_app_detail_id','-1',true);$('#app_credentials_app_detail_id').select2('val','');$('#selectAllAppCredentials').prop('checked',false);"  >
-                                                <option value="-1" selected>   Select Sports </option>
-                                                @foreach ($sportsList as $obj)
+                                            <select class="form-control" id="appCredentialsAccountsId" name="appCredentialsAccountsId" onchange="getApplicationListOptionByAccounts(this.value,'app_credentials_app_detail_id','-1',true);$('#app_credentials_app_detail_id').select2('val','');$('#selectAllAppCredentials').prop('checked',false);"  >
+                                                <option value="-1" selected>   Select Accounts </option>
+                                                @foreach ($accountsList as $obj)
                                                     <option value="{{ $obj->id }}"  {{ (isset($obj->id) && old('id')) ? "selected":"" }}>{{ $obj->name }}</option>
                                                 @endforeach
                                             </select>
@@ -567,7 +567,7 @@
                                             <select  class="form-control js-example-basic-multiple"  multiple="multiple" id="app_credentials_app_detail_id" name="app_credentials_app_detail_id[]">
                                                 <option value="-1" disabled>   Select App </option>
                                                 @foreach ($assignedAppsList as $obj)
-                                                    <option value="{{ $obj->id }}" data-sports_id="{{ $obj->sports_id }}"  {{ (isset($obj->id) && old('id')) ? "selected":"" }}>{{ $obj->appName . ' - ' . $obj->packageId }}</option>
+                                                    <option value="{{ $obj->id }}" data-account_id="{{ $obj->account_id }}"  {{ (isset($obj->id) && old('id')) ? "selected":"" }}>{{ $obj->appName . ' - ' . $obj->packageId }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -655,11 +655,11 @@
 
                                 <div class="col-sm-12">
                                     <div class="row form-group">
-                                        <label for="appDetailsSportsId" class="col-sm-2 col-form-label mt-4">Sports</label>
+                                        <label for="appDetailsAccountsId" class="col-sm-2 col-form-label mt-4">Accounts</label>
                                         <div class="col-sm-4 pt-4">
-                                            <select class="form-control" id="appDetailsSportsId" name="appDetailsSportsId" onchange="getApplicationListOptionBySports(this.value,'app_details_application_id','-1',true);$('#app_details_application_id').select2('val','');$('#selectAllAppDetails').prop('checked',false);"  >
-                                                <option value="-1" selected>   Select Sports </option>
-                                                @foreach ($sportsList as $obj)
+                                            <select class="form-control" id="appDetailsAccountsId" name="appDetailsAccountsId" onchange="getApplicationListOptionByAccounts(this.value,'app_details_application_id','-1',true);$('#app_details_application_id').select2('val','');$('#selectAllAppDetails').prop('checked',false);"  >
+                                                <option value="-1" selected>   Select Accounts </option>
+                                                @foreach ($accountsList as $obj)
                                                     <option value="{{ $obj->id }}"  {{ (isset($obj->id) && old('id')) ? "selected":"" }}>{{ $obj->name }}</option>
                                                 @endforeach
                                             </select>
@@ -692,7 +692,7 @@
                                             <select  class="form-control js-example-basic-multiple"  multiple="multiple" id="app_details_application_id" name="app_details_application_id[]">
                                                 <option value="-1" disabled>   Select App </option>
                                                 @foreach ($assignedAppsList as $obj)
-                                                    <option value="{{ $obj->id }}" data-sports_id="{{ $obj->sports_id }}"  {{ (isset($obj->id) && old('id')) ? "selected":"" }}>{{ $obj->appName . ' - ' . $obj->packageId }}</option>
+                                                    <option value="{{ $obj->id }}" data-account_id="{{ $obj->account_id }}"  {{ (isset($obj->id) && old('id')) ? "selected":"" }}>{{ $obj->appName . ' - ' . $obj->packageId }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -919,8 +919,8 @@
         }
     });
 
-    $("#selectAllSportsData").click(function(){
-        if($("#selectAllSportsData").is(':checked') ){
+    $("#selectAllAccountsData").click(function(){
+        if($("#selectAllAccountsData").is(':checked') ){
             $("#app_detail_id > option:not(:first)").prop("selected","selected");
             $("#app_detail_id").trigger("change");
         }else{
@@ -987,8 +987,8 @@
         var Form_Data = new FormData(this);
         var validation = true;
 
-        if(!$("#appDetailsSportsId").val() || ($("#appDetailsSportsId").val() == "-1")){
-            alert("Please Select Sports");
+        if(!$("#appDetailsAccountsId").val() || ($("#appDetailsAccountsId").val() == "-1")){
+            alert("Please Select Accounts");
             validation = false;
             return false;
         }
@@ -1180,8 +1180,8 @@
         var Form_Data = new FormData(this);
         var validation = true;
 
-        if(!$("#appCredentialsSportsId").val() || ($("#appCredentialsSportsId").val() == "-1")){
-            alert("Please Select Sports");
+        if(!$("#appCredentialsAccountsId").val() || ($("#appCredentialsAccountsId").val() == "-1")){
+            alert("Please Select Accounts");
             validation = false;
             return false;
         }
@@ -1322,8 +1322,8 @@
         var Form_Data = new FormData(this);
         var validation = true;
 
-        if(!$("#appKeySportsId").val() || ($("#appKeySportsId").val() == "-1")){
-            alert("Please Select Sports");
+        if(!$("#appKeyAccountsId").val() || ($("#appKeyAccountsId").val() == "-1")){
+            alert("Please Select Accounts");
             validation = false;
             return false;
         }
@@ -1518,8 +1518,8 @@
         var Form_Data = new FormData(this);
         var validation = true;
 
-        if(!$("#versionSportsId").val() || ($("#versionSportsId").val() == "-1")){
-            alert("Please Select Sports");
+        if(!$("#versionAccountsId").val() || ($("#versionAccountsId").val() == "-1")){
+            alert("Please Select Accounts");
             validation = false;
             return false;
         }
@@ -1692,9 +1692,9 @@
 
     }
 
-    async function SyncSportsLoop(iteration,htmlForm,opt,appSize,timer){
+    async function SyncAccountsLoop(iteration,htmlForm,opt,appSize,timer){
 
-            showHideBtnSpinner("pushSportsDataSubmit","Loading...","spinner-border spinner-border-sm","fa fa-paper-plane",true);
+            showHideBtnSpinner("pushAccountsDataSubmit","Loading...","spinner-border spinner-border-sm","fa fa-paper-plane",true);
 
             var finalTimer = 1000;
 
@@ -1708,7 +1708,7 @@
 
             setTimeout(function(){
 
-                showHideBtnSpinner("pushSportsDataSubmit","Loading...","spinner-border spinner-border-sm","fa fa-paper-plane",true);
+                showHideBtnSpinner("pushAccountsDataSubmit","Loading...","spinner-border spinner-border-sm","fa fa-paper-plane",true);
 
                 let totalAppSize = parseInt(appSize) - 1;
 
@@ -1734,8 +1734,8 @@
                         if(response?.data?.failed.length > 0){
 
                             for(var i = 0 ; i < response?.data?.failed.length;i++) {
-                                $('table#syncSportsResultList tbody tr:last').after('<tr><td>'+response?.data?.failed[i]?.app_detail+'</td> <td>'+response?.data?.failed[i]?.message+'</td>  <td><span class="badge badge-danger text-sm">Failed</span></td> </tr>');
-                                $("table#syncSportsResultList").show();
+                                $('table#syncAccountsResultList tbody tr:last').after('<tr><td>'+response?.data?.failed[i]?.app_detail+'</td> <td>'+response?.data?.failed[i]?.message+'</td>  <td><span class="badge badge-danger text-sm">Failed</span></td> </tr>');
+                                $("table#syncAccountsResultList").show();
                             }
                         }
 
@@ -1747,10 +1747,10 @@
 
                                     if (response?.data?.success[i]?.firebaseConfigJson != "null") {
 
-                                        $('table#syncSportsResultList tbody tr:last').after('<tr><td>'+response?.data?.success[i]?.app_detail+'</td> <td>'+response?.data?.success[i]?.message+'</td>  <td><span class="badge badge-success text-sm">Success</span></td> </tr>');
-                                        $("table#syncSportsResultList").show();
+                                        $('table#syncAccountsResultList tbody tr:last').after('<tr><td>'+response?.data?.success[i]?.app_detail+'</td> <td>'+response?.data?.success[i]?.message+'</td>  <td><span class="badge badge-success text-sm">Success</span></td> </tr>');
+                                        $("table#syncAccountsResultList").show();
 
-                                        showHideBtnSpinner("pushSportsDataSubmit","Loading...","spinner-border spinner-border-sm","fa fa-paper-plane",true);
+                                        showHideBtnSpinner("pushAccountsDataSubmit","Loading...","spinner-border spinner-border-sm","fa fa-paper-plane",true);
 
                                         var firebaseConfig = JSON.parse(response?.data?.success[i]?.firebaseConfigJson);
                                         const app = initializeApp(firebaseConfig, response?.data?.success[i]?.appPackageId);
@@ -1800,8 +1800,8 @@
     /****** Add or Update Sync Data Form  ::  Function **********/
     $("#firebaseSynchronizationForm").on('submit',(function(e) {
 
-        $('#syncSportsResultList tbody').html('<tr></tr>');
-        $('#syncSportsResultList, .closeButtonDiv').hide();
+        $('#syncAccountsResultList tbody').html('<tr></tr>');
+        $('#syncAccountsResultList, .closeButtonDiv').hide();
 
         var applications_list = $("#app_detail_id").val();
 
@@ -1810,8 +1810,8 @@
         var Form_Data = new FormData(this);
         var validation = true;
 
-        if(!$("#sports_filter").val() || ($("#sports_filter").val() == "-1")){
-            alert("Please Select Sports");
+        if(!$("#account_filter").val() || ($("#account_filter").val() == "-1")){
+            alert("Please Select Accounts");
             validation = false;
             return false;
         }
@@ -1822,7 +1822,7 @@
             return false;
         }
 
-        if(!$("#sync_sports_timer").val() && applications_list.length > 1){
+        if(!$("#sync_accounts_timer").val() && applications_list.length > 1){
             alert("Please Select Synchronization Timer");
             validation = false;
             return false;
@@ -1835,20 +1835,20 @@
         }
 
         var opt = [];
-        opt['btnId']  = "pushSportsDataSubmit";
+        opt['btnId']  = "pushAccountsDataSubmit";
         opt['btnText']  = "Push Data to Firebase";
         opt['btnAddClass']  = "fa fa-paper-plane";
         opt['btnRemoveClass']  = "spinner-border spinner-border-sm";
-        opt['resultTableId']  = "syncSportsResultList";
+        opt['resultTableId']  = "syncAccountsResultList";
 
-        showHideBtnSpinner("pushSportsDataSubmit","Loading...","spinner-border spinner-border-sm","fa fa-paper-plane",true);
+        showHideBtnSpinner("pushAccountsDataSubmit","Loading...","spinner-border spinner-border-sm","fa fa-paper-plane",true);
 
         if(validation){
 
-            var timer = $("#sync_sports_timer").val();
+            var timer = $("#sync_accounts_timer").val();
 
             for (let i=0; i < applications_list.length; i++) {
-                SyncSportsLoop(i,this,opt,applications_list.length,timer);
+                SyncAccountsLoop(i,this,opt,applications_list.length,timer);
             }
         }
         else{

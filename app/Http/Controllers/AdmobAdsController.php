@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Sports;
+use App\Models\Accounts;
 use Illuminate\Http\Request;
 use App\Models\AppDetails;
 use App\Models\AdmobAds;
@@ -32,10 +32,10 @@ class AdmobAdsController extends Controller
             $appsList = AppDetails::get();
         }
 
-        $sportsList = Sports::orderBy('id','DESC')->get();
+        $accountsList = Accounts::orderBy('id','DESC')->get();
 
         return view('admob_ads')
-            ->with('sportsList',$sportsList)
+            ->with('accountsList',$accountsList)
             ->with('appsList',$appsList);
     }
 
@@ -138,8 +138,8 @@ class AdmobAdsController extends Controller
                 $Filterdata = $Filterdata->whereIn('admob_ads.app_detail_id',$this->roleAssignedApplications);
             }
 
-            if($request->filter_app_id == '-1' && isset($request->filter_sports_id) && !empty($request->filter_sports_id) && ($request->filter_sports_id != '-1') ){
-                $Filterdata = $Filterdata->where('app_details.sports_id',$request->filter_sports_id);
+            if($request->filter_app_id == '-1' && isset($request->filter_accounts_id) && !empty($request->filter_accounts_id) && ($request->filter_accounts_id != '-1') ){
+                $Filterdata = $Filterdata->where('app_details.account_id',$request->filter_accounts_id);
             }
 
 

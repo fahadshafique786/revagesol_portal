@@ -98,9 +98,9 @@ class Applications extends BaseController
 
                     foreach($dataObject as $index => $obj){
 
-                        $obj->sportsId = $obj->sports_id;
+                        $obj->accountsId = $obj->account_id;
 
-                        unset($obj->sports_id);
+                        unset($obj->account_id);
                         unset($obj->created_at);
                         unset($obj->updated_at);
                         unset($obj->isProxyEnable);

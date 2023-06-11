@@ -7,13 +7,13 @@ use Illuminate\Http\Request;
 use DB;
 use Illuminate\Routing\Controller as BaseController;
 
-class SportsApi extends BaseController
+class AccountsApi extends BaseController
 {
     public $imageUrl;
 
     public function __construct(){
 
-        $this->imageUrl = config('app.sportsImagePath');
+        $this->imageUrl = config('app.accountsImagePath');
     }
 
     public function index()
@@ -48,10 +48,10 @@ class SportsApi extends BaseController
 
             $responseData = null;
 
-            $data = DB::table('sports')
+            $data = DB::table('accounts')
                 ->select(DB::raw('
-                    id as sportsId,name as sportsName,
-                    IFNULL(CONCAT("'.$this->imageUrl.'","",icon),"") AS icon, sports_type AS sportsType,
+                    id as accountsId,name as accountsName,
+                    IFNULL(CONCAT("'.$this->imageUrl.'","",icon),"") AS icon, accounts_type AS accountsType,
                     image_required AS isImageRequired, multi_league AS isMultiLeague
                 '))
                  ->orderBy('id','asc');
@@ -70,7 +70,7 @@ class SportsApi extends BaseController
             }
             else{
                 $response['code'] = 400;
-                $response['message'] = 'Sports List not found!';
+                $response['message'] = 'Accounts List not found!';
                 $response['data'] = null;
             }
 

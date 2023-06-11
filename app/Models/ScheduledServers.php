@@ -14,7 +14,7 @@ class ScheduledServers extends Model
         'server_id',
         'schedule_id',
         'connection_time',
-//        'sports_id',
+//        'account_id',
     ];
 
 

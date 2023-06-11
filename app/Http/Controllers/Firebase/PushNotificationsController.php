@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Firebase;
 use App\Models\AppDetails;
 use App\Models\NotificationAdditionalInfo;
 use App\Models\PushNotification;
-use App\Models\Sports;
+use App\Models\Accounts;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
 use DB;
@@ -22,10 +22,10 @@ class PushNotificationsController extends  BaseController
     public function index()
     {
         $appsList = AppDetails::all();
-        $sportsList = Sports::orderBy('id','DESC')->get();
+        $accountsList = Accounts::orderBy('id','DESC')->get();
 
         return view('firebase.push_notifications')
-            ->with('sportsList',$sportsList)
+            ->with('accountsList',$accountsList)
             ->with('appsList',$appsList);
     }
 
@@ -35,22 +35,22 @@ class PushNotificationsController extends  BaseController
 
             $response = [];
 
-            $FilterData = PushNotification::select('push_notifications.*','sports.name as sportsName','app_details.appName','app_details.packageId as packageId');
+            $FilterData = PushNotification::select('push_notifications.*','accounts.name as accountsName','app_details.appName','app_details.packageId as packageId');
 
             if(isset($request->filter_app_id) && !empty($request->filter_app_id) && ($request->filter_app_id != '-1')){
                 $FilterData = $FilterData->where('push_notifications.app_detail_id',$request->filter_app_id);
             }
 
-            $FilterData = $FilterData->leftJoin('sports', function ($join) {
-                $join->on('sports.id', '=', 'push_notifications.sports_id');
+            $FilterData = $FilterData->leftJoin('accounts', function ($join) {
+                $join->on('accounts.id', '=', 'push_notifications.account_id');
             });
 
             $FilterData = $FilterData->leftJoin('app_details', function ($join) {
                 $join->on('app_details.id', '=', 'push_notifications.app_detail_id');
             });
 
-            if($request->filter_app_id == '-1' && isset($request->filter_sports_id) && !empty($request->filter_sports_id) && ($request->filter_sports_id != '-1') ){
-                $FilterData = $FilterData->where('app_details.sports_id',$request->filter_sports_id);
+            if($request->filter_app_id == '-1' && isset($request->filter_accounts_id) && !empty($request->filter_accounts_id) && ($request->filter_accounts_id != '-1') ){
+                $FilterData = $FilterData->where('app_details.account_id',$request->filter_accounts_id);
             }
 
             $FilterData = $FilterData->orderBy('push_notifications.id','DESC')->get();
@@ -69,7 +69,7 @@ class PushNotificationsController extends  BaseController
                         }
                     }
 
-                    $appName = ($obj->app_detail_id) ? $obj->appName . ' - ' . $obj->packageId : $obj->sportsName. " - " . "All Apps";
+                    $appName = ($obj->app_detail_id) ? $obj->appName . ' - ' . $obj->packageId : $obj->accountsName. " - " . "All Apps";
 
                     $response[$i]['checkbox'] = '<input type="checkbox" class="sub_chk" data-id="'.$obj->id.'">';
                     $response[$i]['srno'] = $i + 1;
@@ -108,7 +108,7 @@ class PushNotificationsController extends  BaseController
         {
 
             $request->validate([
-                'sports_id' => 'required',
+                'account_id' => 'required',
                 'app_detail_id' => 'required',
                 'title' => 'required',
                 'message' => 'required',
@@ -119,7 +119,7 @@ class PushNotificationsController extends  BaseController
         {
             $request->validate([
                 'title' => 'required',
-                'sports_id' => 'required',
+                'account_id' => 'required',
                 'app_detail_id' => 'required',
                 'message' => 'required',
                 'image' => 'max:300',
@@ -130,7 +130,7 @@ class PushNotificationsController extends  BaseController
         $input = [];
         $input['title'] = $request->title;
         $input['message'] = $request->message;
-        $input['sports_id'] = $request->sports_id;
+        $input['account_id'] = $request->account_id;
         $input['app_detail_id'] = ($request->app_detail_id == 'all') ? 0  : $request->app_detail_id;
         $input['schedule_datetime'] = ($request->schedule_datetime && ($request->schedule_datetime != "N/A")) ? $request->schedule_datetime : NULL;
 
@@ -221,7 +221,7 @@ class PushNotificationsController extends  BaseController
 
         if($request->app_detail_id == 'all'){
 
-            $applicationList = getAppListBySportsId($request->sports_id);
+            $applicationList = getAppListByAccountsId($request->account_id);
             if(!empty($applicationList)){
 
                 $errors = [];
@@ -242,12 +242,12 @@ class PushNotificationsController extends  BaseController
                             $this->sendNotification($request->title , $request->message , $obj->packageId , $notificationKey , $prepareCustomData , $notificationImage);
                         }
                         else{
-                            $errors[] = $obj->sportsName . ' - ' . $obj->packageId . ' : Notification Key Not Found!';
+                            $errors[] = $obj->accountsName . ' - ' . $obj->packageId . ' : Notification Key Not Found!';
                         }
                     }
                     else{
 
-                        $errors[] = $obj->sportsName . ' - ' . $obj->packageId . ' : Credentials not found!';
+                        $errors[] = $obj->accountsName . ' - ' . $obj->packageId . ' : Credentials not found!';
 
                     }
 
@@ -260,7 +260,7 @@ class PushNotificationsController extends  BaseController
 
             $packageId = getPackageIdByAppId($request->app_detail_id);
             $firebaseCredentials = getFirebaseCredentialKeysByAppId($request->app_detail_id);
-            $sportsDetail = getSportDetailsById($request->sports_id);
+            $accountsDetail = getAccountDetailsById($request->account_id);
 
             if($firebaseCredentials){
 
@@ -279,11 +279,11 @@ class PushNotificationsController extends  BaseController
                     $this->sendNotification($request->title , $request->message , $packageId , $notificationKey , $prepareCustomData , $notificationImage);
                 }
                 else{
-                    $errors[] = $sportsDetail->name . ' - ' . $packageId . ' : Notification Key Not Found!';
+                    $errors[] = $accountsDetail->name . ' - ' . $packageId . ' : Notification Key Not Found!';
                 }
             }
             else{
-                $errors[] = $sportsDetail->name . ' - ' . $packageId . ' : Credentials not found!';
+                $errors[] = $accountsDetail->name . ' - ' . $packageId . ' : Credentials not found!';
             }
         }
 

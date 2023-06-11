@@ -8774,12 +8774,12 @@ var
 	 */
 	prefilters = {},
 
-	/* Transports bindings
+	/* Tranaccounts bindings
 	 * 1) key is the dataType
 	 * 2) the catchall symbol "*" can be used
 	 * 3) selection will start with transport dataType and THEN go to "*" if needed
 	 */
-	transports = {},
+	tranaccounts = {},
 
 	// Avoid comment-prolog char sequence (#10098); must appease lint and evade compression
 	allTypes = "*/".concat( "*" ),
@@ -8789,7 +8789,7 @@ var
 	originAnchor.href = location.href;
 
 // Base "constructor" for jQuery.ajaxPrefilter and jQuery.ajaxTransport
-function addToPrefiltersOrTransports( structure ) {
+function addToPrefiltersOrTranaccounts( structure ) {
 
 	// dataTypeExpression is optional and defaults to "*"
 	return function( dataTypeExpression, func ) {
@@ -8822,11 +8822,11 @@ function addToPrefiltersOrTransports( structure ) {
 	};
 }
 
-// Base inspection function for prefilters and transports
-function inspectPrefiltersOrTransports( structure, options, originalOptions, jqXHR ) {
+// Base inspection function for prefilters and tranaccounts
+function inspectPrefiltersOrTranaccounts( structure, options, originalOptions, jqXHR ) {
 
 	var inspected = {},
-		seekingTransport = ( structure === transports );
+		seekingTransport = ( structure === tranaccounts );
 
 	function inspect( dataType ) {
 		var selected;
@@ -9116,8 +9116,8 @@ jQuery.extend( {
 			ajaxExtend( jQuery.ajaxSettings, target );
 	},
 
-	ajaxPrefilter: addToPrefiltersOrTransports( prefilters ),
-	ajaxTransport: addToPrefiltersOrTransports( transports ),
+	ajaxPrefilter: addToPrefiltersOrTranaccounts( prefilters ),
+	ajaxTransport: addToPrefiltersOrTranaccounts( tranaccounts ),
 
 	// Main method
 	ajax: function( url, options ) {
@@ -9302,7 +9302,7 @@ jQuery.extend( {
 		}
 
 		// Apply prefilters
-		inspectPrefiltersOrTransports( prefilters, s, options, jqXHR );
+		inspectPrefiltersOrTranaccounts( prefilters, s, options, jqXHR );
 
 		// If request was aborted inside a prefilter, stop there
 		if ( completed ) {
@@ -9404,7 +9404,7 @@ jQuery.extend( {
 		jqXHR.fail( s.error );
 
 		// Get transport
-		transport = inspectPrefiltersOrTransports( transports, s, options, jqXHR );
+		transport = inspectPrefiltersOrTranaccounts( tranaccounts, s, options, jqXHR );
 
 		// If no transport, we auto-abort
 		if ( !transport ) {

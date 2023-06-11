@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ScheduledServers;
 use App\Models\Schedules;
 use App\Models\SchedulesApps;
-use App\Models\Sports;
+use App\Models\Accounts;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
@@ -31,7 +31,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $sportsList = Sports::orderBy('id','DESC')->get();
+        $accountsList = Accounts::orderBy('id','DESC')->get();
 
 //        $response = $this->sendNotification(
 //            "Testing",
@@ -42,7 +42,7 @@ class HomeController extends Controller
 //        exit();
 
         return view('dashboard')
-            ->with('sportsList',$sportsList);
+            ->with('accountsList',$accountsList);
 
     }
 
@@ -90,11 +90,11 @@ class HomeController extends Controller
             $Filterdata = Schedules::select(
                 'schedules.*','leagues.name as league_name','homeTeam.name as home_team_name',
                 'homeTeam.points as home_points','awayTeam.name as away_team_name','awayTeam.points as away_points',
-                'sports.name as sportsName'
+                'accounts.name as accountsName'
             );
 
-            if(isset($request->filter_sports) && !empty($request->filter_sports) && ($request->filter_sports != '-1')) {
-                $Filterdata = $Filterdata->where('schedules.sports_id', $request->filter_sports);
+            if(isset($request->filter_accounts) && !empty($request->filter_accounts) && ($request->filter_accounts != '-1')) {
+                $Filterdata = $Filterdata->where('schedules.account_id', $request->filter_accounts);
             }
 
             if(isset($request->filter_league) && !empty($request->filter_league) && ($request->filter_league != '-1')){
@@ -118,8 +118,8 @@ class HomeController extends Controller
             $Filterdata = $Filterdata->join('teams as homeTeam', function ($join) {
                 $join->on('schedules.home_team_id', '=', 'homeTeam.id');
             })
-                ->leftJoin('sports', function ($join) {
-                    $join->on('sports.id', '=', 'schedules.sports_id');
+                ->leftJoin('accounts', function ($join) {
+                    $join->on('accounts.id', '=', 'schedules.account_id');
                 })
                 ->join('leagues', function ($join) {
                     $join->on('leagues.id', '=', 'schedules.leagues_id');
@@ -188,7 +188,7 @@ class HomeController extends Controller
                     $response[$i]['srno'] = $serverLink;
                     $response[$i]['appData'] = $dataArray;
                     $response[$i]['scheduleName'] = $obj->scheduleName;
-                    $response[$i]['sportsName'] = $obj->sportsName;
+                    $response[$i]['accountsName'] = $obj->accountsName;
                     $response[$i]['league'] = $obj->league_name;
                     $response[$i]['home_team_id'] = $obj->home_team_name;
                     $response[$i]['away_team_id'] = $obj->away_team_name;

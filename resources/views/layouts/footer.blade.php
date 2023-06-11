@@ -51,12 +51,12 @@
 
 <script>
 
-    function getLeaguesOptionBySports(sports_id,league_filter_id){
+    function getLeaguesOptionByAccounts(account_id,league_filter_id){
 
         $.ajax({
             type:"POST",
             url: "{{ url('admin/leagueslistbysport') }}",
-            data: { sports_id: sports_id},
+            data: { account_id: account_id},
             success: function(response){
                 $("#"+league_filter_id).html(response);
             }
@@ -64,12 +64,12 @@
 
     }
 
-    function getApplicationListOptionBySports(sports_id,app_filter_id,otherElementId="-1",disableFirstOption = false){
+    function getApplicationListOptionByAccounts(account_id,app_filter_id,otherElementId="-1",disableFirstOption = false){
 
         $.ajax({
             type:"POST",
             url: "{{ url('admin/apps-list-options') }}",
-            data: { sports_id: sports_id  , disable_first_option : disableFirstOption},
+            data: { account_id: account_id  , disable_first_option : disableFirstOption},
             success: function(response){
                 $("#"+app_filter_id).html(response);
                 if(otherElementId != "-1"){
@@ -82,12 +82,12 @@
     }
 
 
-    function getApplicationListOptionBySportsNoPermission(sports_id,app_filter_id,otherElementId="-1",disableFirstOption = false){
+    function getApplicationListOptionByAccountsNoPermission(account_id,app_filter_id,otherElementId="-1",disableFirstOption = false){
 
         $.ajax({
             type:"POST",
             url: "{{ url('admin/apps-list-options-no-permissions') }}",
-            data: { sports_id: sports_id  , disable_first_option : disableFirstOption},
+            data: { account_id: account_id  , disable_first_option : disableFirstOption},
             success: function(response){
                 $("#"+app_filter_id).html(response);
                 if(otherElementId != "-1"){
@@ -99,12 +99,12 @@
 
     }
 
-    function getAllApplicationListOptionBySports(sports_id,app_filter_id,otherElementId="-1",disableFirstOption = false){
+    function getAllApplicationListOptionByAccounts(account_id,app_filter_id,otherElementId="-1",disableFirstOption = false){
 
         $.ajax({
             type:"POST",
             url: "{{ url('admin/apps-list-options/all') }}",
-            data: { sports_id: sports_id  , disable_first_option : disableFirstOption},
+            data: { account_id: account_id  , disable_first_option : disableFirstOption},
             success: function(response){
                 $("#"+app_filter_id).html(response);
                 if(otherElementId != "-1"){
@@ -116,12 +116,12 @@
 
     }
 
-    function getAllAppListOptionBySportsNoPermission(sports_id,app_filter_id,otherElementId="-1",disableFirstOption = false){
+    function getAllAppListOptionByAccountsNoPermission(account_id,app_filter_id,otherElementId="-1",disableFirstOption = false){
 
         $.ajax({
             type:"POST",
             url: "{{ url('admin/apps-list-options-no-permissions/all') }}",
-            data: { sports_id: sports_id  , disable_first_option : disableFirstOption},
+            data: { account_id: account_id  , disable_first_option : disableFirstOption},
             success: function(response){
                 $("#"+app_filter_id).html(response);
                 if(otherElementId != "-1"){
@@ -134,12 +134,12 @@
     }
 
 
-    function getRemainingAppsOptionBySports(sports_id,app_filter_id,otherElementId="-1"){
+    function getRemainingAppsOptionByAccounts(account_id,app_filter_id,otherElementId="-1"){
 
         $.ajax({
             type:"POST",
             url: "{{ url('admin/remaining-apps-options') }}",
-            data: { sports_id: sports_id},
+            data: { account_id: account_id},
             success: function(response){
                 $("#"+app_filter_id).html(response);
                 if(otherElementId != "-1"){
@@ -896,14 +896,14 @@ $(document).ready(function($){
 
     function TriggerApplicationDropdown(applicationID){
 
-        $(".Sports-Block,.Leagues-Block,.Schedules-Block").hide();
+        $(".Accounts-Block,.Leagues-Block,.Schedules-Block").hide();
         $("#leagues_id,#schedules_id").attr('disabled','disabled');
-        $("#sports_id").val('');
+        $("#account_id").val('');
 
 
         if(applicationID){
-            var sports_id = $("#app_detail_id").find(':selected').attr('data-sports_id')
-            $("#sports_id").val(sports_id);
+            var account_id = $("#app_detail_id").find(':selected').attr('data-account_id')
+            $("#account_id").val(account_id);
 
         }
     }
@@ -915,12 +915,12 @@ $(document).ready(function($){
         $("#"+btnId).attr("disabled",btnEnabledDisable);
     }
 
-    function getApplicationListOptionsBySports(sports_id,app_filter_id){
+    function getApplicationListOptionsByAccounts(account_id,app_filter_id){
 
         $.ajax({
             type:"POST",
             url: "{{ url('admin/sync/app-list-options') }}",
-            data: { sports_id: sports_id},
+            data: { account_id: account_id},
             success: function(response){
                 $("#"+app_filter_id).html(response);
             }

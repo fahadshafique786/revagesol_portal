@@ -88,14 +88,14 @@
             </li>
             @endif
 
-			@if(auth()->user()->can('view-sports') || auth()->user()->can('view-leagues') || auth()->user()->can('view-teams') || auth()->user()->can('view-schedules') || auth()->user()->can('view-servers') || auth()->user()->hasRole('super-admin'))
+			@if(auth()->user()->can('view-accounts') || auth()->user()->can('view-leagues') || auth()->user()->can('view-teams') || auth()->user()->can('view-schedules') || auth()->user()->can('view-servers') || auth()->user()->hasRole('super-admin'))
             <li class="nav-header py-3">SPORTS MANAGEMENT </li>
-                @if(auth()->user()->can('view-sports')  || auth()->user()->hasRole('super-admin'))
+                @if(auth()->user()->can('view-accounts')  || auth()->user()->hasRole('super-admin'))
                     <li class="nav-item">
-                        <a href="{{ url('admin/sports') }}" class="nav-link {{ (Request::segment(2) == 'sports') ? 'active' : '' }}">
+                        <a href="{{ url('admin/accounts') }}" class="nav-link {{ (Request::segment(2) == 'accounts') ? 'active' : '' }}">
                             <!-- <i class="far fa fa-life-ring nav-icon"></i> -->
 							<img src="{{ asset('dist/img/sidebar-icons/sports.png') }}" class="elevation-2 "/>
-                            <p>Sports</p>
+                            <p>Accounts</p>
                         </a>
                     </li>
                 @endif
@@ -179,7 +179,7 @@
             @endif
 
 
-                @if(auth()->user()->can('view-firebase_configuration') || auth()->user()->can('view-manage-push_notifications') || auth()->user()->can('view-manage-sync_apps_data') || auth()->user()->can('view-manage-sync_sports_data') || auth()->user()->hasRole('super-admin'))
+                @if(auth()->user()->can('view-firebase_configuration') || auth()->user()->can('view-manage-push_notifications') || auth()->user()->can('view-manage-sync_apps_data') || auth()->user()->can('view-manage-sync_accounts_data') || auth()->user()->hasRole('super-admin'))
 
                 <li class="nav-header py-3">FIREBASE CONFIGURATION </li>
 
@@ -204,7 +204,7 @@
                 </li>
                 @endif
 
-                @if(auth()->user()->can('view-manage-sync_apps_data') || auth()->user()->can('view-manage-sync_sports_data') ||  auth()->user()->hasRole('super-admin'))
+                @if(auth()->user()->can('view-manage-sync_apps_data') || auth()->user()->can('view-manage-sync_accounts_data') ||  auth()->user()->hasRole('super-admin'))
                 <li class="nav-item ">
                     <a href="{{ url('admin/sync-data') }}" class="nav-link {{ (Request::segment(2) == 'sync-data') ? 'active' : '' }}">
                         <img src="{{ asset('dist/img/sidebar-icons/sync.png') }}" class="elevation-2 "/>

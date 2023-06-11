@@ -6,7 +6,7 @@ use App\Models\AppDetails;
 use App\Models\RoleHasApplication;
 use App\Models\User;
 use Illuminate\Http\Request;
-use App\Models\Sports;
+use App\Models\Accounts;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Spatie\Permission\Models\Permission;
@@ -25,10 +25,10 @@ class RolesController extends Controller
     {
         $permissions = Permission::all();
         $applicationList = AppDetails::all();
-        $sportsList = Sports::orderBy('id','DESC')->get();
+        $accountsList = Accounts::orderBy('id','DESC')->get();
 
         return view('roles.index')
-            ->with('sportsList',$sportsList)
+            ->with('accountsList',$accountsList)
             ->with('permissions',$permissions)
             ->with('applications',$applicationList);
     }
@@ -68,7 +68,7 @@ class RolesController extends Controller
         $role->syncPermissions($request->permissions);
 
         if((in_array("20",$request->permissions)) && (in_array("19",$request->permissions))){
-            $this->syncApplications($request->application_ids,$role,$request->sports_id);
+            $this->syncApplications($request->application_ids,$role,$request->account_id);
         }
         else{
             RoleHasApplication::where('role_id',$role->id)->delete();
@@ -77,9 +77,9 @@ class RolesController extends Controller
         return response()->json(['success' => true]);
     }
 
-    public function syncApplications($applicationIds,$role,$sports_id){
+    public function syncApplications($applicationIds,$role,$account_id){
 
-        $roleHasAppsFromDB = DB::table('role_has_applications')->select('application_id','sports_id')->where('role_id',$role->id)->get()->toArray();
+        $roleHasAppsFromDB = DB::table('role_has_applications')->select('application_id','account_id')->where('role_id',$role->id)->get()->toArray();
 
         $array1 = [];
         foreach($roleHasAppsFromDB as $obj){
@@ -98,8 +98,8 @@ class RolesController extends Controller
             $roleAssignedApps['application_id'] = $appId;
             $roleAssignedApps['role_id'] = $role->id;
 
-            $appDetail = AppDetails::where('id',$appId)->select('sports_id')->first();
-            $roleAssignedApps['sports_id'] = $appDetail->sports_id;
+            $appDetail = AppDetails::where('id',$appId)->select('account_id')->first();
+            $roleAssignedApps['account_id'] = $appDetail->account_id;
 
             RoleHasApplication::create($roleAssignedApps);
         }
@@ -115,9 +115,9 @@ class RolesController extends Controller
         $where = array('id' => $request->id);
         $rolesData  = Role::with($with)->where($where)->first();
         $roleHasApplication = RoleHasApplication::where('role_id', $request->id)->get();
-        $roleHasSports =  DB::table('role_has_applications')
+        $roleHasAccounts =  DB::table('role_has_applications')
         ->where('role_id',$request->id)
-        ->select('sports_id')
+        ->select('account_id')
         ->distinct()
         ->get();
 
@@ -125,11 +125,11 @@ class RolesController extends Controller
             $roleHasApplication = null;
         }
         else{
-            $rolesData['sports_id'] = $roleHasApplication[0]->sports_id;
+            $rolesData['account_id'] = $roleHasApplication[0]->account_id;
         }
 
         $rolesData['role_has_application'] = $roleHasApplication;
-        $rolesData['role_has_sports_id'] = $roleHasSports;
+        $rolesData['role_has_accounts_id'] = $roleHasAccounts;
 
         return response()->json($rolesData);
         exit();

@@ -22,12 +22,12 @@
                             <form action="javascript:void(0)" id="addEditForm" name="addEditForm" class="form-horizontal" method="POST" enctype="multipart/form-data">
 
                                 <div class="form-group row">
-                                    <label for="staticEmail" class="col-sm-2 col-form-label">Sports</label>
+                                    <label for="staticEmail" class="col-sm-2 col-form-label">Accounts</label>
                                     <div class="col-sm-4">
-                                        <select class="form-control" name="sports_id" id="sports_id" required>
+                                        <select class="form-control" name="account_id" id="account_id" required>
                                             <option value="">   Select </option>
-                                            @foreach($sportsList as $obj)
-                                                <option value="{{$obj->id}}" {{($obj->id == $appData->sports_id) ? 'selected' : '' }}>   {{   $obj->name }}    </option>
+                                            @foreach($accountsList as $obj)
+                                                <option value="{{$obj->id}}" {{($obj->id == $appData->account_id) ? 'selected' : '' }}>   {{   $obj->name }}    </option>
                                             @endforeach
                                         </select>
 
@@ -510,7 +510,7 @@
                 timer: 3000
             });
 
-            var version_sports_id = $("#sports_id").val();
+            var version_accounts_id = $("#account_id").val();
             var versionCategories = "appDetailsDatabaseVersion";
             var versionAppDetailId  = [];
                 versionAppDetailId[0] = {{ $application_id }};
@@ -518,7 +518,7 @@
             $.ajax({
                 type:"POST",
                 url: "{{ url('admin/app-settings/update-database-version') }}",
-                data: { versionSportsId : version_sports_id  , version_categories : versionCategories , version_app_detail_ids : versionAppDetailId},
+                data: { versionAccountsId : version_accounts_id  , version_categories : versionCategories , version_app_detail_ids : versionAppDetailId},
                 success: function (res) {
 
                     $('#cover-spin').hide();

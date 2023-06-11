@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AppDetails;
 use App\Models\AppSettings;
 use App\Models\FirebaseCredentials;
-use App\Models\Sports;
+use App\Models\Accounts;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Response;
@@ -19,27 +19,27 @@ class AppSettingsController extends Controller
         $this->middleware('auth');
         $this->middleware('role_or_permission:super-admin|view-app_settings', ['only' => ['index','fetchAppSettingsList','getApplicationSettingsCardView']]);
         $this->middleware('role_or_permission:super-admin|manage-app_settings',['only' => ['edit','store','destroy','deleteAll']]);
-        $this->middleware('role_or_permission:super-admin|view-manage-sync_sports_data',['only' => ['updateDatabaseVersion']]);
+        $this->middleware('role_or_permission:super-admin|view-manage-sync_accounts_data',['only' => ['updateDatabaseVersion']]);
     }
 
     public function index()
     {
         $this->roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
 
-        $appsList = AppSettings::select('app_settings.id as id','appName','appLogo','packageId','sports.name as sports_name')
+        $appsList = AppSettings::select('app_settings.id as id','appName','appLogo','packageId','accounts.name as accounts_name')
             ->join('app_details', function ($join) {
                 $join->on('app_details.id', '=', 'app_settings.app_detail_id');
             })
-            ->join('sports', function ($join) {
-                $join->on('sports.id', '=', 'app_details.sports_id');
+            ->join('accounts', function ($join) {
+                $join->on('accounts.id', '=', 'app_details.account_id');
             })
             ->get();
 
-        $sportsList = Sports::orderBy('id','DESC')->get();
+        $accountsList = Accounts::orderBy('id','DESC')->get();
 
         return view('app_settings.index')
             ->with('appsList',$appsList)
-            ->with('sportsList',$sportsList);
+            ->with('accountsList',$accountsList);
 
     }
 
@@ -60,7 +60,7 @@ class AppSettingsController extends Controller
 //                );
 //            '));
 //
-            $sportsList = Sports::orderBy('id','DESC')->get();
+            $accountsList = Accounts::orderBy('id','DESC')->get();
 
             $appData = [];
 
@@ -69,20 +69,20 @@ class AppSettingsController extends Controller
             return view('app_settings.create')
                 ->with('appsList',$appListWithoutCredentials)
                 ->with('appData',$appData )
-                ->with('sportsList',$sportsList);
+                ->with('accountsList',$accountsList);
 
         }
         else{
 
             $appSettingData = AppSettings::where('id',$appSettingId)->first();
             $appId = $appSettingData->app_detail_id;
-            $appDetail = AppDetails::where('id',$appId)->select("sports_id")->first();
-            $sportsId = $appDetail->sports_id;
+            $appDetail = AppDetails::where('id',$appId)->select("account_id")->first();
+            $accountsId = $appDetail->account_id;
 
             $appIdClause = "";
 
-            if(!empty($sportsId)){
-                $appIdClause = " AND app.sports_id = ". $sportsId;
+            if(!empty($accountsId)){
+                $appIdClause = " AND app.account_id = ". $accountsId;
             }
 
             if(!empty($appSettingId)){
@@ -102,14 +102,14 @@ class AppSettingsController extends Controller
 
 //            dd(DB::getQueryLog());
 
-            $sportsList = Sports::orderBy('id','DESC')->get();
+            $accountsList = Accounts::orderBy('id','DESC')->get();
 
             return view('app_settings.create')
                 ->with('appData',$appSettingData)
                 ->with('appsList',$excludedApps)
-                ->with('sportsList',$sportsList)
+                ->with('accountsList',$accountsList)
                 ->with('appSettingId',$appSettingId)
-                ->with('sportsId',$sportsId);
+                ->with('accountsId',$accountsId);
         }
 
     }
@@ -305,18 +305,18 @@ class AppSettingsController extends Controller
 
         $this->roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
 
-        $appsList = AppSettings::select('app_settings.id as id','appName','appLogo','packageId','sports.name as sports_name')
+        $appsList = AppSettings::select('app_settings.id as id','appName','appLogo','packageId','accounts.name as accounts_name')
             ->join('app_details', function ($join) {
                 $join->on('app_details.id', '=', 'app_settings.app_detail_id');
             })
-            ->join('sports', function ($join) {
-                $join->on('sports.id', '=', 'app_details.sports_id');
+            ->join('accounts', function ($join) {
+                $join->on('accounts.id', '=', 'app_details.account_id');
             });
 
         if(isset($request->searchKeywords) && !empty($request->searchKeywords)){
             $appsList = $appsList->where(function($query) {
                 $query->orWhere('app_details.appName','like','%'.request()->searchKeywords.'%');
-                $query->orWhere('sports.name','like','%'.request()->searchKeywords.'%');
+                $query->orWhere('accounts.name','like','%'.request()->searchKeywords.'%');
             });
         }
 
@@ -324,8 +324,8 @@ class AppSettingsController extends Controller
             $appsList = $appsList->whereIn('app_settings.app_detail_id',$this->roleAssignedApplications);
         }
 
-        if(isset($request->sportsId) && !empty($request->sportsId) && $request->sportsId != '-1'){
-            $appsList = $appsList->where('app_details.sports_id',$request->sportsId);
+        if(isset($request->accountsId) && !empty($request->accountsId) && $request->accountsId != '-1'){
+            $appsList = $appsList->where('app_details.account_id',$request->accountsId);
             $appsList = $appsList->orderBy('app_settings.id','ASC');
         }
 
@@ -341,22 +341,22 @@ class AppSettingsController extends Controller
     {
         if($request->ajax())
         {
-            $appsList = AppSettings::select('app_settings.id as id','appName','appLogo','packageId','sports.name as sports_name')
+            $appsList = AppSettings::select('app_settings.id as id','appName','appLogo','packageId','accounts.name as accounts_name')
                 ->join('app_details', function ($join) {
                     $join->on('app_details.id', '=', 'app_settings.app_detail_id');
                 })
-                ->join('sports', function ($join) {
-                    $join->on('sports.id', '=', 'app_details.sports_id');
+                ->join('accounts', function ($join) {
+                    $join->on('accounts.id', '=', 'app_details.account_id');
                 });
 
-            if(isset($request->sportsId) && !empty($request->sportsId) && $request->sportsId != '-1'){
-                $appsList = $appsList->where('app_details.sports_id',$request->sportsId);
+            if(isset($request->accountsId) && !empty($request->accountsId) && $request->accountsId != '-1'){
+                $appsList = $appsList->where('app_details.account_id',$request->accountsId);
             }
 
             if(isset($request->searchKeywords) && !empty($request->searchKeywords)){
                 $appsList = $appsList->where(function($query) {
                     $query->orWhere('app_details.appName','like','%'.request()->searchKeywords.'%');
-                    $query->orWhere('sports.name','like','%'.request()->searchKeywords.'%');
+                    $query->orWhere('accounts.name','like','%'.request()->searchKeywords.'%');
                 });
             }
 
@@ -379,14 +379,14 @@ class AppSettingsController extends Controller
     public function updateDatabaseVersion(Request $request){
 
 //        if($request->version_app_detail_id == "all"){
-//            $listOfApplications = getAppListBySportsId($request->versionSportsId);
+//            $listOfApplications = getAppListByAccountsId($request->versionAccountsId);
 //        }
 //        else{
-//            $listOfApplications = getAppListBySportsId($request->versionSportsId,$request->version_app_detail_id);
+//            $listOfApplications = getAppListByAccountsId($request->versionAccountsId,$request->version_app_detail_id);
 //        }
 
-        $sportsId = $request->versionSportsId;
-        $sportsDetail = getSportDetailsById($sportsId);
+        $accountsId = $request->versionAccountsId;
+        $accountsDetail = getAccountDetailsById($accountsId);
 
         $versionCategories = $request->version_categories;
 
@@ -394,7 +394,7 @@ class AppSettingsController extends Controller
 
         if(count($request->version_app_detail_ids) > 0) {
             foreach ($request->version_app_detail_ids as $appDetailId) {
-                $listOfApplications = getAppListBySportsId($request->versionSportsId, $appDetailId);
+                $listOfApplications = getAppListByAccountsId($request->versionAccountsId, $appDetailId);
 
                 if(!empty($listOfApplications)){
                     foreach ($listOfApplications as $obj) {
@@ -431,7 +431,7 @@ class AppSettingsController extends Controller
                                         $firebaseConfigJson = json_encode($parseFirebaseConfigJson);
 
                                         $response[] = [
-                                            'app_detail' => $obj->sportsName . ' - ' . $obj->packageId,
+                                            'app_detail' => $obj->accountsName . ' - ' . $obj->packageId,
                                             'firebase_status' => "success",
                                             'message' => "Credentials Successfully Pushed!",
                                             'firebaseData' => $jsonData,
@@ -442,24 +442,24 @@ class AppSettingsController extends Controller
                                         ];
                                     }
                                     else{
-                                        $errors[] = ['app_detail' =>  $obj->sportsName . ' - ' . $obj->packageId , 'message' => 'Firebase Config JSON is missing!' ];
+                                        $errors[] = ['app_detail' =>  $obj->accountsName . ' - ' . $obj->packageId , 'message' => 'Firebase Config JSON is missing!' ];
                                     }
                                 }
                                 else{
-                                    $errors[] = ['app_detail' =>  $obj->sportsName . ' - ' . $obj->packageId , 'message' => 'Firebase Credentials not found!' ];
+                                    $errors[] = ['app_detail' =>  $obj->accountsName . ' - ' . $obj->packageId , 'message' => 'Firebase Credentials not found!' ];
                                 }
                             }
                             else{
-                                $errors[] = ['app_detail' =>  $obj->sportsName . ' - ' . $obj->packageId , 'message' => 'Failed due to incorrect decimal value!' ];
+                                $errors[] = ['app_detail' =>  $obj->accountsName . ' - ' . $obj->packageId , 'message' => 'Failed due to incorrect decimal value!' ];
                             }
                         }
                         else{
-                            $errors[] = ['app_detail' =>  $obj->sportsName . ' - ' . $obj->packageId , 'message' => 'App Setting not found!' ];
+                            $errors[] = ['app_detail' =>  $obj->accountsName . ' - ' . $obj->packageId , 'message' => 'App Setting not found!' ];
                         }
                     }
                 }
                 else{
-                    $errors[] = ['app_detail' => $sportsDetail->name , 'message' => 'Application not found!' ];
+                    $errors[] = ['app_detail' => $accountsDetail->name , 'message' => 'Application not found!' ];
                 }
 
             }

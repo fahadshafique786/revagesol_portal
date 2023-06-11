@@ -6,7 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\PermissionsController;
 
-use App\Http\Controllers\SportsController;
+use App\Http\Controllers\AccountsController;
 use App\Http\Controllers\LeaguesController;
 use App\Http\Controllers\TeamsController;
 use App\Http\Controllers\ScheduleController;
@@ -88,14 +88,14 @@ Route::group(
         Route::post('/update-password', [UserController::class, 'changePassword']);
         Route::post('/get-schedule-list', [HomeController::class, 'getSchedulesList']);
 
-        /******* Sports Module ***********/
+        /******* Accounts Module ***********/
 
-        Route::get('/sports', [SportsController::class, 'index']);
-        Route::get('/fetchsportsdata', [SportsController::class, 'fetchsportsdata']);
-        Route::post('/add-update-Sport', [SportsController::class, 'store']);
-        Route::post('/edit-Sport', [SportsController::class, 'edit']);
-        Route::post('/delete-sport', [SportsController::class, 'destroy']);
-        Route::delete('/sportsDeleteAll', [SportsController::class, 'deleteAll']);
+        Route::get('/accounts', [AccountsController::class, 'index']);
+        Route::get('/fetchaccountsdata', [AccountsController::class, 'fetchaccountsdata']);
+        Route::post('/add-update-Account', [AccountsController::class, 'store']);
+        Route::post('/edit-Account', [AccountsController::class, 'edit']);
+        Route::post('/delete-account', [AccountsController::class, 'destroy']);
+        Route::delete('/accountsDeleteAll', [AccountsController::class, 'deleteAll']);
 
         /******* RBAC Management ***********/
 
@@ -118,13 +118,13 @@ Route::group(
         Route::post('/add-update-leagues', [LeaguesController::class, 'store']);
         Route::post('/edit-league', [LeaguesController::class, 'edit']);
         Route::post('/delete-league', [LeaguesController::class, 'destroy']);
-        Route::post('/leagueslistbysport', [LeaguesController::class, 'getLeaguesOptionBySports']);
+        Route::post('/leagueslistbysport', [LeaguesController::class, 'getLeaguesOptionByAccounts']);
         Route::delete('/leaguesDeleteAll', [LeaguesController::class, 'deleteAll']);
 
         /******* Teams Module ***********/
-        Route::get('/teams/{sports_id}', [TeamsController::class, 'index']);
-        Route::post('/fetch-teams-data/{sports_id}', [TeamsController::class, 'fetchteamsdata']);
-        Route::post('/add-update-teams/{sports_id}', [TeamsController::class, 'store']);
+        Route::get('/teams/{account_id}', [TeamsController::class, 'index']);
+        Route::post('/fetch-teams-data/{account_id}', [TeamsController::class, 'fetchteamsdata']);
+        Route::post('/add-update-teams/{account_id}', [TeamsController::class, 'store']);
         Route::post('/delete-team', [TeamsController::class, 'destroy']);
         Route::post('/edit-team', [TeamsController::class, 'edit']);
         Route::post('/getTeamsByLeagueId', [TeamsController::class, 'getTeamsByLeagueId']);
@@ -132,9 +132,9 @@ Route::group(
 
 
         /******* Schedules Module ***********/
-        Route::get('/schedules/{sports_id}', [ScheduleController::class, 'index']);
-        Route::post('/fetch-schedules-data/{sports_id}', [ScheduleController::class, 'fetchschedulesdata']);
-        Route::post('/add-update-schedules/{sports_id}', [ScheduleController::class, 'store']);
+        Route::get('/schedules/{account_id}', [ScheduleController::class, 'index']);
+        Route::post('/fetch-schedules-data/{account_id}', [ScheduleController::class, 'fetchschedulesdata']);
+        Route::post('/add-update-schedules/{account_id}', [ScheduleController::class, 'store']);
         Route::post('/delete-schedule', [ScheduleController::class, 'destroy']);
         Route::post('/edit-schedule', [ScheduleController::class, 'edit']);
         Route::post('/update-schedule-live-status', [ScheduleController::class, 'updateScheduleLiveStatus']);
@@ -173,7 +173,7 @@ Route::group(
         Route::post('/apps-list-options-no-permissions', [AppDetailsController::class, 'getApplicationListOptionsNoPermission']);
         Route::post('/apps-list-options/all', [AppDetailsController::class, 'getAppsListWithAllOption']);
         Route::post('/apps-list-options-no-permissions/all', [AppDetailsController::class, 'getAppsListWithAllOptionNoPermissions']);
-        Route::post('/roles/sports/apps-options', [AppDetailsController::class, 'getRolesAppsListBySports']);
+        Route::post('/roles/accounts/apps-options', [AppDetailsController::class, 'getRolesAppsListByAccounts']);
         Route::post('/remaining-apps-options', [AppDetailsController::class, 'getRemainingAppsForAppSettingOptions']);
         Route::get('/pagination/applications/fetch_data', [AppDetailsController::class, 'fetchData']);
         Route::post('/app-detail/proxy/change-status', [AppDetailsController::class, 'updateProxyStatus']);

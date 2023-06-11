@@ -7,7 +7,7 @@ use App\Models\AppCredentials;
 use App\Models\AppSettings;
 use App\Models\Schedules;
 use App\Models\SponsorAds;
-use App\Models\Sports;
+use App\Models\Accounts;
 use Illuminate\Http\Request;
 use App\Models\AppDetails;
 use App\Models\Leagues;
@@ -32,7 +32,7 @@ class Synchronization extends BaseController
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('role_or_permission:super-admin|view-manage-sync_sports_data', ['only' => ['syncDataToFirebase']]);
+        $this->middleware('role_or_permission:super-admin|view-manage-sync_accounts_data', ['only' => ['syncDataToFirebase']]);
         $this->middleware('role_or_permission:super-admin|view-manage-sync_apps_data', ['only' => ['syncAppKeys','syncAppCredentials','syncAppDetails']]);
 
         $this->imageUrl = config('app.appsImagePath');
@@ -55,10 +55,10 @@ class Synchronization extends BaseController
         }
 
 
-        $sportsList = Sports::orderBy('id','DESC')->get();
+        $accountsList = Accounts::orderBy('id','DESC')->get();
 
         return view('firebase.synchronization')
-            ->with('sportsList',$sportsList)
+            ->with('accountsList',$accountsList)
             ->with('appsList',$appsList)
             ->with('assignedAppsList',$assignedAppsList);
     }
@@ -77,19 +77,19 @@ class Synchronization extends BaseController
 
             case "leagues_url":
 
-                $sportsId = $request->sports_id;
-                $sportsDetail = getSportDetailsById($sportsId);
+                $accountsId = $request->account_id;
+                $accountsDetail = getAccountDetailsById($accountsId);
 
                 $firebaseURL = "";
                 if(count($request->app_detail_ids) > 0) {
                     foreach ($request->app_detail_ids as $appDetailId) {
-                        $listOfApplications = getAppListBySportsId($request->sports_id, $appDetailId);
+                        $listOfApplications = getAppListByAccountsId($request->account_id, $appDetailId);
 
 
                         if (!empty($listOfApplications)) {
                             foreach ($listOfApplications as $obj) {
 
-                                $jsonData = $this->generateLeaguesJson($sportsId, $obj->application_id);
+                                $jsonData = $this->generateLeaguesJson($accountsId, $obj->application_id);
 
                                 if (!empty($jsonData)) {
 
@@ -133,7 +133,7 @@ class Synchronization extends BaseController
                             }
                         } else {
                             // application not found!
-                            $errors[] = ['app_detail' => $sportsDetail->name, 'message' => 'Application not found!'];
+                            $errors[] = ['app_detail' => $accountsDetail->name, 'message' => 'Application not found!'];
                         }
                     }
                 }
@@ -142,13 +142,13 @@ class Synchronization extends BaseController
 
             case "apps_url":
 
-                $sportsId = $request->sports_id;
-                $sportsDetail = getSportDetailsById($sportsId);
+                $accountsId = $request->account_id;
+                $accountsDetail = getAccountDetailsById($accountsId);
 
                 $firebaseURL = "";
                 if(count($request->app_detail_ids) > 0){
                     foreach($request->app_detail_ids as $appDetailId) {
-                        $listOfApplications = getAppListBySportsId($request->sports_id, $appDetailId);
+                        $listOfApplications = getAppListByAccountsId($request->account_id, $appDetailId);
 
                         if(!empty($listOfApplications)){
                             foreach($listOfApplications as $obj) {
@@ -201,7 +201,7 @@ class Synchronization extends BaseController
                         }
                         else{
                             // application not found!
-                            $errors[] = ['app_detail' => $sportsDetail->name , 'message' => 'Application not found!' ];
+                            $errors[] = ['app_detail' => $accountsDetail->name , 'message' => 'Application not found!' ];
                         }
 
                     }
@@ -212,19 +212,19 @@ class Synchronization extends BaseController
 
             case "schedules_url":
 
-                $sportsId = $request->sports_id;
-                $sportsDetail = getSportDetailsById($sportsId);
+                $accountsId = $request->account_id;
+                $accountsDetail = getAccountDetailsById($accountsId);
 
                 $firebaseURL = "";
 
                 if(count($request->app_detail_ids) > 0) {
                     foreach ($request->app_detail_ids as $appDetailId) {
-                        $listOfApplications = getAppListBySportsId($request->sports_id, $appDetailId);
+                        $listOfApplications = getAppListByAccountsId($request->account_id, $appDetailId);
 
                         if(!empty($listOfApplications)){
                             foreach($listOfApplications as $obj) {
 
-                                $jsonData = $this->generateSchedulesJson($sportsId,$obj->application_id);
+                                $jsonData = $this->generateSchedulesJson($accountsId,$obj->application_id);
 
                                 if(!empty($jsonData)) {
 
@@ -272,7 +272,7 @@ class Synchronization extends BaseController
                         }
                         else{
                             // application not found!
-                            $errors[] = ['app_detail' => $sportsDetail->name , 'message' => 'Application not found!' ];
+                            $errors[] = ['app_detail' => $accountsDetail->name , 'message' => 'Application not found!' ];
                         }
                     }
                 }
@@ -281,18 +281,18 @@ class Synchronization extends BaseController
 
             case "servers_url":
 
-                $sportsId = $request->sports_id;
-                $sportsDetail = getSportDetailsById($sportsId);
+                $accountsId = $request->account_id;
+                $accountsDetail = getAccountDetailsById($accountsId);
 
                 $firebaseURL = "";
                 if(count($request->app_detail_ids) > 0) {
                     foreach ($request->app_detail_ids as $appDetailId) {
-                        $listOfApplications = getAppListBySportsId($request->sports_id, $appDetailId);
+                        $listOfApplications = getAppListByAccountsId($request->account_id, $appDetailId);
 
                         if (!empty($listOfApplications)) {
                             foreach ($listOfApplications as $obj) {
 
-                                $jsonData = $this->generateServersJson($sportsId);
+                                $jsonData = $this->generateServersJson($accountsId);
 
                                 if (!empty($jsonData)) {
 
@@ -337,7 +337,7 @@ class Synchronization extends BaseController
                         }
                         else {
                             // application not found!
-                            $errors[] = ['app_detail' => $sportsDetail->name, 'message' => 'Application not found!'];
+                            $errors[] = ['app_detail' => $accountsDetail->name, 'message' => 'Application not found!'];
                         }
                     }
                 }
@@ -436,8 +436,8 @@ class Synchronization extends BaseController
 
             case "leagues_url":
 
-                $sportsId = $request->sports_id;
-                $jsonData = $this->generateLeaguesJson($sportsId);
+                $accountsId = $request->account_id;
+                $jsonData = $this->generateLeaguesJson($accountsId);
                 $firebaseURL = "";
 
                 if(!empty($jsonData)){
@@ -493,8 +493,8 @@ class Synchronization extends BaseController
 
             case "schedules_url":
 
-                $sportsId = $request->sports_id;
-                $jsonData = $this->generateSchedulesJson($sportsId);
+                $accountsId = $request->account_id;
+                $jsonData = $this->generateSchedulesJson($accountsId);
                 $firebaseURL = "";
 
                 if(!empty($jsonData)){
@@ -549,8 +549,8 @@ class Synchronization extends BaseController
 
             case "servers_url":
 
-                $sportsId = $request->sports_id;
-                $jsonData = $this->generateServersJson($sportsId);
+                $accountsId = $request->account_id;
+                $jsonData = $this->generateServersJson($accountsId);
                 $firebaseURL = "";
 
                 if(!empty($jsonData)){
@@ -670,9 +670,9 @@ class Synchronization extends BaseController
 
             foreach($dataObject as $index => $obj){
 
-                $obj->sportsId = $obj->sports_id;
+                $obj->accountsId = $obj->account_id;
 
-                unset($obj->sports_id);
+                unset($obj->account_id);
                 unset($obj->created_at);
                 unset($obj->updated_at);
                 unset($obj->isProxyEnable);
@@ -712,11 +712,11 @@ class Synchronization extends BaseController
 
     }
 
-    function generateLeaguesJson($sportsId,$applicationId){
+    function generateLeaguesJson($accountsId,$applicationId){
 
-        $data = Leagues::where('sports_id',$sportsId)
+        $data = Leagues::where('account_id',$accountsId)
             ->select(DB::raw('
-                id as leagueId,name as leagueName,sports_id as sportsId,IFNULL(CONCAT("'.$this->leaguesImageUrl.'","",icon),"") AS leagueIcon ,
+                id as leagueId,name as leagueName,account_id as accountsId,IFNULL(CONCAT("'.$this->leaguesImageUrl.'","",icon),"") AS leagueIcon ,
                 isSponsorAd , IFNULL(sponsorAdClickUrl,"") AS sponsorAdClickUrl,
                 IFNULL(CONCAT("'.$this->leaguesImageUrl.'","",sponsorAdImageUrl),"") AS sponsorAdImageUrl'
             ));
@@ -744,7 +744,7 @@ class Synchronization extends BaseController
                 }
             }
 
-            $response[$sportsId] = $leaguesArray;
+            $response[$accountsId] = $leaguesArray;
             return json_encode($response);
         }
         else{
@@ -753,10 +753,10 @@ class Synchronization extends BaseController
 
     }
 
-    function generateSchedulesJson($sportsId,$applicationId){
+    function generateSchedulesJson($accountsId,$applicationId){
 
         $response = [];
-        $leaguesObj = Leagues::where('sports_id',$sportsId)
+        $leaguesObj = Leagues::where('account_id',$accountsId)
             ->select(DB::raw('id as leagueId'));
 
 
@@ -802,7 +802,7 @@ class Synchronization extends BaseController
                     $response[$object->leagueId] = $schedulesList;
                 }
 
-                $responseData[$sportsId]  = $response;
+                $responseData[$accountsId]  = $response;
             }
 
             return json_encode($responseData);
@@ -813,10 +813,10 @@ class Synchronization extends BaseController
 
     }
 
-    function generateServersJson($sportsId){
+    function generateServersJson($accountsId){
 
         $response = [];
-        $scheduleObj = Schedules::where('sports_id',$sportsId)
+        $scheduleObj = Schedules::where('account_id',$accountsId)
             ->select(DB::raw('id as scheduleId'));
 
         if($scheduleObj->exists()) {
@@ -930,8 +930,8 @@ class Synchronization extends BaseController
 
     public function getApplicationListOptions(Request $request){
 
-        if(!empty($request->sports_id) && $request->sports_id != "-1"){
-            $appList = AppDetails::where('sports_id',$request->sports_id)->get();
+        if(!empty($request->account_id) && $request->account_id != "-1"){
+            $appList = AppDetails::where('account_id',$request->account_id)->get();
         }
         else{
             $appList = AppDetails::all();
@@ -939,7 +939,7 @@ class Synchronization extends BaseController
         $options = '<option value="">Select App </option>';
         if(!empty($appList)){
             foreach($appList as $obj){
-                $options .= '<option value="'.$obj->id.'" data-sports_id="'.$obj->sports_id.'">   '  .   $obj->appName   .  ' - ' . $obj->packageId . '    </option>';
+                $options .= '<option value="'.$obj->id.'" data-account_id="'.$obj->account_id.'">   '  .   $obj->appName   .  ' - ' . $obj->packageId . '    </option>';
             }
         }
 
@@ -953,7 +953,7 @@ class Synchronization extends BaseController
         if(count($request->app_key_app_detail_ids) > 0){
             foreach($request->app_key_app_detail_ids as $appDetailId){
 
-                $listOfApplications = getAppListBySportsId($request->appKeySportsId,$appDetailId);
+                $listOfApplications = getAppListByAccountsId($request->appKeyAccountsId,$appDetailId);
 
                 $updateAppSettingData = [];
                 if(!empty($listOfApplications)){
@@ -1039,15 +1039,15 @@ class Synchronization extends BaseController
                                     ];
                                 }
                                 else{
-                                    $errors[] = ['app_detail' =>  $obj->sportsName . ' - ' . $obj->packageId , 'message' => 'Firebase Config JSON is missing!' ];
+                                    $errors[] = ['app_detail' =>  $obj->accountsName . ' - ' . $obj->packageId , 'message' => 'Firebase Config JSON is missing!' ];
                                 }
                             }
                             else{
-                                $errors[] = ['app_detail' =>  $obj->sportsName . ' - ' . $obj->packageId , 'message' => 'Firebase Credentials not found!' ];
+                                $errors[] = ['app_detail' =>  $obj->accountsName . ' - ' . $obj->packageId , 'message' => 'Firebase Credentials not found!' ];
                             }
                         }
                         else{
-                            $errors[] = ['app_detail' =>  $obj->sportsName . ' - ' . $obj->packageId , 'message' => 'App Setting not found!' ];
+                            $errors[] = ['app_detail' =>  $obj->accountsName . ' - ' . $obj->packageId , 'message' => 'App Setting not found!' ];
                         }
                     }
                 }
@@ -1109,7 +1109,7 @@ class Synchronization extends BaseController
         if(count($request->app_credentials_app_detail_id) > 0){
             foreach($request->app_credentials_app_detail_id as $appDetailId){
 
-                $listOfApplications = getAppListBySportsId($request->appCredentialsSportsId,$appDetailId);
+                $listOfApplications = getAppListByAccountsId($request->appCredentialsAccountsId,$appDetailId);
 
                 $updateAppCredentialsData = [];
                 if(!empty($listOfApplications)){
@@ -1153,7 +1153,7 @@ class Synchronization extends BaseController
 
                         }
                         else{
-                            $errors[] = ['app_detail' =>  $obj->sportsName . ' - ' . $obj->packageId , 'message' => 'App Credentials not found!' ];
+                            $errors[] = ['app_detail' =>  $obj->accountsName . ' - ' . $obj->packageId , 'message' => 'App Credentials not found!' ];
                         }
                     }
                 }
@@ -1181,7 +1181,7 @@ class Synchronization extends BaseController
         if(count($request->app_details_application_ids) > 0){
             foreach($request->app_details_application_ids as $appDetailId){
 
-                $listOfApplications = getAppListBySportsId($request->appDetailsSportsId,$appDetailId);
+                $listOfApplications = getAppListByAccountsId($request->appDetailsAccountsId,$appDetailId);
 
                 $updateAppDetailsData = [];
                 if(!empty($listOfApplications)){
@@ -1259,7 +1259,7 @@ class Synchronization extends BaseController
                                             $parseAppDetailFirebaseConfigJson = json_decode($appDetailFirebaseConfigJson);
 
                                             if (!empty($parseAppDetailFirebaseConfigJson)) {
-//                                                $errors[] = ['app_detail' =>  $obj->sportsName . ' - ' . $obj->packageId , 'message' => 'Firebase Configuration Parameters not found for this Application!' ];
+//                                                $errors[] = ['app_detail' =>  $obj->accountsName . ' - ' . $obj->packageId , 'message' => 'Firebase Configuration Parameters not found for this Application!' ];
 
                                                 $parseAppDetailFirebaseConfigJson->databaseURL = $appDetailFirebaseCredentials->apps_url;
 
@@ -1302,15 +1302,15 @@ class Synchronization extends BaseController
 
                                             }
                                             else{
-                                                $errors[] = ['app_detail' =>  $obj->sportsName . ' - ' . $obj->packageId , 'message' => 'Firebase Configuration Parameters not found for this Application!' ];
+                                                $errors[] = ['app_detail' =>  $obj->accountsName . ' - ' . $obj->packageId , 'message' => 'Firebase Configuration Parameters not found for this Application!' ];
                                             }
                                         }
                                         else{
-                                            $errors[] = ['app_detail' =>  $obj->sportsName . ' - ' . $obj->packageId , 'message' => 'Firebase Credentials not found!' ];
+                                            $errors[] = ['app_detail' =>  $obj->accountsName . ' - ' . $obj->packageId , 'message' => 'Firebase Credentials not found!' ];
                                         }
                                     }
                                     else{
-                                        $errors[] = ['app_detail' =>  $obj->sportsName . ' - ' . $obj->packageId , 'message' => 'Data not found!' ];
+                                        $errors[] = ['app_detail' =>  $obj->accountsName . ' - ' . $obj->packageId , 'message' => 'Data not found!' ];
                                     }
 
                                     /******* App Settings Sync to Firebase **********/
@@ -1335,7 +1335,7 @@ class Synchronization extends BaseController
 //                                            $firebaseConfigJson = json_encode($parseFirebaseConfigJson);
 //
 //                                            $response[] = [
-//                                                'app_detail' => $obj->sportsName . ' - ' . $obj->packageId,
+//                                                'app_detail' => $obj->accountsName . ' - ' . $obj->packageId,
 //                                                'firebase_status' => "success",
 //                                                'message' => "Keys Successfully Found!",
 //                                                'firebaseData' => $jsonData,
@@ -1346,24 +1346,24 @@ class Synchronization extends BaseController
 //                                            ];
 //                                        }
 //                                        else{
-//                                            $errors[] = ['app_detail' =>  $obj->sportsName . ' - ' . $obj->packageId , 'message' => 'Firebase Config JSON is missing!' ];
+//                                            $errors[] = ['app_detail' =>  $obj->accountsName . ' - ' . $obj->packageId , 'message' => 'Firebase Config JSON is missing!' ];
 //                                        }
 //                                    }
 //                                    else{
-//                                        $errors[] = ['app_detail' =>  $obj->sportsName . ' - ' . $obj->packageId , 'message' => 'Firebase Credentials for App Setting URL not found!' ];
+//                                        $errors[] = ['app_detail' =>  $obj->accountsName . ' - ' . $obj->packageId , 'message' => 'Firebase Credentials for App Setting URL not found!' ];
 //                                    }
 
                                 }
                                 else{
-                                    $errors[] = ['app_detail' =>  $obj->sportsName . ' - ' . $obj->packageId , 'message' => 'Failed due to incorrect decimal value!' ];
+                                    $errors[] = ['app_detail' =>  $obj->accountsName . ' - ' . $obj->packageId , 'message' => 'Failed due to incorrect decimal value!' ];
                                 }
                             }
                             else{
-                                $errors[] = ['app_detail' =>  $obj->sportsName . ' - ' . $obj->packageId , 'message' => 'App Setting not found!' ];
+                                $errors[] = ['app_detail' =>  $obj->accountsName . ' - ' . $obj->packageId , 'message' => 'App Setting not found!' ];
                             }
                         }
                         else{
-                            $errors[] = ['app_detail' =>  $obj->sportsName . ' - ' . $obj->packageId , 'message' => 'App Setting not found!' ];
+                            $errors[] = ['app_detail' =>  $obj->accountsName . ' - ' . $obj->packageId , 'message' => 'App Setting not found!' ];
                         }
                     }
                 }
