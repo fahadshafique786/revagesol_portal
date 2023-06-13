@@ -89,7 +89,7 @@
             @endif
 
 			@if(auth()->user()->can('view-accounts') || auth()->user()->can('view-leagues') || auth()->user()->can('view-teams') || auth()->user()->can('view-schedules') || auth()->user()->can('view-servers') || auth()->user()->hasRole('super-admin'))
-            <li class="nav-header py-3">SPORTS MANAGEMENT </li>
+            <li class="nav-header py-3">ACCOUNTS MANAGEMENT </li>
                 @if(auth()->user()->can('view-accounts')  || auth()->user()->hasRole('super-admin'))
                     <li class="nav-item">
                         <a href="{{ url('admin/accounts') }}" class="nav-link {{ (Request::segment(2) == 'accounts') ? 'active' : '' }}">
