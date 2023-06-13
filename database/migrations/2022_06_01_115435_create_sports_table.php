@@ -17,9 +17,7 @@ class CreateAccountsTable extends Migration
             $table->id();
             $table->string('icon')->nullable();
             $table->string('name')->nullable();
-            $table->enum('accounts_type',['single','double'])->default('single');
             $table->enum('image_required',['yes','no','0','1'])->default('0');
-            $table->enum('multi_league',['yes','no','0','1'])->default('0');
             $table->timestamps();
         });
     }

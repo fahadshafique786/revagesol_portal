@@ -51,8 +51,8 @@ class AccountsApi extends BaseController
             $data = DB::table('accounts')
                 ->select(DB::raw('
                     id as accountsId,name as accountsName,
-                    IFNULL(CONCAT("'.$this->imageUrl.'","",icon),"") AS icon, accounts_type AS accountsType,
-                    image_required AS isImageRequired, multi_league AS isMultiLeague
+                    IFNULL(CONCAT("'.$this->imageUrl.'","",icon),"") AS icon,
+                    image_required AS isImageRequired
                 '))
                  ->orderBy('id','asc');
 
@@ -61,9 +61,6 @@ class AccountsApi extends BaseController
                 foreach($data as $index => $arr){
                     $arr->isImageRequired = (int) $arr->isImageRequired;
                     $arr->isImageRequired = getBoolean($arr->isImageRequired);
-
-                    $arr->isMultiLeague = (int) $arr->isMultiLeague;
-                    $arr->isMultiLeague = getBoolean($arr->isMultiLeague);
                 }
 
                 $response['data'] = $data;
