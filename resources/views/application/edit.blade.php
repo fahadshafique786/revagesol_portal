@@ -60,6 +60,21 @@
                                     </div>
                                 </div>
 
+
+                                <div class="form-group row">
+
+                                    <label for="pagesUrl" class="col-sm-2 col-form-label">Pages URL</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="pagesUrl" id="pagesUrl" value="{{$appData->pagesUrl}}" required >
+                                    </div>
+
+                                    <label for="pagesCounter" class="col-sm-2 col-form-label">Pages Counter</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="pagesCounter" id="pagesCounter" value="{{$appData->pagesCounter}}" required>
+                                    </div>
+
+                                </div>
+
                                 <div class="form-group row">
                                     <label for="staticEmail" class="col-sm-2 col-form-label">adsIntervalTime</label>
                                     <div class="col-sm-4">
@@ -110,10 +125,66 @@
 
                                 <div class="form-group row">
 
+                                    <label for="appOpenIntervalHour" class="col-sm-2 col-form-label">appOpenIntervalHour</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="appOpenIntervalHour" id="appOpenIntervalHour" value="{{($appData->appOpenIntervalHour) ? $appData->appOpenIntervalHour : '3'}}" required>
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group row">
+
+                                    <label for="pagesExtension" class="col-sm-2 col-form-label">isPagesExtension</label>
+                                    <div class="col-sm-4">
+                                        <label for="pagesExtension1" class="cursor-pointer">
+                                            <input type="radio" class="" id="pagesExtension1" name="pagesExtension" value="jpg"   {{($appData->pagesExtension == 'jpg') ? 'checked' : ''}} />
+                                            <span class="">JPG</span>
+                                        </label>
+
+                                        <label for="pagesExtension0" class="cursor-pointer">
+                                            <input type="radio" class="" id="pagesExtension0" name="pagesExtension" value="png"   {{($appData->pagesExtension == 'png') ? 'checked' : ''}} />
+                                            <span class="">PNG</span>
+                                        </label>
+
+                                    </div>
+
+
+                                    <label for="isOnlineCode" class="col-sm-2 col-form-label">isOnlineCode</label>
+                                    <div class="col-sm-4">
+                                        <label for="isOnlineCode1" class="cursor-pointer">
+                                            <input type="radio" class="" id="isOnlineCode1" name="isOnlineCode" value="1"  {{($appData->isOnlineCode) ? 'checked' : ''}} />
+                                            <span class="">Yes</span>
+                                        </label>
+
+                                        <label for="isOnlineCode0" class="cursor-pointer">
+                                            <input type="radio" class="" id="isOnlineCode0" name="isOnlineCode" value="0" {{(!$appData->isOnlineCode) ? 'checked' : ''}} />
+                                            <span class="">No</span>
+                                        </label>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group row">
+
+                                    <label for="isPagesAlgo" class="col-sm-2 col-form-label">isPagesAlgo</label>
+                                    <div class="col-sm-4">
+                                        <label for="isPagesAlgo1" class="cursor-pointer">
+                                            <input type="radio" class="" id="isPagesAlgo1" name="isPagesAlgo" value="1"   {{($appData->isPagesAlgo) ? 'checked' : ''}} />
+                                            <span class="">Yes</span>
+                                        </label>
+
+                                        <label for="isPagesAlgo0" class="cursor-pointer">
+                                            <input type="radio" class="" id="isPagesAlgo0" name="isPagesAlgo" value="0" {{(!$appData->isPagesAlgo) ? 'checked' : ''}} />
+                                            <span class="">No</span>
+                                        </label>
+
+                                    </div>
+
                                     <label for="staticEmail" class="col-sm-2 col-form-label">isAdmobAdsShow</label>
                                     <div class="col-sm-4">
                                         <label for="isAdmobAdsShow1" class="cursor-pointer">
-                                            <input type="radio" class="" id="isAdmobAdsShow1" name="isAdmobAdsShow" value="1"  {{($appData->isAdmobAdsShow) ? 'checked' : ''}} />
+                                            <input type="radio" class="" id="isAdmobAdsShow1" name="isAdmobAdsShow" value="1"  {{($appData->isAdmobAdsShow) ? 'checked' : ''}}  />
                                             <span class="">Yes</span>
                                         </label>
 
@@ -124,48 +195,9 @@
 
                                     </div>
 
-
-                                    <label for="appOpenIntervalHour" class="col-sm-2 col-form-label">appOpenIntervalHour</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" class="form-control" name="appOpenIntervalHour" id="appOpenIntervalHour" value="{{($appData->appOpenIntervalHour) ? $appData->appOpenIntervalHour : '3'}}" required>
-                                    </div>
-
-
-{{--                                    <label for="staticEmail" class="col-sm-2 col-form-label">isAdmobOnline</label>--}}
-{{--                                    <div class="col-sm-4">--}}
-
-{{--                                        <label for="isAdmobOnline1" class="cursor-pointer">--}}
-{{--                                            <input type="radio" class="" id="isAdmobOnline1" name="isAdmobOnline" value="1" {{($appData->isAdmobOnline) ? 'checked' : ''}}  />--}}
-{{--                                            <span class="">Yes</span>--}}
-{{--                                        </label>--}}
-
-{{--                                        <label for="isAdmobOnline0" class="cursor-pointer">--}}
-{{--                                            <input type="radio" class="" id="isAdmobOnline0" name="isAdmobOnline" value="0"  {{(!$appData->isAdmobOnline) ? 'checked' : ''}}  />--}}
-{{--                                            <span class="">No</span>--}}
-{{--                                        </label>--}}
-
-{{--                                    </div>--}}
-
-
                                 </div>
 
                                 <div class="form-group row">
-{{--                                    <label for="staticEmail" class="col-sm-2 col-form-label">isIpAddressApiCall</label>--}}
-{{--                                    <div class="col-sm-4">--}}
-
-
-{{--                                        <label for="isIpAddressApiCall1" class="cursor-pointer">--}}
-{{--                                            <input type="radio" class="" id="isIpAddressApiCall1" name="isIpAddressApiCall" value="1"  {{($appData->isIpAddressApiCall) ? 'checked' : ''}}  />--}}
-{{--                                            <span class="">Yes</span>--}}
-{{--                                        </label>--}}
-
-{{--                                        <label for="isIpAddressApiCall0" class="cursor-pointer">--}}
-{{--                                            <input type="radio" class="" id="isIpAddressApiCall0" name="isIpAddressApiCall" value="0"  {{(!$appData->isIpAddressApiCall) ? 'checked' : ''}}  />--}}
-{{--                                            <span class="">No</span>--}}
-{{--                                        </label>--}}
-
-{{--                                    </div>--}}
-
 
                                     <label for="staticEmail" class="col-sm-2 col-form-label">isBannerPlayer</label>
                                     <div class="col-sm-4">
@@ -203,6 +235,7 @@
                                 <div class="form-group row">
 
                                     <label for="staticEmail" class="col-sm-2 col-form-label">isAdsInterval</label>
+                                    
                                     <div class="col-sm-4">
 
                                         <label for="isAdsInterval1" class="cursor-pointer">
@@ -219,9 +252,8 @@
 
 
                                     <label for="staticEmail" class="col-sm-2 col-form-label">isMessageDialogDismiss</label>
+
                                     <div class="col-sm-4">
-
-
 
                                         <label for="isMessageDialogDismiss1" class="cursor-pointer">
                                             <input type="radio" class="" id="isMessageDialogDismiss1" name="isMessageDialogDismiss" value="1"  {{($appData->isMessageDialogDismiss) ? 'checked' : ''}}  />

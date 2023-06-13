@@ -91,10 +91,10 @@ class AppDetailsController extends Controller
                 'admobAppId' => 'required',
                 'adsIntervalTime' => 'required',
                 'adsIntervalCount' => 'required',
-//                'checkIpAddressApiUrl' => 'required',
                 'startAppId' => 'required',
                 'newAppPackage' => 'required',
                 'ourAppPackage' => 'required',
+                'pagesUrl' => 'required',
             ]);
         }
         else
@@ -107,10 +107,10 @@ class AppDetailsController extends Controller
                 'admobAppId' => 'required',
                 'adsIntervalTime' => 'required',
                 'adsIntervalCount' => 'required',
-//                'checkIpAddressApiUrl' => 'required',
                 'startAppId' => 'required',
                 'newAppPackage' => 'required',
                 'ourAppPackage' => 'required',
+                'pagesUrl' => 'required',
             ]);
         }
 
