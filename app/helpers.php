@@ -536,3 +536,22 @@ if ( ! function_exists('getApplicationsByRoleId'))
         return false;
     }
 }
+
+if ( ! function_exists('getAccountssByRoleId'))
+{
+    function getAccountssByRoleId($roleId){
+
+        $applicationsList = RoleHasApplication::select('application_id')->where('role_id',$roleId)->get()->toArray();
+        if(!empty($applicationsList)){
+
+            $applicationArray = [];
+            foreach($applicationsList as $obj){
+                $applicationArray [] = $obj['application_id'];
+            }
+
+            return $applicationArray;
+//                return rtrim($commaSeparatedIds,',');
+        }
+        return false;
+    }
+}

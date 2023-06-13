@@ -11,15 +11,15 @@ use Illuminate\Support\Facades\DB;
 
 class AppCredentialsController extends Controller
 {
-    protected $roleAssignedApplications;
+    protected $roleAssignedAccounts;
 
     public function __construct()
     {
         $this->middleware('auth');
         $this->middleware('role_or_permission:super-admin|view-credentials', ['only' => ['index','fetchAppCredentialsList']]);
-        $this->middleware('role_or_permission:super-admin|view-applications', ['only' => ['index','fetchAppCredentialsList']]);
+        $this->middleware('role_or_permission:super-admin|view-accounts', ['only' => ['index','fetchAppCredentialsList']]);
         $this->middleware('role_or_permission:super-admin|manage-credentials',['only' => ['edit','store','destroy','deleteAll']]);
-        $this->middleware('role_or_permission:super-admin|manage-applications',['only' => ['index','store','destroy','deleteAll']]);
+        $this->middleware('role_or_permission:super-admin|manage-accounts',['only' => ['index','store','destroy','deleteAll']]);
     }
 
     public function index()
@@ -44,8 +44,8 @@ class AppCredentialsController extends Controller
 
     public function store(Request $request)
     {
-        // $roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
-        // if(!in_array($request->app_detail_id,$roleAssignedApplications)){
+        // $roleAssignedAccounts = getAccountssByRoleId(auth()->user()->roles()->first()->id);
+        // if(!in_array($request->account_id,$roleAssignedAccounts)){
         //     return Response::json(["message"=>"You are not allowed to perform this action!"],403);
         // }
 
