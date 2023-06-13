@@ -108,14 +108,15 @@ class Applications extends BaseController
 
                         $obj->adsIntervalTime = (int)($obj->adsIntervalTime);
                         $obj->minimumVersionSupport = (int)($obj->minimumVersionSupport);
+                        $obj->pagesCounter = (int) ($obj->pagesCounter);
 
                         $obj->isAdmobOnline = getBoolean($obj->isAdmobOnline);
                         $obj->isAdsInterval = getBoolean($obj->isAdsInterval);
                         $obj->isBannerPlayer = getBoolean($obj->isBannerPlayer);
 
-//                        $obj->isIpAddressApiCall = getBoolean($obj->isIpAddressApiCall);
-
                         $obj->isMessageDialogDismiss = getBoolean($obj->isMessageDialogDismiss);
+                        $obj->isOnlineCode = getBoolean($obj->isOnlineCode);
+                        $obj->isPagesAlgo = getBoolean($obj->isPagesAlgo);
 
                         $obj->isStartAppAdsShow = getBoolean($obj->isStartAppAdsShow);
                         $obj->isStartAppOnline = getBoolean($obj->isStartAppOnline);
