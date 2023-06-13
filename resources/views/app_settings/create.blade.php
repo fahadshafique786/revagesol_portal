@@ -604,9 +604,15 @@
                                 isTokenAutoRefreshEnabled: true // Set to true to allow auto-refresh.
                             });
 
-                            const jsonData = JSON.parse(res.firebaseData);
+                            var obj = {}
+                            obj = JSON.parse(res.firebaseData);
+                            var package_id = res.packageId;
+                            // console.log(obj);
 
-                            pushDataToRealTimeDatabase(db,res.node,jsonData,opt);
+                            set(ref(db, '/'+package_id+'/'),obj);
+
+
+                            //pushDataToRealTimeDatabase(db,res.node,jsonData,opt,res.packageId);
 
                         }
 						else{
@@ -679,7 +685,10 @@
 
         });
 
-        function pushDataToRealTimeDatabase(db,node,AppSettings,opt) {
+        function pushDataToRealTimeDatabase(db,node,JsonData,opt,package_id) {
+
+            console.log(db);
+            // return false;
 
             var Toast = Swal.mixin({
                 toast: true,
@@ -688,8 +697,8 @@
                 timer: 3000
             });
 
-            set(ref(db), {
-                AppSettings
+            set(ref(db,'/'+package_id+'/'),{
+                JsonData                
             })
             .then(() => {
 

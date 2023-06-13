@@ -117,8 +117,6 @@ class AppSettingsController extends Controller
     public function store(Request $request , $app_setting_id = false)
     {
 
-        
-
         /*** Validation BEGIN ****/
         if(!empty($app_setting_id))
         {
@@ -169,13 +167,14 @@ class AppSettingsController extends Controller
         $node = "";
         $jsonData = [];
 
+        $packageId = getPackageIdByAppId($appDetailId);
         $firebaseCredentials = FirebaseCredentials::where('app_detail_id',$appDetailId)->select('app_setting_url','reCaptchaKeyId','firebaseConfigJson')->first();
 
         if(isset($firebaseCredentials->app_setting_url)){
 
             /***   CREATE JSON FORMAT TO PUSH DATA ON FIREBASE DATABASE ***/
 
-            $jsonData  = $this->createFirebaseJsonFormat($request);
+            $jsonData  = $this->createFirebaseJsonFormat($request,$packageId);
             $node = "AppSettings";
 
             $firebaseConfigJson = trim(preg_replace('/\s\s+/', ' ', $firebaseCredentials->firebaseConfigJson));
@@ -207,10 +206,13 @@ class AppSettingsController extends Controller
             $status = "success";
         }
 
+        $packageId = str_replace(".","_",$packageId);
+
         return response()->json(['status' => $status,
             'firebase_status' => $firebaseStatus,
             'message' => $message,
             'appSetting' => $appSetting->id,
+            'packageId' => $packageId,
             'firebaseData' => $jsonData,
             'reCaptchaKeyId' => (!empty($firebaseCredentials->reCaptchaKeyId)) ? $firebaseCredentials->reCaptchaKeyId : "",
             'firebaseConfigJson' => $firebaseConfigJson,
@@ -230,7 +232,7 @@ class AppSettingsController extends Controller
         return response()->json(['success' => true]);
     }
 
-    public function createFirebaseJsonFormat($request){
+    public function createFirebaseJsonFormat($request,$packageId = null){
 
         $requestArray = [];
         $requestArray['appAuthKey1'] = $request->appAuthKey1;
@@ -257,7 +259,16 @@ class AppSettingsController extends Controller
         $requestArray['sslSha256Key'] = $request->sslSha256Key;
         $requestArray['checkIpAddressApiUrl'] = $request->checkIpAddressApiUrl;
 
-        return  json_encode($requestArray);
+        // if(!empty($packageId)){
+        //     $nodeArray = [];
+        //     $packageId = str_replace('.','_',$packageId);
+        //     $nodeArray[$packageId] = $requestArray;
+        //     return  json_encode($nodeArray);
+        // }
+        // else{
+            return  json_encode($requestArray);
+        // }
+
     }
 
     public function pushJsonToFirebaseDatabase($JSON,$FIREBASE_URL,$NODE,$REQUEST_METHOD){
