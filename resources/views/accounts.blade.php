@@ -49,8 +49,6 @@
                                     <th scope="col" width="10px">#</th>
                                     <th scope="col">Icon</th>
                                     <th scope="col">Name</th>
-                                    <th scope="col">Type</th>
-                                    <th scope="col">Multi League</th>
                                     <th scope="col">Image Required</th>
                                     <th scope="col">Action</th>
                                 </tr>
@@ -92,48 +90,6 @@
                                 </div>
 
                             </div>
-
-                            <div class="form-group row">
-
-                                <div class="col-sm-12">
-                                    <label for="name" class="control-label d-block">  Accounts Type </label>
-                                    <label for="accounts_type_single" class="cursor-pointer">
-                                        <input type="radio" class="" id="accounts_type_single" name="accounts_type" value="single"  />
-                                        Single
-                                    </label>
-
-                                    &nbsp;&nbsp;&nbsp;&nbsp;
-                                    <label for="accounts_type_double" class="cursor-pointer">
-                                        <input type="radio" class="" id="accounts_type_double" name="accounts_type"  value="double" checked />
-                                        Double
-                                    </label>
-
-                                    <span class="text-danger" id="accounts_typeError"></span>
-                                </div>
-
-                            </div>
-
-                            <div class="form-group row">
-
-                                <div class="col-sm-12">
-                                    <label for="name" class="control-label d-block">Multi League</label>
-                                    <label for="multi_league1" class="cursor-pointer">
-                                        <input type="radio" class="" id="multi_league1" name="multi_league" value="1" checked/>
-                                        <span class="">Yes</span>
-                                    </label>
-
-                                    &nbsp;&nbsp;&nbsp;&nbsp;
-
-                                    <label for="multi_league0" class="cursor-pointer">
-                                        <input type="radio" class="" id="multi_league0" name="multi_league"  value="0" />
-                                        <span class="">No</span>
-                                    </label>
-
-                                    <span class="text-danger" id="multi_leagueError"></span>
-                                </div>
-
-                            </div>
-
 
 
                             <div class="form-group row">
@@ -232,18 +188,6 @@
                     { data: 'srno', name: 'srno' , searchable:false},
                     { data: 'icon', name: 'icon', searchable:false},
                     { data: 'name', name: 'name' },
-                    { data: 'accounts_type', name: 'accounts_type' },
-                    { data: 'multi_league', name: 'multi_league' , searchable:false , render: function( data, type, full, meta,rowData ) {
-                            if(data=='Yes'){
-                                return "<a href='javascript:void(0)' class='badge badge-success text-xs text-capitalize'>"+data+"</a>" +" ";
-                            }
-                            else{
-                                return "<a href='javascript:void(0)' class='badge badge-danger text-xs text-capitalize'>"+data+"</a>" +" ";
-                            }
-                        },
-
-
-                    },
                     { data: 'image_required', name: 'image_required' , searchable:false , render: function( data, type, full, meta,rowData ) {
 
                             if(data=='Yes'){
@@ -298,8 +242,6 @@
 
                 $('#ajaxheadingModel').html("Add Accounts");
 
-                $("#accounts_type_double").attr('checked','checked');
-
                 $("#sport_logo_hidden").val('');
 
                 $('#ajax-model').modal('show');
@@ -330,8 +272,6 @@
                         $('#name').val(res.name);
                         $('#sport_logo_hidden').val(res.icon);
 
-                        $("#multi_league"+res.multi_league).prop("checked",true);
-
                         $("#image_required"+res.image_required).prop("checked",true);
 
                         if(res.image_required == "1"){
@@ -340,9 +280,6 @@
                         else{
                             $("#sport_logo").attr('disabled','disabled');
                         }
-
-                        $("#accounts_type_"+res.accounts_type).prop("checked",true);
-
 
                     }
                 });
@@ -387,10 +324,6 @@
 
                 $('#nameError').text('');
 
-                $('#accounts_typeError').text('');
-
-                $('#multi_leagueError').text('');
-
                 $('#sport_logoError').text('');
 
 
@@ -430,8 +363,6 @@
                         $("#btn-save").html(' Save');
                         $("#btn-save"). attr("disabled", false);
                         $('#nameError').text(response.responseJSON.errors.name);
-                        $('#accounts_typeError').text(response.responseJSON.errors.accounts_type);
-                        $('#multi_leagueError').text(response.responseJSON.errors.multi_league);
                         $('#image_requiredError').text(response.responseJSON.errors.image_required);
                     }
                 });

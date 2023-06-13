@@ -73,8 +73,129 @@
         </div>
         <!-- /.row -->
 
+
+        <!-- APPLICATION LIST  -->
+
+        <div class="row">
+                <div class="col-12">
+                    <!-- Default box -->
+                    <div class="card">
+
+                        <div class="card-body">
+
+                            <div class="row">
+                                <div class="col-3 pull-right text-right">
+                                    <button type="button" onclick="loadApplicationsCardView()" class="d-none btn btn-primary" id="filter"> <i class="fa fa-filter"></i> Apply Filter </button>
+
+                                    <select class="form-control" id="account_filter" name="account_filter" onchange="setFilterDefaultValue();loadApplicationsCardView()" >
+                                        <option value="-1" selected>   Select Accounts </option>
+                                        @foreach ($accountsList as $obj)
+                                            <option value="{{ $obj->id }}"  {{ (isset($obj->id) && old('id')) ? "selected":"" }}>{{ $obj->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-9 pull-right text-right">
+                                    <label>
+                                        <input type="text" id="searchBox" class="form-control form-control-sm" placeholder="Search" >
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="row mt-4" id="applications_container">
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.row -->
+
+
+        <!-- END OF  APPLICATION LIST  -->
+
+
+
+
+
      </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
  
 @endsection
+
+@push('scripts')
+
+<script type="text/javascript">
+
+    $(document).ready(function($){
+
+        $("#searchBox").on('keyup',function(e){
+            loadApplicationsCardView();
+        })
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        loadApplicationsCardView();
+
+        $(document).on('click', '.pagination a', function(event){
+            event.preventDefault();
+            var page = $(this).attr('href').split('page=')[1];
+            fetchData(page);
+            return false;
+        });
+
+    });
+
+
+
+    var isFilterChange = false;
+    function setFilterDefaultValue(){
+        isFilterChange = true;
+    }
+
+    function fetchData(page)
+    {
+        $.ajax({
+            url:"pagination/applications/fetch_data?page="+page+"&accountsId="+$("#account_filter").val()+"&searchKeywords="+$("#searchBox").val(),
+            success:function(data)
+            {
+                $("#applications_container").html(data);                }
+        });
+    }
+
+    function loadApplicationsCardView(){
+        if(isFilterChange){
+            $("#searchBox").val('');
+            isFilterChange = false;
+        }
+
+        $('#cover-spin').show();
+
+        $.ajax({
+
+            type:"POST",
+            url: "{{ url('admin/apps-card-view') }}",
+            data: { accountsId: $("#account_filter").val() , searchKeywords : $("#searchBox").val()},
+            success: function(response){
+                $('#cover-spin').hide();
+                $("#applications_container").html(response);
+
+                if($("#totalAppsCount").val() > 0){
+                    $("#deleteAllButton").show();
+                }
+                else{
+                    $("#deleteAllButton").hide();
+                }
+            }
+        });
+
+    }  
+</script>
+
+@endpush

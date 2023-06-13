@@ -12,9 +12,7 @@ class Accounts extends Model
     protected $fillable = [
         'icon',
         'name',
-        'accounts_type',
         'image_required',
-        'multi_league',
     ];
 
 }

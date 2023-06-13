@@ -37,21 +37,17 @@ class AccountsController extends Controller
         {
             $this->validate($request, [
                 'name' => 'required|unique:accounts,name,'.$request->id,
-                'accounts_type' => 'required',
             ]);
         }
         else
         {
             $this->validate($request, [
                 'name' => 'required|unique:accounts,name,'.$request->id,
-                'accounts_type' => 'required',
             ]);
         }
 
         $input = array();
         $input['name'] = $request->name;
-        $input['multi_league'] = $request->multi_league;
-        $input['accounts_type'] = $request->accounts_type;
         $input['image_required'] = $request->image_required;
 
 
@@ -157,8 +153,6 @@ class AccountsController extends Controller
                     $response[$i]['srno'] = $i + 1;
                     $response[$i]['icon'] = $sport_logo;
                     $response[$i]['name'] = $accounts->name;
-                    $response[$i]['accounts_type'] = $accounts->accounts_type;
-                    $response[$i]['multi_league'] = getBooleanStr($accounts->multi_league,true);
                     $response[$i]['image_required'] = getBooleanStr($accounts->image_required,true);
                     if(auth()->user()->hasRole('super-admin') || auth()->user()->can('manage-accounts'))
                     {

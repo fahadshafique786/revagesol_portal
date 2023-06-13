@@ -38,16 +38,12 @@ class AppDetailsController extends Controller
     {
         $this->roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
 
-//        DB::enableQueryLog();
-
         $appsList = AppDetails::select('app_details.id as id','appName','appLogo','packageId','accounts.name as accounts_name')
             ->join('accounts', function ($join) {
                 $join->on('accounts.id', '=', 'app_details.account_id');
             });
 
         $appsList = $appsList->get();
-
-//        dd(DB::getQueryLog());
 
         $accountsList = Accounts::orderBy('id','DESC')->get();
 
@@ -272,6 +268,7 @@ class AppDetailsController extends Controller
             $appsList = $appsList->where(function($query) {
                 $query->orWhere('app_details.appName','like','%'.request()->searchKeywords.'%');
                 $query->orWhere('accounts.name','like','%'.request()->searchKeywords.'%');
+                $query->orWhere('app_details.packageId','like','%'.request()->searchKeywords.'%');
             });
         }
 
