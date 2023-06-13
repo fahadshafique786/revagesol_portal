@@ -255,8 +255,6 @@
 
                 $('#sport_logoError').text('');
 
-                $("input[name=accounts_type]").removeAttr('checked');
-
                 $.ajax({
                     type:"POST",
                     url: "{{ url('admin/edit-Account') }}",
