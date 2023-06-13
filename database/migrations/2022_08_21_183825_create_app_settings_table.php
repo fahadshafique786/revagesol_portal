@@ -21,9 +21,6 @@ class CreateAppSettingsTable extends Migration
             $table->decimal('appCacheId')->default(1.1);
             $table->decimal('appDetailsDatabaseVersion')->default(1.1);
             $table->decimal('appSharedPrefId')->default(1.1);
-            $table->decimal('leaguesDatabaseVersion')->default(1.1);
-            $table->decimal('schedulesDatabaseVersion')->default(1.1);
-            $table->decimal('serversDatabaseVersion')->default(1.1);
             $table->string('serverApiBaseUrl')->nullable();
             $table->string('streamKey')->nullable();
             $table->enum('isAppClearCache',['0','1'])->default('0');

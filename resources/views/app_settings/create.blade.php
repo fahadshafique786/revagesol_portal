@@ -128,88 +128,6 @@
 
                                 </div>
 
-
-                                <div class="form-group row">
-
-                                    <label for="staticEmail" class="col-sm-2 col-form-label">Leagues Database Version</label>
-                                    <div class="col-sm-4">
-                                        <input type="text"
-                                               readonly="readonly"
-                                               maxlength="3"
-                                               data-currentValue="{{(isset($appData->leaguesDatabaseVersion) && ($appData->leaguesDatabaseVersion)) ? $appData->leaguesDatabaseVersion : '1.1' }}"
-                                               class="form-control w-50 d-inline-block notAllowedAlphabets versionControlInput"
-                                               name="leaguesDatabaseVersion" id="leaguesDatabaseVersion"
-                                               value="{{(isset($appData->leaguesDatabaseVersion) && ($appData->leaguesDatabaseVersion)) ? $appData->leaguesDatabaseVersion : "1.1" }}"
-                                               required />
-
-                                        <button type="button" class="plus numbers" >+</button>
-                                        <button type="button" class="minus numbers" >-</button>
-
-                                    </div>
-
-                                    <label for="staticEmail" class="col-sm-2 col-form-label">Schedules Database Version</label>
-                                    <div class="col-sm-4">
-                                        <input type="text"
-                                               readonly="readonly"
-                                               maxlength="3"
-                                               data-currentValue="{{(isset($appData->schedulesDatabaseVersion) && ($appData->schedulesDatabaseVersion)) ? $appData->schedulesDatabaseVersion : '1.1' }}"
-                                               class="form-control w-50 d-inline-block notAllowedAlphabets versionControlInput"
-                                               name="schedulesDatabaseVersion" id="schedulesDatabaseVersion"
-                                               value="{{(isset($appData->schedulesDatabaseVersion) && ($appData->schedulesDatabaseVersion)) ? $appData->schedulesDatabaseVersion : "1.1" }}"
-                                               required />
-
-                                        <button type="button" class="plus numbers" >+</button>
-                                        <button type="button" class="minus numbers" >-</button>
-
-                                    </div>
-
-
-
-                                </div>
-
-                                <div class="form-group row">
-
-                                    <label for="staticEmail" class="col-sm-2 col-form-label">Servers Database Version</label>
-                                    <div class="col-sm-4">
-                                        <input type="text"
-                                               readonly="readonly"
-                                               maxlength="3"
-                                               data-currentValue="{{(isset($appData->serversDatabaseVersion) && ($appData->serversDatabaseVersion)) ? $appData->serversDatabaseVersion : '1.1' }}"
-                                               class="form-control w-50 d-inline-block notAllowedAlphabets versionControlInput"
-                                               name="serversDatabaseVersion" id="serversDatabaseVersion"
-                                               value="{{(isset($appData->serversDatabaseVersion) && ($appData->serversDatabaseVersion)) ? $appData->serversDatabaseVersion : "1.1" }}"
-                                               required />
-
-                                        <button type="button" class="plus numbers" >+</button>
-                                        <button type="button" class="minus numbers" >-</button>
-
-                                    </div>
-
-
-
-
-
-                                    <label for="staticEmail" class="col-sm-2 col-form-label">Minimum Version Support</label>
-                                    <div class="col-sm-4">
-
-                                        <input type="text"
-                                               readonly="readonly"
-                                               maxlength="3"
-                                               data-currentValue="{{(isset($appData->minimumVersionSupport) && ($appData->minimumVersionSupport)) ? $appData->minimumVersionSupport : '1' }}"
-                                               class="form-control w-50 d-inline-block notAllowedAlphabets versionControlInput"
-                                               name="minimumVersionSupport" id="minimumVersionSupport"
-                                               value="{{(isset($appData->minimumVersionSupport) && ($appData->minimumVersionSupport)) ? $appData->minimumVersionSupport : "" }}"
-                                               required />
-
-                                        <button type="button" class="plus digit_numbers" >+</button>
-                                        <button type="button" class="minus digit_numbers" >-</button>
-
-
-                                    </div>
-
-                                </div>
-
-
                                 <div class="form-group row dbversion">
 
                                     <label for="staticEmail" class="col-sm-2 col-form-label">Is App Details Database Save</label>
@@ -490,9 +408,30 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    <div class="col-sm-12 text-right">
+
+                                    <label for="staticEmail" class="col-sm-2 col-form-label">Minimum Version Support</label>
+                                    <div class="col-sm-4">
+
+                                        <input type="text"
+                                               readonly="readonly"
+                                               maxlength="3"
+                                               data-currentValue="{{(isset($appData->minimumVersionSupport) && ($appData->minimumVersionSupport)) ? $appData->minimumVersionSupport : '1' }}"
+                                               class="form-control w-50 d-inline-block notAllowedAlphabets versionControlInput"
+                                               name="minimumVersionSupport" id="minimumVersionSupport"
+                                               value="{{(isset($appData->minimumVersionSupport) && ($appData->minimumVersionSupport)) ? $appData->minimumVersionSupport : "" }}"
+                                               required />
+
+                                        <button type="button" class="plus digit_numbers" >+</button>
+                                        <button type="button" class="minus digit_numbers" >-</button>
+
+
+                                    </div>
+
+                                    <div class="col-sm-6 text-right">
                                         <button type="submit" class="btn btn-info" id="submitApp"> <i class="fa fa-save"></i> <span class=""> SUBMIT </span> </button>
                                     </div>
+
+
                                 </div>
 
                             </form>
@@ -522,53 +461,6 @@
         import { initializeAppCheck , ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-app-check.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-analytics.js";
         import { getDatabase , set , ref } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-database.js";
-
-
-
-        // $("button.digit_numbers").on("click", function() {
-
-        //     var $button = $(this);
-        //     var OldValue = $button.parent().find("input").attr('data-currentValue');
-        //     var value = $button.parent().find("input").val()
-
-        //     alert(value);
-
-        //     var finalValue = 0;
-        //     alert($button.text());
-        //     if ($button.text() === "+") {
-
-        //         var newVal = parseInt(value) + 1;
-
-        //         let difference = Math.abs(newVal - OldValue);
-        //         finalValue = newVal;
-        //         alert(finalValue + " === " + newVal )
-        //     }
-        //     else {
-
-        //         finalValue = OldValue;
-
-        //         var floatValue = value.split('.');
-        //         var decimalValue = floatValue[1];
-
-        //         var oldFloatValue = OldValue.split('.');
-        //         var oldDecimalValue = oldFloatValue[1];
-
-
-        //         var newVal = parseInt(value) - 1;
-
-        //         let difference = Math.abs(OldValue - newVal);
-
-        //         finalValue = newVal;
-
-        //     }
-
-        //     alert(finalValue);
-
-        //     $button.parent().find("input").val(finalValue);
-
-        //     return false;
-
-        // });
 
         $("button.numbers").on("click", function() {
 

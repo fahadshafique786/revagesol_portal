@@ -262,9 +262,6 @@ return [
 
     'versionCategories' => [
         'appDetailsDatabaseVersion'      => 'App Details Database Version',
-        'leaguesDatabaseVersion'   => 'Leagues Database Version',
-        'schedulesDatabaseVersion' => 'Schedules Database Version',
-        'serversDatabaseVersion'   => 'Servers Database Version',
         'appDetailsDatabaseClearVersion'   => 'App Detail Database Clear Version',
         'appCacheId'   => 'App Cache Id',
         'appSharedPrefId'   => 'App Shared Pref Id',

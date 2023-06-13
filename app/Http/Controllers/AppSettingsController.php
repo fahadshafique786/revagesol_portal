@@ -238,10 +238,7 @@ class AppSettingsController extends Controller
         $requestArray['appCacheId'] =  (float) number_format($request->appCacheId,1);
         $requestArray['appDetailsDatabaseVersion'] = (float) number_format($request->appDetailsDatabaseVersion,1);
         $requestArray['appSharedPrefId'] =  (float) number_format($request->appSharedPrefId,1);
-        $requestArray['leaguesDatabaseVersion'] =  (float) number_format($request->leaguesDatabaseVersion,1);
-        $requestArray['schedulesDatabaseVersion'] =  (float) number_format($request->schedulesDatabaseVersion,1);
         $requestArray['serverApiBaseUrl'] = $request->serverApiBaseUrl;
-        $requestArray['serversDatabaseVersion'] =  (float) number_format($request->serversDatabaseVersion,1);
         $requestArray['streamKey'] = $request->streamKey;
         $requestArray['isAppClearCache'] = getBoolean($request->isAppClearCache);
         $requestArray['isAppClearSharedPref'] = getBoolean($request->isAppClearSharedPref);
@@ -259,7 +256,6 @@ class AppSettingsController extends Controller
         $requestArray['isServerTokenFetch'] = getBoolean($request->isServerTokenFetch);
         $requestArray['sslSha256Key'] = $request->sslSha256Key;
         $requestArray['checkIpAddressApiUrl'] = $request->checkIpAddressApiUrl;
-//        $requestArray['isIpAddressApiCall'] = $request->isIpAddressApiCall;
 
         return  json_encode($requestArray);
     }
@@ -377,13 +373,6 @@ class AppSettingsController extends Controller
     }
 
     public function updateDatabaseVersion(Request $request){
-
-//        if($request->version_app_detail_id == "all"){
-//            $listOfApplications = getAppListByAccountsId($request->versionAccountsId);
-//        }
-//        else{
-//            $listOfApplications = getAppListByAccountsId($request->versionAccountsId,$request->version_app_detail_id);
-//        }
 
         $accountsId = $request->versionAccountsId;
         $accountsDetail = getAccountDetailsById($accountsId);
