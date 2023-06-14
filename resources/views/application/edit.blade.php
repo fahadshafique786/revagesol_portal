@@ -394,7 +394,7 @@
 
         $(document).ready(function($){
 
-            $('#adsIntervalTime,#minimumVersionSupport,#adsIntervalCount').on('keypress',function (e) {
+            $('#adsIntervalTime,#minimumVersionSupport,#adsIntervalCount,#pagesCounter').on('keypress',function (e) {
 
                 var charCode = (e.which) ? e.which : event.keyCode
                 if (String.fromCharCode(charCode).match(/[^0-9+.]/g))
@@ -402,7 +402,7 @@
 
             });
 
-            $('#adsIntervalTime,#minimumVersionSupport,#adsIntervalCount').on("cut copy paste",function(e) {
+            $('#adsIntervalTime,#minimumVersionSupport,#adsIntervalCount,#pagesCounter').on("cut copy paste",function(e) {
                 e.preventDefault();
             });
 
