@@ -196,10 +196,13 @@ class AppDetailsController extends Controller
             RoleHasApplication::create(["role_id"=> $roleId , "application_id" => $appDetailResponse->id ]);
         }
 
+        $packageId = str_replace(".","_",$request->packageId);
+
         return response()->json(['status' => $status,
             'firebase_status' => $firebaseStatus,
             'message' => $message,
             'appSetting' => $appDetailId,
+            'packageId' => $request->packageId,
             'firebaseData' => $jsonData,
             'reCaptchaKeyId' => (!empty($firebaseCredentials->reCaptchaKeyId)) ? $firebaseCredentials->reCaptchaKeyId : "",
             'firebaseConfigJson' => $firebaseConfigJson,

@@ -471,9 +471,10 @@
                                 isTokenAutoRefreshEnabled: true // Set to true to allow auto-refresh.
                             });
 
-                            const jsonData = JSON.parse(res.firebaseData);
+                            var jsonData = JSON.parse(res.firebaseData);
+                            var package_id = res?.packageId;
 
-                            pushDataToRealTimeDatabase(db, res.node, jsonData,opt);
+                            pushDataToRealTimeDatabase(db, res.node, jsonData,opt,package_id);
 
                         }
                         else{
@@ -571,8 +572,9 @@
                         });
 
                         const jsonData = JSON.parse(res?.data?.success[0].firebaseData);
+                        var package_id = res?.appPackageId;
 
-                        pushDataToRealTimeDatabase(db, res?.data?.success[0].node, jsonData,opt);
+                        pushDataToRealTimeDatabase(db, res?.data?.success[0].node, jsonData,opt,package_id);
 
                     }
                     else{
@@ -635,9 +637,7 @@
             switch(node) {
                 case 'AppDetails':
                     const AppDetails = jsonData;
-                    set(ref(db), {
-                        AppDetails
-                    })
+                    set(ref(db),AppDetails)
                         .then(() => {
 
                             Toast.fire({
@@ -666,9 +666,7 @@
 
                 case 'AppSettings':
                     const AppSettings = jsonData;
-                    set(ref(db), {
-                        AppSettings
-                    })
+                    set(ref(db),AppSettings)
                         .then(() => {
 
                             Toast.fire({

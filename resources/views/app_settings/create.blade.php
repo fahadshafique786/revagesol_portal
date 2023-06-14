@@ -604,15 +604,10 @@
                                 isTokenAutoRefreshEnabled: true // Set to true to allow auto-refresh.
                             });
 
-                            var obj = {}
-                            obj = JSON.parse(res.firebaseData);
-                            var package_id = res.packageId;
-                            // console.log(obj);
+                            var jsonData = JSON.parse(res.firebaseData);
+                            var package_id = res?.packageId;
 
-                            set(ref(db, '/'+package_id+'/'),obj);
-
-
-                            //pushDataToRealTimeDatabase(db,res.node,jsonData,opt,res.packageId);
+                            pushDataToRealTimeDatabase(db,res.node,jsonData,opt,package_id);
 
                         }
 						else{
@@ -697,9 +692,7 @@
                 timer: 3000
             });
 
-            set(ref(db,'/'+package_id+'/'),{
-                JsonData                
-            })
+            set(ref(db,'/'+package_id+'/'),JsonData)
             .then(() => {
 
                 Toast.fire({
