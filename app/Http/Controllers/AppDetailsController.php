@@ -661,6 +661,8 @@ class AppDetailsController extends Controller
                 $obj->isAdmobOnline = getBoolean($obj->isAdmobOnline);
                 $obj->isAdsInterval = getBoolean($obj->isAdsInterval);
                 $obj->isBannerPlayer = getBoolean($obj->isBannerPlayer);
+                $obj->isPagesAlgo = getBoolean($obj->isPagesAlgo);
+                $obj->isOnlineCode = getBoolean($obj->isOnlineCode);
 
 
                 $obj->isMessageDialogDismiss = getBoolean($obj->isMessageDialogDismiss);

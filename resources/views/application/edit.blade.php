@@ -134,7 +134,7 @@
 
                                 <div class="form-group row">
 
-                                    <label for="pagesExtension" class="col-sm-2 col-form-label">isPagesExtension</label>
+                                    <label for="pagesExtension" class="col-sm-2 col-form-label">Pages Extension</label>
                                     <div class="col-sm-4">
                                         <label for="pagesExtension1" class="cursor-pointer">
                                             <input type="radio" class="" id="pagesExtension1" name="pagesExtension" value="jpg"   {{($appData->pagesExtension == 'jpg') ? 'checked' : ''}} />
