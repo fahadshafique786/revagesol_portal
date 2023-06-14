@@ -394,7 +394,7 @@ class AppSettingsController extends Controller
 
         if(count($request->version_app_detail_ids) > 0) {
             foreach ($request->version_app_detail_ids as $appDetailId) {
-                $listOfApplications = getAppListByAccountsId($request->versionAccountsId, $appDetailId);
+                $listOfApplications = getAppListByAccountId($request->versionAccountsId, $appDetailId);
 
                 if(!empty($listOfApplications)){
                     foreach ($listOfApplications as $obj) {
