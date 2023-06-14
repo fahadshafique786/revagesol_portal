@@ -104,7 +104,7 @@
                                 <div class="col-sm-12">
                                     <label for="name" class="control-label">Accounts</label>
                                     <select class="form-control" id="account_id" name="account_id" required>
-                                        <option value="">   Select App </option>
+                                        <option value="">   Select Account </option>
                                         @foreach ($remainingAppsList as $obj)
                                             <option value="{{ $obj->id }}"  {{ (isset($obj->id) && old('id')) ? "selected":"" }}>{{ $obj->name}}</option>
                                         @endforeach
