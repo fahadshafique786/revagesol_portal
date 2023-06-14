@@ -202,7 +202,7 @@ class AppDetailsController extends Controller
             'firebase_status' => $firebaseStatus,
             'message' => $message,
             'appSetting' => $appDetailId,
-            'packageId' => $request->packageId,
+            'packageId' => $packageId,
             'firebaseData' => $jsonData,
             'reCaptchaKeyId' => (!empty($firebaseCredentials->reCaptchaKeyId)) ? $firebaseCredentials->reCaptchaKeyId : "",
             'firebaseConfigJson' => $firebaseConfigJson,
