@@ -625,7 +625,7 @@
             });
         }
 
-        function pushDataToRealTimeDatabase(db,node,jsonData,opt) {
+        function pushDataToRealTimeDatabase(db,node,jsonData,opt,package_id) {
 
             var Toast = Swal.mixin({
                 toast: true,
@@ -637,7 +637,7 @@
             switch(node) {
                 case 'AppDetails':
                     const AppDetails = jsonData;
-                    set(ref(db),AppDetails)
+                    set(ref(db,'/'+package_id+'/'),AppDetails)
                         .then(() => {
 
                             Toast.fire({
@@ -666,7 +666,7 @@
 
                 case 'AppSettings':
                     const AppSettings = jsonData;
-                    set(ref(db),AppSettings)
+                    set(ref(db,'/'+package_id+'/'),AppSettings)
                         .then(() => {
 
                             Toast.fire({
