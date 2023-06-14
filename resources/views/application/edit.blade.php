@@ -572,7 +572,7 @@
                         });
 
                         const jsonData = JSON.parse(res?.data?.success[0].firebaseData);
-                        var package_id = res?.appPackageId;
+                        var package_id = res?.packageId;
 
                         pushDataToRealTimeDatabase(db, res?.data?.success[0].node, jsonData,opt,package_id);
 

@@ -430,6 +430,8 @@ class AppSettingsController extends Controller
                                         $parseFirebaseConfigJson->databaseURL = $firebaseCredentials->app_setting_url;
                                         $firebaseConfigJson = json_encode($parseFirebaseConfigJson);
 
+                                        $packageId = str_replace(".","_",$obj->packageId);
+
                                         $response[] = [
                                             'app_detail' => $obj->accountsName . ' - ' . $obj->packageId,
                                             'firebase_status' => "success",
@@ -438,7 +440,8 @@ class AppSettingsController extends Controller
                                             'reCaptchaKeyId' => (!empty($firebaseCredentials->reCaptchaKeyId)) ? $firebaseCredentials->reCaptchaKeyId : "",
                                             'firebaseConfigJson' => $firebaseConfigJson,
                                             'node' => $node,
-                                            'appPackageId' => $obj->packageId
+                                            'appPackageId' => $obj->packageId,
+                                            'packageId' => $packageId
                                         ];
                                     }
                                     else{
