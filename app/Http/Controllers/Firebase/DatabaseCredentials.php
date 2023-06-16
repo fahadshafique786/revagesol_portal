@@ -213,7 +213,7 @@ class DatabaseCredentials extends BaseController
             // }
 
             if($request->filter_app_id == '-1' && isset($request->filter_accounts_id) && !empty($request->filter_accounts_id) && ($request->filter_accounts_id != '-1') ){
-                $Filterdata = $Filterdata->where('app_details.account_id',$request->filter_accounts_id);
+                $Filterdata = $Filterdata->where('accounts.id',$request->filter_accounts_id);
             }
 
             $Filterdata = $Filterdata->orderBy('firebase_credentials.id','asc')->get();
