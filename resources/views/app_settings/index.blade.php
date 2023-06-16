@@ -125,11 +125,6 @@
                                     </div>
                                 @endforeach
 
-                            <!-- @else
-                                <div class="col-xl-3 col-md-3">
-                                    <p> No data available</p>
-                                </div> -->
-
                             @endif
 
                         </div>
