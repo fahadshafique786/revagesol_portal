@@ -15,6 +15,7 @@ class CreateFirebaseCredentialsTable extends Migration
     {
         Schema::create('firebase_credentials', function (Blueprint $table) {
             $table->id();
+            $table->unsignedInteger('account_id')->index();
             $table->unsignedBigInteger('app_detail_id')->index();
             $table->string('apps_url')->nullable();
             $table->string('leagues_url')->nullable();

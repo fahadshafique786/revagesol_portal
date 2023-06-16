@@ -10,6 +10,7 @@ class FirebaseCredentials extends Model
     use HasFactory;
 
     protected $fillable = [
+        'account_id',
         'app_detail_id',
         'apps_url',
         'leagues_url',
