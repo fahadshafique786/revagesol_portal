@@ -351,10 +351,10 @@
     function callDataTableWithFilters(){
         $("#master").prop('checked',false);
         fetchData($('#filter_app_id').val());
-        reloadAppsList();
+        reloadAccountList();
     }
 
-    function reloadAppsList(account_id = ""){
+    function reloadAccountList(account_id = ""){
         $.ajax({
             type:"POST",
             url: "{{ url('admin/firebase/get-applist-options') }}",
@@ -400,7 +400,7 @@
 
             $("form#addEditForm")[0].reset();
 
-            // reloadAppsList();
+            reloadAccountList();
 
             setTimeout(function(){
 
@@ -422,7 +422,7 @@
 
             var account_id =  $(this).data('account_id');
 
-            reloadAppsList(account_id)
+            reloadAccountList(account_id)
 
 
             $.ajax({
@@ -466,7 +466,7 @@
                         $('#ajax-model').modal('show');
                     },1000);
 
-                    // reloadAppsList(res.app_detail_id);
+                    // reloadAccountList(res.app_detail_id);
 
 
 
