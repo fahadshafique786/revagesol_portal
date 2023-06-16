@@ -32,8 +32,8 @@ class DatabaseCredentials extends BaseController
         SELECT *
            FROM accounts acc
            WHERE NOT EXISTS (SELECT *
-                                FROM app_credentials ac
-                                WHERE ac.account_id = acc.id
+                                FROM firebase_credentials fb
+                                WHERE fb.account_id = acc.id
                                       );
         '));
 
