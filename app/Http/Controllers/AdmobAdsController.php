@@ -41,10 +41,10 @@ class AdmobAdsController extends Controller
 
     public function store(Request $request)
     {
-        $roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
-        if(!in_array($request->app_detail_id,$roleAssignedApplications)){
-            return Response::json(["message"=>"You are not allowed to perform this action!"],403);
-        }
+        // $roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
+        // if(!in_array($request->app_detail_id,$roleAssignedApplications)){
+        //     return Response::json(["message"=>"You are not allowed to perform this action!"],403);
+        // }
 
         
         if(!empty($request->id))
@@ -82,8 +82,13 @@ class AdmobAdsController extends Controller
 
         }
 
+
         $input = array();
+
+        $account_id = getAccountIdByAppId($request->app_detail_id);
+
         $input['adName'] = $request->adName;
+        $input['account_id'] = $account_id;
         $input['app_detail_id'] = $request->app_detail_id;
         $input['adUId'] = $request->adUId;
         $input['isAdShow'] = $request->isAdShow;
@@ -107,11 +112,11 @@ class AdmobAdsController extends Controller
 
     public function destroy(Request $request)
     {
-        $database = AdmobAds::where('id',$request->id)->select('app_detail_id')->first();
-        $roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
-        if(!in_array($database->app_detail_id,$roleAssignedApplications)){
-            return Response::json(["message"=>"You are not allowed to perform this action!"],403);
-        }
+        // $database = AdmobAds::where('id',$request->id)->select('app_detail_id')->first();
+        // $roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
+        // if(!in_array($database->app_detail_id,$roleAssignedApplications)){
+        //     return Response::json(["message"=>"You are not allowed to perform this action!"],403);
+        // }
         
         AdmobAds::where('id',$request->id)->delete();
         return response()->json(['success' => true]);

@@ -88,6 +88,15 @@ if ( ! function_exists('getPackageIdByAppId')) {
     }
 }
 
+if ( ! function_exists('getAccountIdByAppId')) {
+    function getAccountIdByAppId($appDetailId)
+    {
+        $application = AppDetails::where('id',$appDetailId)->select(['account_id'])->first();
+
+        return (!empty($application)) ? $application->account_id : null;
+    }
+}
+
 if ( ! function_exists('getFirebaseCredentialKeysByAppId')) {
     function getFirebaseCredentialKeysByAppId($appDetailId)
     {

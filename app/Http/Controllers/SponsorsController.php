@@ -48,10 +48,10 @@ class SponsorsController extends Controller
 
     public function store(Request $request)
     {
-        $roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
-        if(!in_array($request->app_detail_id,$roleAssignedApplications)){
-            return Response::json(["message"=>"You are not allowed to perform this action!"],403);
-        }
+        // $roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
+        // if(!in_array($request->app_detail_id,$roleAssignedApplications)){
+        //     return Response::json(["message"=>"You are not allowed to perform this action!"],403);
+        // }
 
         if(!empty($request->id))
         {
@@ -93,7 +93,11 @@ class SponsorsController extends Controller
         }
 
         $input = array();
+
+        $account_id = getAccountIdByAppId($request->app_detail_id);
+
         $input['adName'] = $request->adName;
+        $input['account_id'] = $account_id;
         $input['app_detail_id'] = $request->app_detail_id;
         $input['clickAdToGo'] = $request->clickAdToGo;
         $input['isAdShow'] = $request->isAdShow;
@@ -155,11 +159,11 @@ class SponsorsController extends Controller
     public function destroy(Request $request)
     {
 
-        $database = SponsorAds::where('id',$request->id)->select('app_detail_id')->first();
-        $roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
-        if(!in_array($database->app_detail_id,$roleAssignedApplications)){
-            return Response::json(["message"=>"You are not allowed to perform this action!"],403);
-        }
+        // $database = SponsorAds::where('id',$request->id)->select('app_detail_id')->first();
+        // $roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
+        // if(!in_array($database->app_detail_id,$roleAssignedApplications)){
+        //     return Response::json(["message"=>"You are not allowed to perform this action!"],403);
+        // }
         
 
         $getIcon = DB::table('sponsor_ads')->where('id',$request->id)->select('adUrlImage')->first();
