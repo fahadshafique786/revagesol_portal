@@ -418,7 +418,7 @@
                                                data-currentValue="{{(isset($appData->minimumVersionSupport) && ($appData->minimumVersionSupport)) ? $appData->minimumVersionSupport : '1' }}"
                                                class="form-control w-50 d-inline-block notAllowedAlphabets versionControlInput"
                                                name="minimumVersionSupport" id="minimumVersionSupport"
-                                               value="{{(isset($appData->minimumVersionSupport) && ($appData->minimumVersionSupport)) ? $appData->minimumVersionSupport : "" }}"
+                                               value="{{(isset($appData->minimumVersionSupport) && ($appData->minimumVersionSupport)) ? $appData->minimumVersionSupport : '1' }}"
                                                required />
 
                                         <button type="button" class="plus digit_numbers" >+</button>

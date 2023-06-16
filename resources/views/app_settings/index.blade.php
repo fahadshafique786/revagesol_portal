@@ -62,12 +62,14 @@
                                     </label>
                                 </div>
 
-                                <div class="col-12 pull-left text-left">
-                                    <label for="master" class="form-label">
-                                        <input type="checkbox" name=""  class="bigSizeCheckbox mt-0" id="master" />
-                                        <span class="vertical-super pt-2 d-inline-block"> Select All </span>
-                                    </label>
-                                </div>
+                                @if(sizeof($appsList) > 0)
+                                    <div class="col-12 pull-left text-left">
+                                        <label for="master" class="form-label">
+                                            <input type="checkbox" name=""  class="bigSizeCheckbox mt-0" id="master" />
+                                            <span class="vertical-super pt-2 d-inline-block"> Select All </span>
+                                        </label>
+                                    </div>
+                                @endif
 
                             </div>
 
@@ -123,10 +125,10 @@
                                     </div>
                                 @endforeach
 
-                            @else
+                            <!-- @else
                                 <div class="col-xl-3 col-md-3">
                                     <p> No data available</p>
-                                </div>
+                                </div> -->
 
                             @endif
 
