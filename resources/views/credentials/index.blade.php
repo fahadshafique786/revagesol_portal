@@ -354,6 +354,7 @@
             $('body').on('click', '.edit', function () {
 
                 var id = $(this).data('id');
+                
                 $('#server_auth_keyError,#stream_keyError,#token_keyError,#appSigningKeyError,#versionCodeError,#account_idError').text('');
 
                 var account_id =  $(this).data('account_id');

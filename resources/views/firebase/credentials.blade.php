@@ -14,7 +14,7 @@
                         <div class="row mb-3">
 
                             <div class="col-sm-4 ">
-                                <select class="form-control" id="account_filter" name="account_filter" onchange="getApplicationListOptionByAccounts(this.value,'filter_app_id');$('button#filter').trigger('click');"  >
+                                <select class="form-control" id="account_filter" name="account_filter" onchange="$('button#filter').trigger('click');"  >
                                     <option value="-1" selected>   Select Accounts </option>
                                     @foreach ($accountsList as $obj)
                                         <option value="{{ $obj->id }}"  {{ (isset($obj->id) && old('id')) ? "selected":"" }}>{{ $obj->name }}</option>
@@ -22,17 +22,11 @@
                                 </select>
                             </div>
 
-                            <div class="col-sm-4">
-                                <select class="form-control" id="filter_app_id" name="filter_app_id" onchange="$('button#filter').trigger('click');" >
-                                    <option value="" selected>   Select App </option>
-                                </select>
-                            </div>
-
                             <div class="col-sm-2  visiblilty-hidden">
                                 <button type="button" class="btn btn-primary" id="filter"> <i class="fa fa-filter"></i> Apply Filter </button>
                             </div>
 
-                            <div class="col-2 text-right">
+                            <div class="col-6 text-right">
                                 @if(auth()->user()->hasRole('super-admin') || auth()->user()->can('manage-firebase_configuration'))
                                     <a class="btn btn-warning" href="javascript:window.location.reload()" id="">
                                         <i class="fa fa-spinner"></i> &nbsp; Refresh Screen
@@ -66,12 +60,9 @@
                                     <input type="checkbox" name="" id="master" />
                                 </th>
                                 <th scope="col" width="10px">#</th>
-                                <th scope="col">Application</th>
+                                <th scope="col">Accounts</th>
                                 <th scope="col">App Setting URL</th>
                                 <th scope="col">Apps Detail URL</th>
-                                <th scope="col">Leagues URL</th>
-                                <th scope="col">Schedules URL</th>
-                                <th scope="col">Servers URL</th>
                                 <th scope="col">Re Captcha Key Id</th>
                                 <th scope="col">Notification Key</th>
                                 <th scope="col">Action</th>
@@ -105,10 +96,10 @@
 
                             <div class="col-sm-6">
                                 <label for="name" class="control-label">Application</label>
-                                <select class="form-control" id="app_detail_id" name="app_detail_id" required>
-                                    <option value="">   Select App </option>
-                                    @foreach ($appsList as $obj)
-                                    <option value="{{ $obj->id }}"  {{ (isset($obj->id) && old('id')) ? "selected":"" }}>{{ $obj->appName . ' - ' . $obj->packageId}}</option>
+                                <select class="form-control" id="account_id" name="account_id" required>
+                                    <option value="">   Select Account </option>
+                                    @foreach ($remainingAccountList as $obj)
+                                    <option value="{{ $obj->id }}"  {{ (isset($obj->id) && old('id')) ? "selected":"" }}>{{ $obj->name}}</option>
                                     @endforeach
                                 </select>
 
@@ -142,28 +133,6 @@
                         </div>
 
                         <div class="form-group row">
-
-                            <div class="col-sm-6">
-                                <label for="stream_key" class="control-label d-block"> League URL </label>
-                                <input type="text" class="form-control" id="leagues_url" name="leagues_url" value="" >
-                                <span class="text-danger" id="leagues_urlError"></span>
-                            </div>
-
-                            <div class="col-sm-6">
-                                <label for="stream_key" class="control-label d-block"> Schedule URL </label>
-                                <input type="text" class="form-control" id="schedules_url" name="schedules_url" value="" >
-                                <span class="text-danger" id="schedules_urlError"></span>
-
-                            </div>
-
-                        </div>
-
-                        <div class="form-group row">
-                            <div class="col-sm-6">
-                                <label for="stream_key" class="control-label d-block"> Server URL </label>
-                                <input type="text" class="form-control" id="servers_url" name="servers_url" value="" >
-                                <span class="text-danger" id="servers_urlError"></span>
-                            </div>
 
                             <div class="col-sm-6">
                                 <label for="notificationKey" class="control-label d-block"> Notification Key </label>
@@ -365,12 +334,9 @@
             columns: [
                 { data: 'checkbox', name: 'checkbox' , orderable:false , searchable:false},
                 { data: 'srno', name: 'srno' , searchable:false},
-                { data: 'appName', name: 'appName' },
+                { data: 'account', name: 'account' },
                 { data: 'app_setting_url', name: 'app_setting_url' },
                 { data: 'apps_url', name: 'apps_url' },
-                { data: 'leagues_url', name: 'leagues_url' },
-                { data: 'schedules_url', name: 'schedules_url' },
-                { data: 'servers_url', name: 'servers_url' },
                 { data: 'reCaptchaKeyId', name: 'reCaptchaKeyId' },
                 { data: 'notificationKey', name: 'notificationKey' },
 
@@ -388,13 +354,13 @@
         reloadAppsList();
     }
 
-    function reloadAppsList(application_id = ""){
+    function reloadAppsList(account_id = ""){
         $.ajax({
             type:"POST",
             url: "{{ url('admin/firebase/get-applist-options') }}",
-            data: { appId: application_id , accountsId : $("#account_filter").val()},
+            data: { account_id: account_id , accountsId : $("#account_filter").val()},
             success: function(response){
-                $("#app_detail_id").html(response);
+                $("#account_id").html(response);
             }
 
 
@@ -426,7 +392,7 @@
 
             $('#id').val("");
 
-            $('#leagues_urlError,#schedules_urlError,#notificationKeyError,#apps_urlError,#servers_urlError,#app_setting_urlError,#reCaptchaKeyIdError,#firebaseConfigJsonError').text('');
+            $('#account_idError,#notificationKeyError,#apps_urlError,#app_setting_urlError,#reCaptchaKeyIdError,#firebaseConfigJsonError').text('');
 
             $('#addEditForm').trigger("reset");
 
@@ -434,13 +400,13 @@
 
             $("form#addEditForm")[0].reset();
 
-            reloadAppsList();
+            // reloadAppsList();
 
             setTimeout(function(){
 
-                if($("#filter_app_id").val() > 0){
-                    $("#app_detail_id").val($("#filter_app_id").val());
-                }
+                // if($("#filter_app_id").val() > 0){
+                //     $("#app_detail_id").val($("#filter_app_id").val());
+                // }
 
                 $('#ajax-model').modal('show');
 
@@ -452,11 +418,11 @@
 
             var id = $(this).data('id');
 
-            $('#leagues_urlError,#schedules_urlError,#apps_urlError,#servers_urlError,#app_setting_urlError').text('');
+            $('#account_idError,#apps_urlError,#app_setting_urlError').text('');
 
-            var application_id =  $(this).data('application_id');
+            var account_id =  $(this).data('account_id');
 
-            reloadAppsList(application_id)
+            reloadAppsList(account_id)
 
 
             $.ajax({
@@ -474,9 +440,7 @@
 
 
                     $('#apps_url').val(res.apps_url);
-                    $('#leagues_url').val(res.leagues_url);
-                    $('#schedules_url').val(res.schedules_url);
-                    $('#servers_url').val(res.servers_url);
+                    $('#account_id').val(res.account_id);
                     $('#app_setting_url').val(res.app_setting_url);
                     $('#reCaptchaKeyId').val(res.reCaptchaKeyId);
                     $('#notificationKey').val(res.notificationKey);
@@ -558,7 +522,7 @@
             $("#btn-save"). attr("disabled", true);
 
 
-            $('#leagues_urlError,#schedules_urlError,#apps_urlError,#servers_urlError,#app_setting_urlError,#reCaptchaKeyIdError,#firebaseConfigJsonError').text('');
+            $('#apps_urlError,#app_setting_urlError,#reCaptchaKeyIdError,#firebaseConfigJsonError').text('');
 
 
             $.ajax({
@@ -609,9 +573,6 @@
                     $("#btn-save").html(' Save');
                     $("#btn-save"). attr("disabled", false);
                     $('#apps_urlError').text(response.responseJSON.errors.apps_url);
-                    $('#leagues_urlError').text(response.responseJSON.errors.leagues_url);
-                    $('#schedules_urlError').text(response.responseJSON.errors.schedules_url);
-                    $('#servers_urlError').text(response.responseJSON.errors.servers_url);
                     $('#app_setting_urlError').text(response.responseJSON.errors.app_setting_url);
                     $('#reCaptchaKeyIdError').text(response.responseJSON.errors.reCaptchaKeyId);
                     $('#firebaseConfigJsonError').text(response.responseJSON.errors.firebaseConfigJson);
