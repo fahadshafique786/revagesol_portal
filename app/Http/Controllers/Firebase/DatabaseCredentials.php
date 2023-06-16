@@ -280,7 +280,7 @@ class DatabaseCredentials extends BaseController
         FROM accounts acc
            WHERE NOT EXISTS (SELECT *
                                 FROM firebase_credentials fc
-                                WHERE fc.app_detail_id = acc.id
+                                WHERE fc.account_id = acc.id
                 '.$appIdClause.'
             ) 
             '.$permissionAppIdClause.'
