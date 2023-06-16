@@ -10,6 +10,7 @@ class SponsorAds extends Model
     use HasFactory;
 
     protected $fillable = [
+        'account_id',
         'app_detail_id',
         'adName',
         'adUrlImage',
