@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AppDetails;
-use App\Models\RoleHasApplication;
+use App\Models\RoleHasAccount;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Accounts;
@@ -67,41 +67,38 @@ class RolesController extends Controller
 
         $role->syncPermissions($request->permissions);
 
-        if((in_array("20",$request->permissions)) && (in_array("19",$request->permissions))){
-            $this->syncApplications($request->application_ids,$role,$request->account_id);
+        if((in_array("9",$request->permissions)) && (in_array("10",$request->permissions))){
+            $this->syncApplications($request->account_id,$role);
         }
         else{
-            RoleHasApplication::where('role_id',$role->id)->delete();
+            RoleHasAccount::where('role_id',$role->id)->delete();
         }
 
         return response()->json(['success' => true]);
     }
 
-    public function syncApplications($applicationIds,$role,$account_id){
+    public function syncApplications($accountIds,$role){
 
-        $roleHasAppsFromDB = DB::table('role_has_applications')->select('application_id','account_id')->where('role_id',$role->id)->get()->toArray();
+        $roleHasAccountsFromDB = DB::table('role_has_accounts')->select('account_id')->where('role_id',$role->id)->get()->toArray();
 
         $array1 = [];
-        foreach($roleHasAppsFromDB as $obj){
-            $array1[] = $obj->application_id;
+        foreach($roleHasAccountsFromDB as $obj){
+            $array1[] = $obj->account_id;
         }
 
-        $removableApps = array_diff($array1,$applicationIds); // these application ids will remove form the table
-        $newApps = array_diff($applicationIds,$array1); // these ids must be new and will in the table as well
+        $removableAccounts = array_diff($array1,$accountIds); // these acccounts ids will remove form the table
+        $newAccounts = array_diff($accountIds,$array1); // these ids must be new and will in the table as well
 
-        if(!empty($removableApps)){
-            RoleHasApplication::whereIn('application_id',$removableApps)->where('role_id',$role->id)->delete();
+        if(!empty($removableAccounts)){
+            RoleHasAccount::whereIn('account_id',$removableAccounts)->where('role_id',$role->id)->delete();
         }
 
-        foreach($newApps as $appId){
-            $roleAssignedApps = [];
-            $roleAssignedApps['application_id'] = $appId;
-            $roleAssignedApps['role_id'] = $role->id;
+        foreach($newAccounts as $accountId){
+            $roleAssignedAccounts = [];
+            $roleAssignedAccounts['account_id'] = $accountId;
+            $roleAssignedAccounts['role_id'] = $role->id;
 
-            $appDetail = AppDetails::where('id',$appId)->select('account_id')->first();
-            $roleAssignedApps['account_id'] = $appDetail->account_id;
-
-            RoleHasApplication::create($roleAssignedApps);
+            RoleHasAccount::create($roleAssignedAccounts);
         }
 
         return true;
@@ -114,22 +111,22 @@ class RolesController extends Controller
         ];
         $where = array('id' => $request->id);
         $rolesData  = Role::with($with)->where($where)->first();
-        $roleHasApplication = RoleHasApplication::where('role_id', $request->id)->get();
-        $roleHasAccounts =  DB::table('role_has_applications')
-        ->where('role_id',$request->id)
-        ->select('account_id')
-        ->distinct()
-        ->get();
+        $roleHasAccount = RoleHasAccount::where('role_id', $request->id)->get();
+        // $roleHasAccounts =  DB::table('role_has_applications')
+        // ->where('role_id',$request->id)
+        // ->select('account_id')
+        // ->distinct()
+        // ->get();
 
-        if(sizeOf($roleHasApplication) <= 0){
-            $roleHasApplication = null;
+        if(sizeOf($roleHasAccount) <= 0){
+            $roleHasAccount = null;
         }
         else{
-            $rolesData['account_id'] = $roleHasApplication[0]->account_id;
+            $rolesData['account_id'] = $roleHasAccount[0]->account_id;
         }
 
-        $rolesData['role_has_application'] = $roleHasApplication;
-        $rolesData['role_has_accounts_id'] = $roleHasAccounts;
+        $rolesData['role_has_accounts'] = $roleHasAccount;
+        // $rolesData['role_has_accounts_id'] = $roleHasAccounts;
 
         return response()->json($rolesData);
         exit();

@@ -6,8 +6,8 @@ use App\Models\User;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
-use App\Models\AppDetails;
-use App\Models\RoleHasApplication;
+use App\Models\Accounts;
+use App\Models\RoleHasAccount;
 use Hash;
 use DB;
 
@@ -21,18 +21,17 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
 
-        $applicationList = AppDetails::all();
+        $acccountsList = Accounts::all();
 
-        foreach($applicationList as $obj){
+        foreach($acccountsList as $obj){
         
-            $checkExist = RoleHasApplication::where(['role_id'=> 1 , 'application_id' => $obj->id])->exists();
+            $checkExist = RoleHasAccount::where(['role_id'=> 1 , 'account_id' => $obj->id])->exists();
 
             if(!$checkExist){
-                RoleHasApplication::create(
+                RoleHasAccount::create(
                     [
                         'role_id' => 1,
-                        'account_id' => $obj->account_id,
-                        'application_id' => $obj->id,
+                        'account_id' => $obj->id,
                     ]
                 );                    
                 

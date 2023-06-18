@@ -12,6 +12,7 @@ use App\Models\AppDetails;
 use App\Models\Accounts;
 use App\Models\SponsorAds;
 use App\Models\RoleHasApplication;
+use App\Models\RoleHasAccount;
 use Illuminate\Support\Facades\DB;
 use Response;
 use Auth;
@@ -191,10 +192,10 @@ class AppDetailsController extends Controller
             $message  =  "Firebase credentials not found!";
         }
 
-        if(empty($application_id)){
-            $roleId = auth()->user()->roles()->first()->id;
-            RoleHasApplication::create(["role_id"=> $roleId , "application_id" => $appDetailResponse->id ]);
-        }
+        // if(empty($application_id)){
+        //     $roleId = auth()->user()->roles()->first()->id;
+        //     RoleHasApplication::create(["role_id"=> $roleId , "application_id" => $appDetailResponse->id ]);
+        // }
 
         $packageId = str_replace(".","_",$request->packageId);
 
@@ -475,27 +476,72 @@ class AppDetailsController extends Controller
         return $options;
     }
 
-    public function mergeAccountsAppsList($appsList , $rolesApplications,$commonApps){
+    public function getRolesAccountsListByRoleId(Request $request){
+
+        $commonApps = [];
+        $accountsList = [];
+
+        if(isset($request->accounts) && !empty($request->accounts)){
+            if($request->un_select_all_option == "false"){
+                $accountsList = array_intersect($array1, $request->accounts);
+            }
+        }
+        
+        // if(!empty($request->account_id) && $request->account_id != "-1"){
+        //     $appList = AppDetails::whereIn('account_id',$request->account_id);       
+        //     $currentSelectedApps = [];
+
+        //     $array1 = $appList->pluck('id')->toArray();
+            
+        //     if(isset($request->accounts) && !empty($request->accounts)){
+        //         if($request->un_select_all_option == "false"){
+        //             $commonApps = array_intersect($array1, $request->accounts);
+        //         }
+        //     }
+            
+        //     $appList = $appList->get();
+
+        // }
+        // else{
+
+        //     return ""; // on demand during qa  ( might be possible it can be temporary )
+
+        //     // $appList = AppDetails::get();
+        // }
+
+        $rolesAccounts = RoleHasAccount::where('role_id',$request->role_id)->where('role_id','!=',1)->pluck('account_id')->toArray();
+
+        $commonAccounts = array_intersect($rolesAccounts, $request->accounts);
+
+
+        $accountsList = Accounts::whereIn('id',$request->accounts)->select('id','name')->get();
+        
+        $options = $this->mergeAccountsList($accountsList,$rolesAccounts);
+
+        return $options;
+    }
+
+    public function mergeAccountsList($accountsList , $rolesAccounts){
 
         $options = '';
-        if(!empty($appsList) && sizeof($appsList) > 0){
-            if(count($rolesApplications) > 0){
-                foreach($appsList as $obj){
+        if(!empty($accountsList) && sizeof($accountsList) > 0){
+            if(count($rolesAccounts) > 0){
+                foreach($accountsList as $obj){
                         $isSelected = "";
-                        if(in_array($obj->id,$rolesApplications) || in_array($obj->id,$commonApps) ){
+                        if(in_array($obj->id,$rolesAccounts)){
                             $isSelected = "selected";
                         }
-                        $options .= '<option value="'.$obj->id.'" '.$isSelected.' >   '  .   $obj->appName   .  ' - ' . $obj->packageId . '    </option>';
+                        $options .= '<option value="'.$obj->id.'" '.$isSelected.' >   '  .   $obj->name . '    </option>';
                 }
                 return $options;
             }
             else{
-                foreach($appsList as $obj){
+                foreach($accountsList as $obj){
                     $isSelected = "";
-                    if(in_array($obj->id,$rolesApplications) || in_array($obj->id,$commonApps) ){
+                    if(in_array($obj->id,$rolesAccounts)){
                         $isSelected = "selected";
                     }
-                    $options .= '<option value="'.$obj->id.'" '.$isSelected.' >   '  .   $obj->appName   .  ' - ' . $obj->packageId . '    </option>';
+                    $options .= '<option value="'.$obj->id.'" '.$isSelected.' >   '  .   $obj->name . '    </option>';
                 }
             }
         }
