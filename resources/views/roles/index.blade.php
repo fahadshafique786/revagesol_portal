@@ -95,7 +95,6 @@
                         <label for="name" class="control-label">Accounts</label><br/>
                         <!-- getRolesAppsListByAccounts('account_filter','account_ids',false); -->
                         <select required   multiple="multiple" class="form-control js-example-basic-multiple" id="account_ids" name="account_id[]" onchange="$('#selectAllAccountsData').prop('checked',false);"  >
-                            <option value="-1" disabled="disabled">   Select Accounts </option>
                             @foreach ($accountsList as $obj)
                                 <option value="{{ $obj->id }}" >{{ $obj->name }}</option>
                             @endforeach
@@ -196,7 +195,7 @@
         $("#selectAllAccountsData").click(function(){
 
             if($("#selectAllAccountsData").is(':checked') ){
-                $("#account_ids > option:not(:first)").prop("selected","selected");
+                $("#account_ids > option").prop("selected","selected");
                 $("#account_ids").trigger("change");
                 $("#selectAllAccountsData").prop('checked','true')
             }else{
