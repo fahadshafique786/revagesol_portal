@@ -12,7 +12,7 @@ use Response;
 
 class AppSettingsController extends Controller
 {
-    protected $roleAssignedApplications;
+    protected $roleAssignedAccounts;
 
     public function __construct()
     {
@@ -24,7 +24,7 @@ class AppSettingsController extends Controller
 
     public function index()
     {
-        $this->roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
+        $this->roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
 
         $appsList = AppSettings::select('app_settings.id as id','appName','appLogo','packageId','accounts.name as accounts_name')
             ->join('app_details', function ($join) {
@@ -120,10 +120,10 @@ class AppSettingsController extends Controller
         /*** Validation BEGIN ****/
         if(!empty($app_setting_id))
         {
-            $appSetting = AppSettings::where('id',$app_setting_id)->select(['app_detail_id'])->first();
+            $appSetting = AppSettings::where('id',$app_setting_id)->select(['app_detail_id','account_id'])->first();
 
-            $roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
-            if(!in_array($appSetting->app_detail_id,$roleAssignedApplications)){
+            $roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
+            if(!in_array($appSetting->account_id,$roleAssignedAccounts)){
                 return Response::json(["message"=>"You are not allowed to perform this action!"],403);
             }
     
@@ -222,9 +222,9 @@ class AppSettingsController extends Controller
 
     public function destroy(Request $request)
     {
-        $database = AppSettings::where('id',$request->id)->select('app_detail_id')->first();
-        $roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
-        if(!in_array($database->app_detail_id,$roleAssignedApplications)){
+        $database = AppSettings::where('id',$request->id)->select('account_id')->first();
+        $roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
+        if(!in_array($database->account_id,$roleAssignedAccounts)){
             return Response::json(["message"=>"You are not allowed to perform this action!"],403);
         }
         
@@ -310,7 +310,7 @@ class AppSettingsController extends Controller
 
     public function getApplicationSettingsCardView(Request $request){
 
-        $this->roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
+        $this->roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
 
         $appsList = AppSettings::select('app_settings.id as id','appName','appLogo','packageId','accounts.name as accounts_name')
             ->join('app_details', function ($join) {
@@ -327,8 +327,8 @@ class AppSettingsController extends Controller
             });
         }
 
-        if(!empty($this->roleAssignedApplications)){
-            $appsList = $appsList->whereIn('app_settings.app_detail_id',$this->roleAssignedApplications);
+        if(!empty($this->roleAssignedAccounts)){
+            $appsList = $appsList->whereIn('app_settings.account_id',$this->roleAssignedAccounts);
         }
 
         if(isset($request->accountsId) && !empty($request->accountsId) && $request->accountsId != '-1'){
@@ -367,9 +367,9 @@ class AppSettingsController extends Controller
                 });
             }
 
-            $this->roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
-            if(!empty($this->roleAssignedApplications)){
-                $appsList = $appsList->whereIn('app_details.id',$this->roleAssignedApplications);
+            $this->roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
+            if(!empty($this->roleAssignedAccounts)){
+                $appsList = $appsList->whereIn('app_details.account_id',$this->roleAssignedAccounts);
             }
         
 

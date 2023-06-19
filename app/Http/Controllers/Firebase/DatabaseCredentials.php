@@ -12,15 +12,15 @@ use Response;
 
 class DatabaseCredentials extends BaseController
 {
-    protected $roleAssignedApplications;
+    protected $roleAssignedAccounts;
 
     public function __construct()
     {
         $this->middleware('auth');
         $this->middleware('role_or_permission:super-admin|view-firebase_configuration', ['only' => ['index','getDatabaseCredentialsList']]);
-        $this->middleware('role_or_permission:super-admin|view-applications', ['only' => ['index','getDatabaseCredentialsList']]);
+        $this->middleware('role_or_permission:super-admin|view-accounts', ['only' => ['index','getDatabaseCredentialsList']]);
         $this->middleware('role_or_permission:super-admin|manage-firebase_configuration',['only' => ['edit','store','destroy','deleteAll']]);
-        $this->middleware('role_or_permission:super-admin|manage-applications',['only' => ['edit','store','destroy','deleteAll']]);
+        $this->middleware('role_or_permission:super-admin|manage-accounts',['only' => ['edit','store','destroy','deleteAll']]);
     }
 
     public function index()
@@ -47,10 +47,10 @@ class DatabaseCredentials extends BaseController
 
     public function store(Request $request)
     {
-        // $roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
-        // if(!in_array($request->app_detail_id,$roleAssignedApplications)){
-        //     return Response::json(["message"=>"You are not allowed to perform this action!"],403);
-        // }
+        $roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
+        if(!in_array($request->account_id,$roleAssignedAccounts)){
+            return Response::json(["message"=>"You are not allowed to perform this action!"],403);
+        }
 
         if(!empty($request->id))
         {
@@ -179,11 +179,11 @@ class DatabaseCredentials extends BaseController
 
     public function destroy(Request $request)
     {
-        // $database = FirebaseCredentials::where('id',$request->id)->select('app_detail_id')->first();
-        // $roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
-        // if(!in_array($database->app_detail_id,$roleAssignedApplications)){
-        //     return Response::json(["message"=>"You are not allowed to perform this action!"],403);
-        // }
+        $database = FirebaseCredentials::where('id',$request->id)->select('account_id')->first();
+        $roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
+        if(!in_array($database->account_id,$roleAssignedAccounts)){
+            return Response::json(["message"=>"You are not allowed to perform this action!"],403);
+        }
         
         FirebaseCredentials::where('id',$request->id)->delete();
         return response()->json(['success' => true]);
@@ -194,7 +194,7 @@ class DatabaseCredentials extends BaseController
 
         if(request()->ajax()) {
 
-            // $this->roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
+            $this->roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
 
             $response = array();
             $Filterdata = FirebaseCredentials::select('firebase_credentials.*','accounts.name as accountName');
@@ -208,9 +208,9 @@ class DatabaseCredentials extends BaseController
                 $join->on('accounts.id', '=', 'firebase_credentials.account_id');
             });
 
-            // if(!empty($this->roleAssignedApplications)){
-            //     $Filterdata = $Filterdata->whereIn('firebase_credentials.app_detail_id',$this->roleAssignedApplications);
-            // }
+            if(!empty($this->roleAssignedAccounts)){
+                $Filterdata = $Filterdata->whereIn('firebase_credentials.account_id',$this->roleAssignedAccounts);
+            }
 
             if($request->filter_app_id == '-1' && isset($request->filter_accounts_id) && !empty($request->filter_accounts_id) && ($request->filter_accounts_id != '-1') ){
                 $Filterdata = $Filterdata->where('accounts.id',$request->filter_accounts_id);
@@ -254,7 +254,7 @@ class DatabaseCredentials extends BaseController
 
     public function getAppsOptions(Request $request){
 
-        $this->roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
+        $this->roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
 
         $appIdClause = "";
         $accountsIdClause = "";
@@ -264,9 +264,9 @@ class DatabaseCredentials extends BaseController
             $accountsIdClause = " OR acc.id = ". $request->account_id;
         }
         
-        // if(!empty($this->roleAssignedApplications)){            
-        //     $permissionAppIdClause .= " AND app.id IN (".implode(",",$this->roleAssignedApplications).")";
-        // }
+        if(!empty($this->roleAssignedAccounts)){            
+            $permissionAppIdClause .= " AND acc.id IN (".implode(",",$this->roleAssignedAccounts).")";
+        }
 
 
         if(isset($request->accountsId) && !empty($request->accountsId) && ($request->accountsId != "-1")){

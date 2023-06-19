@@ -27,7 +27,7 @@ class Synchronization extends BaseController
     public $teamsImageUrl;
     public $schedulesimageUrl;
     public $serversImageUrl;
-    protected $roleAssignedApplications;
+    protected $roleAssignedAccounts;
 
     public function __construct()
     {

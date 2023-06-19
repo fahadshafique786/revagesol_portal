@@ -44,10 +44,10 @@ class AppCredentialsController extends Controller
 
     public function store(Request $request)
     {
-        // $roleAssignedAccounts = getAccountssByRoleId(auth()->user()->roles()->first()->id);
-        // if(!in_array($request->account_id,$roleAssignedAccounts)){
-        //     return Response::json(["message"=>"You are not allowed to perform this action!"],403);
-        // }
+        $roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
+        if(!in_array($request->account_id,$roleAssignedAccounts)){
+            return Response::json(["message"=>"You are not allowed to perform this action!"],403);
+        }
 
         if(!empty($request->id))
         {
@@ -206,12 +206,12 @@ class AppCredentialsController extends Controller
 
     public function destroy(Request $request)
     {
-        // $database = AppCredentials::where('id',$request->id)->select('app_detail_id')->first();
-        // $roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
+        $database = AppCredentials::where('id',$request->id)->select('account_id')->first();
+        $roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
         
-        // if(!in_array($database->app_detail_id,$roleAssignedApplications)){
-        //     return Response::json(["message"=>"You are not allowed to perform this action!"],403);
-        // }
+        if(!in_array($database->account_id,$roleAssignedAccounts)){
+            return Response::json(["message"=>"You are not allowed to perform this action!"],403);
+        }
         
         AppCredentials::where('id',$request->id)->delete();
         return response()->json(['success' => true]);
@@ -222,7 +222,7 @@ class AppCredentialsController extends Controller
 
         if(request()->ajax()) {
 
-            $this->roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
+            $this->roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
 
             $response = array();
             $Filterdata = AppCredentials::select('app_credentials.*','accounts.name as accountName');
@@ -231,8 +231,8 @@ class AppCredentialsController extends Controller
                 $join->on('accounts.id', '=', 'app_credentials.account_id');
             });
 
-            // if(!empty($this->roleAssignedApplications)){
-            //     $Filterdata = $Filterdata->whereIn('app_credentials.app_detail_id',$this->roleAssignedApplications);
+            // if(!empty($this->roleAssignedAccounts)){
+            //     $Filterdata = $Filterdata->whereIn('app_credentials.app_detail_id',$this->roleAssignedAccounts);
             // }
 
             if($request->filter_app_id == '-1' && isset($request->filter_accounts_id) && !empty($request->filter_accounts_id) && ($request->filter_accounts_id != '-1') ){
@@ -281,22 +281,22 @@ class AppCredentialsController extends Controller
 
     public function getAppsOptions(Request $request){
 
-        $this->roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
+        $this->roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
 
         DB::enableQueryLog();
-        $appIdClause = "";
+        $accountIdClause = "";
 
         if(isset($request->account_id) && !empty($request->account_id)){
-            $appIdClause = " OR acc.id = ". $request->account_id;
+            $accountIdClause = " OR acc.id = ". $request->account_id;
         }
 
         if(isset($request->accountsId) && !empty($request->accountsId) && ($request->accountsId != "-1")){
-            $appIdClause .= " AND acc.id = ". $request->accountsId;
+            $accountIdClause .= " AND acc.id = ". $request->accountsId;
         }
 
-        // if(!empty($this->roleAssignedApplications)){
-        //     $appIdClause .= " AND app.id IN (".implode(",",$this->roleAssignedApplications).")";
-        // }
+        if(!empty($this->roleAssignedAccounts)){
+            $accountIdClause .= " AND acc.id IN (".implode(",",$this->roleAssignedAccounts).")";
+        }
 
         $appListWithoutCredentials = DB::select(DB::raw('
         SELECT *
@@ -305,7 +305,7 @@ class AppCredentialsController extends Controller
                                 FROM app_credentials ac
                                 WHERE ac.account_id = acc.id
                         )
-        '.$appIdClause.'
+        '.$accountIdClause.'
         '));
 
         $options = '<option value="">Select App </option>';

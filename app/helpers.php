@@ -5,6 +5,7 @@ use App\Models\Accounts;
 use App\Models\AppDetails;
 use Illuminate\Support\Facades\DB;
 use App\Models\RoleHasApplication;
+use App\Models\RoleHasAccount;
 use App\Models\Country;
 use App\Models\BlockedApplication;
 use App\Models\FirebaseCredentials;
@@ -546,20 +547,19 @@ if ( ! function_exists('getApplicationsByRoleId'))
     }
 }
 
-if ( ! function_exists('getAccountssByRoleId'))
+if ( ! function_exists('getAccountsByRoleId'))
 {
-    function getAccountssByRoleId($roleId){
+    function getAccountsByRoleId($roleId){
 
-        $applicationsList = RoleHasApplication::select('application_id')->where('role_id',$roleId)->get()->toArray();
-        if(!empty($applicationsList)){
+        $accountsList = RoleHasAccount::select('account_id')->where('role_id',$roleId)->get()->toArray();
+        if(!empty($accountsList)){
 
-            $applicationArray = [];
-            foreach($applicationsList as $obj){
-                $applicationArray [] = $obj['application_id'];
+            $accountsArray = [];
+            foreach($accountsList as $obj){
+                $accountsArray [] = $obj['account_id'];
             }
 
-            return $applicationArray;
-//                return rtrim($commaSeparatedIds,',');
+            return $accountsArray;
         }
         return false;
     }

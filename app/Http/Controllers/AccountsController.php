@@ -13,6 +13,7 @@ use App\Models\Leagues;
 use App\Models\Teams;
 use App\Models\Servers;
 use App\Models\AppDetails;
+use App\Models\RoleHasAccount;
 use DB;
 
 class AccountsController extends Controller
@@ -71,11 +72,16 @@ class AccountsController extends Controller
             $input['icon'] = $file_unique_name;
         }
 
-        $user   =   Accounts::updateOrCreate(
+        $accounts   =   Accounts::updateOrCreate(
             [
                 'id' => $request->id
             ],
             $input);
+
+        if(empty($request->id)){
+            $roleId = auth()->user()->roles()->first()->id;
+            RoleHasAccount::create(["role_id"=> $roleId , "account_id" => $accounts->id ]);
+        }
 
         return response()->json(['success' => true]);
     }

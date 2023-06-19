@@ -11,15 +11,15 @@ use Illuminate\Support\Facades\DB;
 
 class SponsorsController extends Controller
 {
-    protected $roleAssignedApplications;
+    protected $roleAssignedAccounts;
 
     public function __construct()
     {
         $this->middleware('auth');
         $this->middleware('role_or_permission:super-admin|view-sponsors', ['only' => ['index','FetchSponsorsData']]);
-        $this->middleware('role_or_permission:super-admin|view-applications', ['only' => ['index','FetchSponsorsData']]);
+        $this->middleware('role_or_permission:super-admin|view-accounts', ['only' => ['index','FetchSponsorsData']]);
         $this->middleware('role_or_permission:super-admin|manage-sponsors',['only' => ['edit','store','destroy']]);
-        $this->middleware('role_or_permission:super-admin|manage-applications',['only' => ['edit','store','destroy']]);
+        $this->middleware('role_or_permission:super-admin|manage-accounts',['only' => ['edit','store','destroy']]);
     }
 
     /**
@@ -30,16 +30,16 @@ class SponsorsController extends Controller
 
     public function index()
     {
-        $this->roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
+        $this->roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
 
-        if(!empty($this->roleAssignedApplications)){
-            $appsList = AppDetails::whereIn('id',$this->roleAssignedApplications)->get();
+        if(!empty($this->roleAssignedAccounts)){
+            $accountsList = Accounts::whereIn('id',$this->roleAssignedAccounts)->orderBy('id','DESC')->get();
         }
         else{
-            $appsList = AppDetails::get();
+            $accountsList = Accounts::orderBy('id','DESC')->get();
         }
 
-        $accountsList = Accounts::orderBy('id','DESC')->get();
+        $appsList = AppDetails::get();
 
         return view('sponsors')
             ->with('accountsList',$accountsList)
@@ -48,10 +48,11 @@ class SponsorsController extends Controller
 
     public function store(Request $request)
     {
-        // $roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
-        // if(!in_array($request->app_detail_id,$roleAssignedApplications)){
-        //     return Response::json(["message"=>"You are not allowed to perform this action!"],403);
-        // }
+        $account_id = getAccountIdByAppId($request->app_detail_id);
+        $roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
+        if(!in_array($account_id,$roleAssignedAccounts)){
+            return Response::json(["message"=>"You are not allowed to perform this action!"],403);
+        }
 
         if(!empty($request->id))
         {
@@ -93,8 +94,6 @@ class SponsorsController extends Controller
         }
 
         $input = array();
-
-        $account_id = getAccountIdByAppId($request->app_detail_id);
 
         $input['adName'] = $request->adName;
         $input['account_id'] = $account_id;
@@ -159,11 +158,11 @@ class SponsorsController extends Controller
     public function destroy(Request $request)
     {
 
-        // $database = SponsorAds::where('id',$request->id)->select('app_detail_id')->first();
-        // $roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
-        // if(!in_array($database->app_detail_id,$roleAssignedApplications)){
-        //     return Response::json(["message"=>"You are not allowed to perform this action!"],403);
-        // }
+        $database = SponsorAds::where('id',$request->id)->select('account_id')->first();
+        $roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
+        if(!in_array($database->account_id,$roleAssignedAccounts)){
+            return Response::json(["message"=>"You are not allowed to perform this action!"],403);
+        }
         
 
         $getIcon = DB::table('sponsor_ads')->where('id',$request->id)->select('adUrlImage')->first();
@@ -181,7 +180,7 @@ class SponsorsController extends Controller
     {
         if(request()->ajax()) {
 
-            $this->roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
+            $this->roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
 
             $response = array();
             $Filterdata = SponsorAds::select('sponsor_ads.*','app_details.appName','app_details.packageId as packageId');
@@ -195,8 +194,8 @@ class SponsorsController extends Controller
                 $join->on('app_details.id', '=', 'sponsor_ads.app_detail_id');
             });
 
-            if(!empty($this->roleAssignedApplications)){
-                $Filterdata = $Filterdata->whereIn('sponsor_ads.app_detail_id',$this->roleAssignedApplications);
+            if(!empty($this->roleAssignedAccounts)){
+                $Filterdata = $Filterdata->whereIn('sponsor_ads.account_id',$this->roleAssignedAccounts);
             }
 
             if($request->filter_app_id == '-1' && isset($request->filter_accounts_id) && !empty($request->filter_accounts_id) && ($request->filter_accounts_id != '-1') ){
