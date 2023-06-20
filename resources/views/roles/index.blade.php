@@ -226,7 +226,7 @@
             // $("#account_ids").trigger("change");
             
 
-            $('#account_ids option:eq(1)').attr('selected', 'selected');
+            $('#account_ids option:eq(0)').attr('selected', 'selected');
             $("#account_ids").trigger("change");
 
 
@@ -324,7 +324,7 @@
 
             $("#account_ids").select2();
             
-            $('#account_ids option:eq(1)').removeAttr('selected');
+            $('#account_ids option:eq(0)').removeAttr('selected');
             $("#account_ids").trigger("change");
 
             $.ajax({
