@@ -22,7 +22,15 @@ class PushNotificationsController extends  BaseController
     public function index()
     {
         $appsList = AppDetails::all();
-        $accountsList = Accounts::orderBy('id','DESC')->get();
+
+        $this->roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
+        
+        if(!empty($this->roleAssignedAccounts)){
+            $accountsList = Accounts::whereIn('id',$this->roleAssignedAccounts)->orderBy('id','DESC')->get();
+        }
+        else{
+            $accountsList = Accounts::orderBy('id','DESC')->get();
+        }
 
         return view('firebase.push_notifications')
             ->with('accountsList',$accountsList)

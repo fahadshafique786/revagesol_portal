@@ -35,7 +35,12 @@ class AppSettingsController extends Controller
             })
             ->get();
 
-        $accountsList = Accounts::orderBy('id','DESC')->get();
+        if(!empty($this->roleAssignedAccounts)){
+            $accountsList = Accounts::whereIn('id',$this->roleAssignedAccounts)->orderBy('id','DESC')->get();
+        }
+        else{
+            $accountsList = Accounts::orderBy('id','DESC')->get();
+        }
 
         return view('app_settings.index')
             ->with('appsList',$appsList)
@@ -45,26 +50,21 @@ class AppSettingsController extends Controller
 
     public function create($appSettingId = false)
     {
+        $this->roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
+        if(!empty($this->roleAssignedAccounts)){
+            $accountsList = Accounts::whereIn('id',$this->roleAssignedAccounts)->orderBy('id','DESC')->get();
+        }
+        else{
+            $accountsList = Accounts::orderBy('id','DESC')->get();
+        }
+
         if(!$appSettingId){
 
-            // for create new form
-
-//            $appListWithoutCredentials = DB::select(DB::raw('
-//
-//            SELECT *
-//            FROM app_details app
-//            WHERE NOT EXISTS
-//                (SELECT *
-//                    FROM app_settings s
-//                    WHERE s.app_detail_id = app.id
-//                );
-//            '));
-//
-            $accountsList = Accounts::orderBy('id','DESC')->get();
-
+            // for create new for            
+            
             $appData = [];
 
-          $appListWithoutCredentials = [];
+            $appListWithoutCredentials = [];
 
             return view('app_settings.create')
                 ->with('appsList',$appListWithoutCredentials)
@@ -99,10 +99,6 @@ class AppSettingsController extends Controller
                             )
             '.$appIdClause.'
             '));
-
-//            dd(DB::getQueryLog());
-
-            $accountsList = Accounts::orderBy('id','DESC')->get();
 
             return view('app_settings.create')
                 ->with('appData',$appSettingData)

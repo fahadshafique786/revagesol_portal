@@ -33,8 +33,7 @@ class AdmobAdsController extends Controller
         }
 
         $appsList = AppDetails::get();
-        $accountsList = Accounts::orderBy('id','DESC')->get();
-
+        
         return view('admob_ads')
             ->with('accountsList',$accountsList)
             ->with('appsList',$appsList);

@@ -106,7 +106,7 @@
             <li class="nav-header py-3"> APP CONFIGURATION </li>
             @endif
 
-        @if((auth()->user()->can('view-app_settings') && auth()->user()->can('view-applications')  && auth()->user()->can('manage-applications')  )   || auth()->user()->hasRole('super-admin'))
+        @if((auth()->user()->can('view-app_settings') && auth()->user()->can('view-accounts')  && auth()->user()->can('manage-accounts')  )   || auth()->user()->hasRole('super-admin'))
 
                     <li class="nav-item">
                         <a href="{{ url('admin/app_settings') }}" class="nav-link {{ (Request::segment(2) == 'app_settings') ? 'active' : '' }}">
@@ -130,7 +130,7 @@
 
 
 
-				@if((auth()->user()->can('view-admob_ads') && auth()->user()->can('view-applications')  && auth()->user()->can('manage-applications')  )   || auth()->user()->hasRole('super-admin'))
+				@if((auth()->user()->can('view-admob_ads') && auth()->user()->can('view-accounts')  && auth()->user()->can('manage-accounts')  )   || auth()->user()->hasRole('super-admin'))
                 <li class="nav-item">
                     <a href="{{ url('admin/admob_ads') }}" class="nav-link {{ (Request::segment(2) == 'admob_ads') ? 'active' : '' }}">
                         <img src="{{ asset('dist/img/sidebar-icons/amobs.png') }}" class="elevation-2 "/>
@@ -140,7 +140,7 @@
 
 				@endif
 
-				@if((auth()->user()->can('view-sponsors')   && auth()->user()->can('view-applications')  && auth()->user()->can('manage-applications')  ) || auth()->user()->hasRole('super-admin'))
+				@if((auth()->user()->can('view-sponsors')   && auth()->user()->can('view-accounts')  && auth()->user()->can('manage-accounts')  ) || auth()->user()->hasRole('super-admin'))
 
                 <li class="nav-item">
                     <a href="{{ url('admin/sponsors') }}" class="nav-link {{ (Request::segment(2) == 'sponsors') ? 'active' : '' }}">
@@ -151,7 +151,7 @@
 
 				@endif
 
-                @if((auth()->user()->can('view-credentials')  && auth()->user()->can('view-applications')  && auth()->user()->can('manage-applications')  )  || auth()->user()->hasRole('super-admin'))
+                @if((auth()->user()->can('view-credentials')  && auth()->user()->can('view-accounts')  && auth()->user()->can('manage-accounts')  )  || auth()->user()->hasRole('super-admin'))
 
                 <li class="nav-item ">
                     <a href="{{ url('admin/credentials') }}" class="nav-link {{ (Request::segment(2) == 'credentials') ? 'active' : '' }}">
@@ -162,7 +162,7 @@
 
                 @endif
 
-            @if((auth()->user()->can('view-block-app-countries')  && auth()->user()->can('view-applications')  && auth()->user()->can('manage-applications'))  || auth()->user()->hasRole('super-admin'))
+            @if((auth()->user()->can('view-block-app-countries')  && auth()->user()->can('view-accounts')  && auth()->user()->can('manage-accounts'))  || auth()->user()->hasRole('super-admin'))
             <li class="nav-item d-none">
                 <a href="{{ url('admin/country') }}" class="nav-link {{ (Request::segment(2) == 'country') ? 'active' : '' }}">
                     <i class="fa fa-flag elevation-2"></i>
@@ -183,7 +183,7 @@
 
                 <li class="nav-header py-3">FIREBASE CONFIGURATION </li>
 
-                @if((auth()->user()->can('view-firebase_configuration') && auth()->user()->can('view-applications')  && auth()->user()->can('manage-applications')  ) || auth()->user()->hasRole('super-admin') )
+                @if((auth()->user()->can('view-firebase_configuration') && auth()->user()->can('view-accounts')  && auth()->user()->can('manage-accounts')  ) || auth()->user()->hasRole('super-admin') )
 
                 <li class="nav-item ">
                     <a href="{{ url('admin/firebase-credentials') }}" class="nav-link {{ (Request::segment(2) == 'firebase-credentials') ? 'active' : '' }}">

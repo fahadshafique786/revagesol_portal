@@ -32,7 +32,7 @@ class AppDetailsController extends Controller
         $this->middleware('role_or_permission:super-admin|view-applications', ['only' => ['index','getApplicationCardView']]);
         $this->middleware('role_or_permission:super-admin|view-accounts', ['only' => ['index','getApplicationCardView']]);
         $this->middleware('role_or_permission:super-admin|manage-applications',['only' => ['create','edit','store','destroy','deleteAll']]);
-        $this->middleware('role_or_permission:super-admin|manage-account',['only' => ['create','edit','store','destroy','deleteAll']]);
+        $this->middleware('role_or_permission:super-admin|manage-accounts',['only' => ['create','edit','store','destroy','deleteAll']]);
 
     }
 
@@ -48,7 +48,12 @@ class AppDetailsController extends Controller
 
         $appsList = $appsList->get();
 
-        $accountsList = Accounts::orderBy('id','DESC')->get();
+        if(!empty($this->roleAssignedAccounts)){
+            $accountsList = Accounts::whereIn('id',$this->roleAssignedAccounts)->orderBy('id','DESC')->get();
+        }
+        else{
+            $accountsList = Accounts::orderBy('id','DESC')->get();
+        }
 
         return view('application.index')
             ->with('accountsList',$accountsList)
@@ -58,7 +63,14 @@ class AppDetailsController extends Controller
 
     public function create()
     {
-        $accountsList = Accounts::orderBy('id','DESC')->get();
+        $this->roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
+        if(!empty($this->roleAssignedAccounts)){
+            $accountsList = Accounts::whereIn('id',$this->roleAssignedAccounts)->orderBy('id','DESC')->get();
+        }
+        else{
+            $accountsList = Accounts::orderBy('id','DESC')->get();
+        }
+
         return view('application.create')
         ->with('accountsList',$accountsList);
     }
@@ -68,7 +80,13 @@ class AppDetailsController extends Controller
     {
         $appData = AppDetails::where('id',$application_id)->first();
 
-        $accountsList = Accounts::orderBy('id','DESC')->get();
+        $this->roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
+        if(!empty($this->roleAssignedAccounts)){
+            $accountsList = Accounts::whereIn('id',$this->roleAssignedAccounts)->orderBy('id','DESC')->get();
+        }
+        else{
+            $accountsList = Accounts::orderBy('id','DESC')->get();
+        }
 
 
         return view('application.edit')

@@ -47,15 +47,19 @@ class Synchronization extends BaseController
     public function index()
     {
         $appsList = AppDetails::all();
-        $this->roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
+        $this->roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
 
-        $assignedAppsList = [];
-        if(!empty($this->roleAssignedApplications)){
-            $assignedAppsList = AppDetails::whereIn('id',$this->roleAssignedApplications)->get();
+        if(!empty($this->roleAssignedAccounts)){
+            $accountsList = Accounts::whereIn('id',$this->roleAssignedAccounts)->orderBy('id','DESC')->get();
+        }
+        else{
+            $accountsList = Accounts::orderBy('id','DESC')->get();
         }
 
-
-        $accountsList = Accounts::orderBy('id','DESC')->get();
+        $assignedAppsList = [];
+        if(!empty($this->roleAssignedAccounts)){
+            $assignedAppsList = AppDetails::whereIn('account_id',$this->roleAssignedAccounts)->orderBy('id','DESC')->get();
+        }
 
         return view('firebase.synchronization')
             ->with('accountsList',$accountsList)

@@ -277,7 +277,7 @@
 
         @endif
 
-        @if(auth()->user()->hasRole('super-admin') || (auth()->user()->can('view-manage-sync_apps_data') && auth()->user()->can('view-applications')  && auth()->user()->can('manage-applications')))
+        @if(auth()->user()->hasRole('super-admin') || (auth()->user()->can('view-manage-sync_apps_data') && auth()->user()->can('view-accounts')  && auth()->user()->can('manage-accounts')))
 
         <!-- Small boxes (Stat box3) -->
         <div class="row">

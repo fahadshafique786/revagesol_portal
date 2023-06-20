@@ -25,7 +25,14 @@ class AppCredentialsController extends Controller
     public function index()
     {
         $appsList = AppDetails::all();
-        $accountsList = Accounts::orderBy('id','DESC')->get();
+
+        $this->roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
+        if(!empty($this->roleAssignedAccounts)){
+            $accountsList = Accounts::whereIn('id',$this->roleAssignedAccounts)->orderBy('id','DESC')->get();
+        }
+        else{
+            $accountsList = Accounts::orderBy('id','DESC')->get();
+        }
 
         $appListWithoutCredentials = DB::select(DB::raw('
         SELECT *
