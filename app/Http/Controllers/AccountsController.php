@@ -14,6 +14,7 @@ use App\Models\Teams;
 use App\Models\Servers;
 use App\Models\AppDetails;
 use App\Models\RoleHasAccount;
+use Response;
 use DB;
 
 class AccountsController extends Controller
@@ -36,6 +37,11 @@ class AccountsController extends Controller
     {
         if(!empty($request->id))
         {
+            $roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
+            if(!in_array($request->id,$roleAssignedAccounts)){
+                return Response::json(["message"=>"You are not allowed to perform this action!"],403);
+            }
+
             $this->validate($request, [
                 'name' => 'required|unique:accounts,name,'.$request->id,
             ]);
@@ -97,6 +103,11 @@ class AccountsController extends Controller
 
     public function destroy(Request $request)
     {
+        $roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
+        if(!in_array($request->id,$roleAssignedAccounts)){
+            return Response::json(["message"=>"You are not allowed to perform this action!"],403);
+        }
+
         $getApplications = AppDetails::where('account_id',$request->id)->get();
         foreach($getApplications as $obj){
 
@@ -138,6 +149,11 @@ class AccountsController extends Controller
 
             if(isset($request->filter_accounts) && !empty($request->filter_accounts)){
                 $Filterdata = $Filterdata->where('id',$request->filter_accounts);
+            }
+
+            $this->roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
+            if(!empty($this->roleAssignedAccounts)){
+                $Filterdata = $Filterdata->whereIn('id',$this->roleAssignedAccounts);
             }
 
             $Filterdata =  $Filterdata->orderBy('id','DESC')->get();
