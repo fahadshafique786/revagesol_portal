@@ -187,9 +187,9 @@ class ApiTokenService {
 
             if(
                 isset($headers['Authorization']) && !empty($headers['Authorization'])  &&
-                isset($headers['AccountId']) && !empty($headers['AccountId'])  &&
+                isset($headers['Accountid']) && !empty($headers['Accountid'])  &&
                 isset($headers['Packageid']) && !empty($headers['Packageid']) &&
-                isset($headers['IpAddress']) && !empty($headers['IpAddress'])
+                isset($headers['Ipaddress']) && !empty($headers['Ipaddress'])
             ){
 
                 $response =  [];
@@ -197,8 +197,8 @@ class ApiTokenService {
 
                 $authToken = $headers['Authorization'];
                 $packageId = $headers['Packageid'];
-                $accountId = $headers['AccountId'];
-                $ipAddress = $headers['IpAddress'];
+                $accountId = $headers['Accountid'];
+                $ipAddress = $headers['Ipaddress'];
                 $headerVersionCode = (isset($headers['Versioncode'])) ? (int) $headers['Versioncode'] : 0;
 
                 /*** Split Header Token into the Array ***/
