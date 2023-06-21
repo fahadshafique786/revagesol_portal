@@ -716,6 +716,7 @@ class AppDetailsController extends Controller
 
                 $obj->accountId = $obj->account_id;
 
+                unset($obj->account_id);
                 unset($obj->created_at);
                 unset($obj->updated_at);
                 unset($obj->isProxyEnable);
