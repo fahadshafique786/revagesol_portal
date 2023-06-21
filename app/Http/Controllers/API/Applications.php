@@ -69,9 +69,6 @@ class Applications extends BaseController
                     $sponsorListObject = DB::table('sponsor_ads')
                         ->select(['id AS sponsorAdId','app_detail_id AS appDetailId','adName','adUrlImage','clickAdToGo','isAdShow'])
                         ->where('app_detail_id',$app_detail_id)->get();
-
-
-                        dd($app_detail_id,$sponsorListObject);
                         
                     foreach($adsListObject as $index => $arr){
                         $arr->isAdShow = (int) $arr->isAdShow;
@@ -95,6 +92,8 @@ class Applications extends BaseController
                     }
 
                     $sponsorList = $sponsorListObject;
+
+                        dd($sponsorList);
 
                     $dataObject[0]->suspendAppMessage = (!empty($dataObject[0]->suspendAppMessage)) ? $dataObject[0]->suspendAppMessage : "";
 
