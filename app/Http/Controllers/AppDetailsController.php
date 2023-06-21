@@ -124,7 +124,7 @@ class AppDetailsController extends Controller
                 'appName' => 'required',
                 'packageId' => 'required|unique:app_details',
                 'appName' => 'required',
-                'account_id' => 'required',
+                'account_id' => 'required|exists:accounts,id',
                 'admobAppId' => 'required',
                 'adsIntervalTime' => 'required',
                 'adsIntervalCount' => 'required',
