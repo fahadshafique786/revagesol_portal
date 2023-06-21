@@ -163,6 +163,9 @@ class AppSettingsController extends Controller
         $jsonData = [];
 
         $accountId = ($appSetting->account_id) ? $appSetting->account_id : $request->account_id;
+        
+        dd($accountId);
+
         $packageId = getPackageIdByAppId($appDetailId);
         $firebaseCredentials = FirebaseCredentials::where('account_id',$accountId)->select('app_setting_url','reCaptchaKeyId','firebaseConfigJson')->first();
 
