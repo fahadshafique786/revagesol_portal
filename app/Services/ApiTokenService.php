@@ -258,7 +258,7 @@ class ApiTokenService {
                 $response['code'] = 401;
                 $response['message'] = "Unauthorized Request! 786";
                 $response['data'] = null;
-                dd($response,$headers);
+                // dd($response,$headers);
 
                 return $response;
             }
