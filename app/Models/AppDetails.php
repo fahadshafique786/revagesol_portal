@@ -15,7 +15,6 @@ class AppDetails extends Model
 //    ];
 
     protected $fillable = [
-
         'account_id',
         'packageId',
         'appName',

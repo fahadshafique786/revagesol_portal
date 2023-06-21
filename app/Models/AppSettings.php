@@ -10,6 +10,7 @@ class AppSettings extends Model
     use HasFactory;
 
     protected $fillable = [
+        'account_id',
         'app_detail_id',
         'appAuthKey1',
         'appAuthKey2',
