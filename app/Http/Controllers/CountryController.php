@@ -101,7 +101,15 @@ class CountryController extends Controller
         $remainingApplications = DB::select(DB::raw('SELECT * FROM app_details app WHERE NOT EXISTS (SELECT * FROM blocked_applications bap WHERE bap.application_id = app.id ) '));
 
         $countries = Country::all();
-        $accountsList = Accounts::all();
+
+        $this->roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
+        if(!empty($this->roleAssignedAccounts)){
+            $accountsList = Accounts::whereIn('id',$this->roleAssignedAccounts)->orderBy('id','DESC')->get();
+        }
+        else{
+            $accountsList = Accounts::orderBy('id','DESC')->get();
+        }
+        
         return view('application.blocked_applications')
             ->with('applications',$remainingApplications)
             ->with('accountsList',$accountsList)
