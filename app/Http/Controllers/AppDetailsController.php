@@ -108,7 +108,7 @@ class AppDetailsController extends Controller
             $this->validate($request, [
                 'appName' => 'required',
                 'packageId' => 'required|unique:app_details,packageId,'.$application_id,
-                'account_id' => 'required',
+                'account_id' => 'required|exists:accounts,id',
                 'admobAppId' => 'required',
                 'adsIntervalTime' => 'required',
                 'adsIntervalCount' => 'required',
@@ -186,7 +186,7 @@ class AppDetailsController extends Controller
 
         $jsonData = [];
 
-        $firebaseCredentials = FirebaseCredentials::where('app_detail_id',$appDetailId)->select('apps_url','reCaptchaKeyId','firebaseConfigJson')->first();
+        $firebaseCredentials = FirebaseCredentials::where('account_id',$request->account_id)->select('apps_url','reCaptchaKeyId','firebaseConfigJson')->first();
 
         if(isset($firebaseCredentials->apps_url)){
 
