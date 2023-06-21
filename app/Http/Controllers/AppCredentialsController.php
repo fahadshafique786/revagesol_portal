@@ -238,9 +238,9 @@ class AppCredentialsController extends Controller
                 $join->on('accounts.id', '=', 'app_credentials.account_id');
             });
 
-            // if(!empty($this->roleAssignedAccounts)){
-            //     $Filterdata = $Filterdata->whereIn('app_credentials.app_detail_id',$this->roleAssignedAccounts);
-            // }
+            if(!empty($this->roleAssignedAccounts)){
+                $Filterdata = $Filterdata->whereIn('app_credentials.account_id',$this->roleAssignedAccounts);
+            }
 
             if($request->filter_app_id == '-1' && isset($request->filter_accounts_id) && !empty($request->filter_accounts_id) && ($request->filter_accounts_id != '-1') ){
                 $Filterdata = $Filterdata->where('app_credentials.account_id',$request->filter_accounts_id);
