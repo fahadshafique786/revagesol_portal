@@ -71,6 +71,8 @@ class Applications extends BaseController
                         ->where('app_detail_id',$app_detail_id)->get();
 
 
+                        dd($app_detail_id,$sponsorListObject);
+                        
                     foreach($adsListObject as $index => $arr){
                         $arr->isAdShow = (int) $arr->isAdShow;
                         $arr->isAdShow = getBoolean($arr->isAdShow);
