@@ -170,7 +170,7 @@
                 </a>
             </li>
 
-            <li class="nav-item d-none">
+            <li class="nav-item">
                 <a href="{{ url('admin/block-applications') }}" class="nav-link {{ (Request::segment(2) == 'block-applications') ? 'active' : '' }}">
                     <i class="fa fa-lock elevation-2"></i>
                     <p>Blocked Applications</p>
