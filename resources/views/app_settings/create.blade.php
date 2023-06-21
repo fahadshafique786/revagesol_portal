@@ -25,7 +25,7 @@
                                     <label for="staticEmail" class="col-sm-2 col-form-label">Accounts</label>
                                     <div class="col-sm-4">
 
-                                        <select class="form-control" id="account_filter" name="account_filter" {{ (isset($appSettingId) && ($appSettingId)) ? 'disabled' : '' }}
+                                        <select class="form-control" id="account_id" name="account_id" {{ (isset($appSettingId) && ($appSettingId)) ? 'disabled' : '' }}
                                                 required onchange="getRemainingAppsOptionByAccounts(this.value,'app_detail_id')"  >
                                             <option value="" selected>   Select Accounts </option>
                                             @foreach ($accountsList as $obj)
