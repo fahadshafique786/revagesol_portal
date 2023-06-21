@@ -93,8 +93,6 @@ class Applications extends BaseController
 
                     $sponsorList = $sponsorListObject;
 
-                        dd($sponsorList);
-
                     $dataObject[0]->suspendAppMessage = (!empty($dataObject[0]->suspendAppMessage)) ? $dataObject[0]->suspendAppMessage : "";
 
                     foreach($dataObject as $index => $obj){
