@@ -245,7 +245,7 @@ class ApiTokenService {
                 $ourSha1GeneratedToken = $hashSha1Generated.'-'.$userSalt.'-'.$userEndTime.'-'.$userStartTime;
                 $ourSha256GeneratedToken = $hashSha256Generated.'-'.$userSalt.'-'.$userEndTime.'-'.$userStartTime;
 
-                dd("ourSha1GeneratedToken" , $ourSha1GeneratedToken , "authToken", $authToken , "ourSha256GeneratedToken", $ourSha256GeneratedToken );
+                // dd("ourSha1GeneratedToken" , $ourSha1GeneratedToken , "authToken", $authToken , "ourSha256GeneratedToken", $ourSha256GeneratedToken );
 
                 if($ourSha1GeneratedToken != $authToken && $ourSha256GeneratedToken != $authToken) {
                     $response['code'] = 403;
