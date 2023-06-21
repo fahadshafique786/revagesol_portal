@@ -56,7 +56,11 @@ class AppCredentialsController extends Controller
             return Response::json(["message"=>"You are not allowed to perform this action!"],403);
         }
 
-        if(!empty($request->id))
+        $this->validate($request, [
+            'account_id' => 'required|exists:accounts,id',
+        ]);
+
+        if(!empty($request->id)) // for edit case
         {
             $validationResponse = [];
 
@@ -122,7 +126,7 @@ class AppCredentialsController extends Controller
 
         }
         else
-        {
+        { // for add new case
 
             $validationResponse = [];
 

@@ -116,14 +116,7 @@ class AccountsController extends Controller
             AppCredentials::where('app_detail_id',$obj->id)->delete();
         }
 
-
         AppDetails::where('account_id',$request->id)->delete();
-
-
-        Servers::where('account_id',$request->id)->delete();
-        Schedules::where('account_id',$request->id)->delete();
-        Teams::where('account_id',$request->id)->delete();
-        Leagues::where('account_id',$request->id)->delete();
 
         if(!empty($request->id)){
 
@@ -214,14 +207,6 @@ class AccountsController extends Controller
             }
 
             AppDetails::where('account_id',$id)->delete();
-
-            Servers::where('account_id',$id)->delete();
-
-            Schedules::where('account_id',$id)->delete();
-
-            Teams::where('account_id',$id)->delete();
-
-            Leagues::where('account_id',$id)->delete();
 
             $getIcon = DB::table('accounts')->where('id',$id)->select('icon')->first();
             if(!empty($getIcon->icon)){
