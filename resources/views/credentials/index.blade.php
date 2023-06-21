@@ -291,10 +291,10 @@
         function callDataTableWithFilters(){
             $("#master").prop('checked',false);
             fetchData($('#filter_app_id').val());
-            reloadAppsList();
+            reloadAccountsList();
         }
 
-        function reloadAppsList(account_id = ""){
+        function reloadAccountsList(account_id = ""){
             $.ajax({
                 type:"POST",
                 url: "{{ url('admin/get-applist-options') }}",
@@ -336,7 +336,7 @@
                 $('#ajaxheadingModel').html("Add Credential ");
                 $("form#addEditForm")[0].reset();
 
-                // reloadAppsList();
+                reloadAccountsList();
 
                 setTimeout(function(){
                     // if($("#filter_app_id").val() > 0){
@@ -359,7 +359,7 @@
 
                 var account_id =  $(this).data('account_id');
 
-                reloadAppsList(account_id)
+                reloadAccountsList(account_id)
 
 
                 $.ajax({
