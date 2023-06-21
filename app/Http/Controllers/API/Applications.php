@@ -219,15 +219,16 @@ class Applications extends BaseController
 
                     $appDetails = DB::table('app_details')
                         ->where('packageId', $packageId)
-                        ->select('id');
+                        ->select('id','account_id');
 
                     /*** Get Key From Database By using Package ID ***/
 
                     if ($appDetails->exists()) {
                         $appId = $appDetails->first()->id;
+                        $accountId = $appDetails->first()->account_id;
                         $appCredentials = DB::table('app_credentials')
                             ->select('token_key')
-                            ->where('app_detail_id', $appId);
+                            ->where('account_id', $accountId);
 
                         if ($appCredentials->exists()) {
                             $appCredentials = $appCredentials->first();

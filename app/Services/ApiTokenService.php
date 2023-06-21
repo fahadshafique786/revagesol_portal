@@ -217,10 +217,9 @@ class ApiTokenService {
                 /*** Get Key From Database By using Package ID ***/
 
                 if($appDetails->exists()){
-                    $appId = $appDetails->first()->id;
                     $appCredentials =   DB::table('app_credentials')
                         ->select('stream_key','server_auth_key','appSigningKey','versionCode')
-                        ->where('app_detail_id',$appId);
+                        ->where('account_id',$accountId);
 
                     if($appCredentials->exists()){
                         $appCredentials = $appCredentials->first();
@@ -228,7 +227,7 @@ class ApiTokenService {
 
                         $appSetting = DB::table('app_settings')
                             ->select('isAppSigningKeyUsed')
-                            ->where('app_detail_id',$appId)->first();
+                            ->where('account_id',$accountId)->first();
 
                         $secretKey = (($appSetting->isAppSigningKeyUsed == "1" || $appSetting->isAppSigningKeyUsed == "1") && ($headerVersionCode >= $appCredentials->versionCode ) ) ? $appCredentials->appSigningKey :  $appCredentials->server_auth_key ;
                     }
@@ -247,7 +246,7 @@ class ApiTokenService {
                 $ourSha256GeneratedToken = $hashSha256Generated.'-'.$userSalt.'-'.$userEndTime.'-'.$userStartTime;
 
                 dd("ourSha1GeneratedToken" , $ourSha1GeneratedToken , "authToken", $authToken , "ourSha256GeneratedToken", $ourSha256GeneratedToken );
-                
+
                 if($ourSha1GeneratedToken != $authToken && $ourSha256GeneratedToken != $authToken) {
                     $response['code'] = 403;
                     $response['message'] = "Invalid Token!";
