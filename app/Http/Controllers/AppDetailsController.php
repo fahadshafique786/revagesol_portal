@@ -714,9 +714,8 @@ class AppDetailsController extends Controller
 
             foreach($dataObject as $index => $obj){
 
-                $obj->accountsId = $obj->account_id;
+                $obj->accountId = $obj->account_id;
 
-                unset($obj->account_id);
                 unset($obj->created_at);
                 unset($obj->updated_at);
                 unset($obj->isProxyEnable);
