@@ -187,6 +187,7 @@ class ApiTokenService {
 
             if(
                 isset($headers['Authorization']) && !empty($headers['Authorization'])  &&
+                isset($headers['AccountId']) && !empty($headers['AccountId'])  &&
                 isset($headers['Packageid']) && !empty($headers['Packageid']) &&
                 isset($headers['Ipaddress']) && !empty($headers['Ipaddress'])
             ){
@@ -196,6 +197,7 @@ class ApiTokenService {
 
                 $authToken = $headers['Authorization'];
                 $packageId = $headers['Packageid'];
+                $accountId = $headers['AccountId'];
                 $ipAddress = $headers['Ipaddress'];
                 $headerVersionCode = (isset($headers['Versioncode'])) ? (int) $headers['Versioncode'] : 0;
 
@@ -208,7 +210,8 @@ class ApiTokenService {
 
 
                 $appDetails =   DB::table('app_details')
-                    ->where('packageId',$packageId)
+                    // ->where('packageId',$packageId)
+                    ->where('account_id',$accountId)
                     ->select('id');
 
                 /*** Get Key From Database By using Package ID ***/
