@@ -162,7 +162,15 @@ class AppSettingsController extends Controller
         $node = "";
         $jsonData = [];
 
-        $accountId = (!empty($request->account_id)) ? $request->account_id : $appSetting->account_id ;
+    
+        if(!empty($request->account_id)){
+            $accountId = $request->account_id;
+        }
+        else{
+            $accountId = $appSetting->account_id;
+            $request->merge(['account_id' => $accountId]);           
+        }
+        
         
         $packageId = getPackageIdByAppId($appDetailId);
         $firebaseCredentials = FirebaseCredentials::where('account_id',$accountId)->select('app_setting_url','reCaptchaKeyId','firebaseConfigJson')->first();
@@ -255,6 +263,7 @@ class AppSettingsController extends Controller
         $requestArray['isServerTokenFetch'] = getBoolean($request->isServerTokenFetch);
         $requestArray['sslSha256Key'] = $request->sslSha256Key;
         $requestArray['checkIpAddressApiUrl'] = $request->checkIpAddressApiUrl;
+        $requestArray['accountId'] = $request->account_id;
 
         // if(!empty($packageId)){
         //     $nodeArray = [];
