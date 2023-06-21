@@ -113,6 +113,7 @@ class AppSettingsController extends Controller
     public function store(Request $request , $app_setting_id = false)
     {
 
+        dd($request->account_id,$request->all());
         /*** Validation BEGIN ****/
         if(!empty($app_setting_id))
         {
