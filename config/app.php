@@ -255,9 +255,6 @@ return [
 
     'synchronizationTypes' => [
         'apps_url'      => 'Sync App Details',
-        'leagues_url'   => 'Sync Leagues',
-        'schedules_url' => 'Sync Schedules',
-        'servers_url'   => 'Sync Servers'
     ],
 
     'versionCategories' => [
