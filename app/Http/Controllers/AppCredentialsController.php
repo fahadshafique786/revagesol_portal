@@ -319,7 +319,7 @@ class AppCredentialsController extends Controller
         '.$accountIdClause.'
         '));
 
-        $options = '<option value="">Select App </option>';
+        $options = '<option value="">Select Account </option>';
         if(!empty($appListWithoutCredentials)){
             foreach($appListWithoutCredentials as $obj){
                 $options .= '<option value="'.$obj->id.'">   '  .   $obj->name .   '    </option>';

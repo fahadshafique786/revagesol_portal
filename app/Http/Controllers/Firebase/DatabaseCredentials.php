@@ -297,7 +297,7 @@ class DatabaseCredentials extends BaseController
 
         // dd(DB::getQueryLog());
 
-        $options = '<option value="-1">Select App </option>';
+        $options = '<option value="-1">Select Account </option>';
         if(!empty($accountListWithoutCredentials)){
             foreach($accountListWithoutCredentials as $obj){
                 $options .= '<option value="'.$obj->id.'">   '  .   $obj->name .   '    </option>';
