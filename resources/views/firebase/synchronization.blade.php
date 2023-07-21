@@ -1074,12 +1074,13 @@
                                 });
 
                                 const jsonData = JSON.parse(response?.data?.success[i]?.firebaseData);
+                                var package_id = res?.data?.success[i].packageId;
 
                                 if(response?.data?.success[i]?.node == "AppDetails"){
-                                    syncDataToRealTimeDatabase(db, response?.data?.success[i]?.node, jsonData,opt);
+                                    syncDataToRealTimeDatabase(db, response?.data?.success[i]?.node, jsonData,opt,package_id);
                                 }
                                 else{
-                                    pushDataToRealTimeDatabase(db, response?.data?.success[i]?.node, jsonData,opt)
+                                    pushDataToRealTimeDatabase(db, response?.data?.success[i]?.node, jsonData,opt,package_id)
                                 }
 
                             }
@@ -1396,8 +1397,9 @@
                                 });
 
                                 const jsonData = JSON.parse(response?.data?.success[i]?.firebaseData);
+                                var package_id = res?.data?.success[i].packageId;
 
-                                pushDataToRealTimeDatabase(db, response?.data?.success[i]?.node, jsonData,opt)
+                                pushDataToRealTimeDatabase(db, response?.data?.success[i]?.node, jsonData,opt,package_id)
 
                             }
                         }
@@ -1582,8 +1584,9 @@
                                     });
 
                                     const jsonData = JSON.parse(response?.data?.success[i]?.firebaseData);
+                                    var package_id = res?.data?.success[i].packageId;
 
-                                    pushDataToRealTimeDatabase(db, response?.data?.success[i]?.node, jsonData,opt)
+                                    pushDataToRealTimeDatabase(db,response?.data?.success[i]?.node, jsonData,opt,package_id)
 
                                 }
                             }
@@ -1696,8 +1699,9 @@
                                         });
 
                                         const jsonData = JSON.parse(response?.data?.success[i]?.firebaseData);
+                                        var package_id = res?.data?.success[i].packageId;
 
-                                        syncDataToRealTimeDatabase(db, response?.data?.success[i]?.node, jsonData,opt);
+                                        syncDataToRealTimeDatabase(db, response?.data?.success[i]?.node, jsonData,opt,package_id);
 
                                     }
 
@@ -1792,7 +1796,7 @@
 
     }));
 
-    async function pushDataToRealTimeDatabase(db,node,AppSettings,opt) {
+    async function pushDataToRealTimeDatabase(db,node,AppSettings,opt,package_id) {
         
         var Toast = Swal.mixin({
             toast: true,
@@ -1801,9 +1805,7 @@
             timer: 3000
         });
 
-        set(ref(db), {
-            AppSettings
-        })
+        set(ref(db,'/'+package_id+'/'),AppDetails)
             .then(() => {
 
                 Toast.fire({
@@ -1829,7 +1831,7 @@
 
     }
 
-    async function syncDataToRealTimeDatabase(db,node,jsonData,opt) {
+    async function syncDataToRealTimeDatabase(db,node,jsonData,opt,package_id) {
 
         var Toast = Swal.mixin({
             toast: true,
@@ -1841,9 +1843,7 @@
         switch(node) {
             case 'AppDetails':
                 const AppDetails = jsonData;
-                set(ref(db), {
-                    AppDetails
-                })
+                set(ref(db,'/'+package_id+'/'),AppDetails)
                 .then(() => {
 
                     Toast.fire({
@@ -1862,90 +1862,6 @@
                     showHideBtnSpinner(opt.btnId,opt.btnText,opt.btnAddClass,opt.btnRemoveClass,false);
                 });
 
-                break;
-
-            case 'Leagues':
-
-                let Leagues = jsonData;
-
-                set(ref(db), {
-                    Leagues
-                })
-                    .then(() => {
-
-                        Toast.fire({
-                            icon: "success",
-                            title: "Data has been pushed successfully"
-                        })
-
-                    })
-                    .catch((error) => {
-
-                        Toast.fire({
-                            icon:  "error",
-                            title: 'Synchronization Failed due to ' + error
-                        });
-
-                        showHideBtnSpinner(opt.btnId,opt.btnText,opt.btnAddClass,opt.btnRemoveClass,false);
-                    });
-
-                break;
-            case "Schedules":
-
-                const Schedules = jsonData;
-
-                set(ref(db), {
-                    Schedules
-                })
-                    .then(() => {
-
-                        Toast.fire({
-                            icon: "success",
-                            title: "Data has been pushed successfully"
-                        })
-
-                        console.log("Success!");
-
-                    })
-                    .catch((error) => {
-
-                        Toast.fire({
-                            icon:  "error",
-                            title: 'Synchronization Failed due to ' + error
-                        });
-
-                        showHideBtnSpinner(opt.btnId,opt.btnText,opt.btnAddClass,opt.btnRemoveClass,false);
-
-                    });
-                // code block
-                break;
-
-            case "Servers":
-
-                const Servers = jsonData;
-                set(ref(db), {
-                    Servers
-                })
-                    .then(() => {
-
-                        Toast.fire({
-                            icon: "success",
-                            title: "Data has been pushed successfully"
-                        })
-
-                        console.log("Success!");
-
-                    })
-                    .catch((error) => {
-
-                        Toast.fire({
-                            icon:  "error",
-                            title: 'Synchronization Failed due to ' + error
-                        });
-
-                        showHideBtnSpinner(opt.btnId,opt.btnText,opt.btnAddClass,opt.btnRemoveClass,false);
-
-                    });
                 break;
             default:
             // code block
