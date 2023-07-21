@@ -69,7 +69,6 @@
                                     <th scope="col">App Signing key</th>
                                     <th scope="col">Minimum Version Code</th>
                                     <th scope="col">Auth Helper Key</th>
-                                    <th scope="col">Token Key</th>
                                     <th scope="col">Action</th>
                                 </tr>
                                 </thead>
