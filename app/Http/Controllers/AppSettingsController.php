@@ -419,6 +419,7 @@ class AppSettingsController extends Controller
 
                                     /***   CREATE JSON FORMAT TO PUSH DATA ON FIREBASE DATABASE ***/
 
+                                    // dd($obj->application_id);
                                     $appSettings = getAppSettingDataByAppId($obj->application_id);
 
                                     $jsonData  = $this->createFirebaseJsonFormat($appSettings);
