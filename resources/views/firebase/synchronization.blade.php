@@ -1594,9 +1594,6 @@
                                 }
                             }
                         }
-                        else{
-//                            showHideBtnSpinner(opt.btnId,opt.btnText,opt.btnAddClass,opt.btnRemoveClass,false);
-                        }
 
                 },
                 dataType: 'json',
