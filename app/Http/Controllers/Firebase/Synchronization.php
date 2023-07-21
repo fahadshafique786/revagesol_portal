@@ -163,7 +163,7 @@ class Synchronization extends BaseController
 
                                 if(!empty($jsonData)) {
 
-                                    $firebaseCredentials = FirebaseCredentials::where('app_detail_id',$obj->application_id)->select('apps_url','reCaptchaKeyId','firebaseConfigJson')->first();
+                                    $firebaseCredentials = FirebaseCredentials::where('account_id',$accountsId)->select('apps_url','reCaptchaKeyId','firebaseConfigJson')->first();
 
                                     if(isset($firebaseCredentials->apps_url)) {
 
