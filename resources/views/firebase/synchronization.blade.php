@@ -1074,7 +1074,7 @@
                                 });
 
                                 const jsonData = JSON.parse(response?.data?.success[i]?.firebaseData);
-                                var package_id = res?.data?.success[i].packageId;
+                                var package_id = response?.data?.success[i].packageId;
 
                                 if(response?.data?.success[i]?.node == "AppDetails"){
                                     syncDataToRealTimeDatabase(db, response?.data?.success[i]?.node, jsonData,opt,package_id);
@@ -1397,7 +1397,7 @@
                                 });
 
                                 const jsonData = JSON.parse(response?.data?.success[i]?.firebaseData);
-                                var package_id = res?.data?.success[i].packageId;
+                                var package_id = response?.data?.success[i].packageId;
 
                                 pushDataToRealTimeDatabase(db, response?.data?.success[i]?.node, jsonData,opt,package_id)
 
@@ -1584,7 +1584,7 @@
                                     });
 
                                     const jsonData = JSON.parse(response?.data?.success[i]?.firebaseData);
-                                    var package_id = res?.data?.success[i].packageId;
+                                    var package_id = response?.data?.success[i].packageId;
 
                                     pushDataToRealTimeDatabase(db,response?.data?.success[i]?.node, jsonData,opt,package_id)
 
@@ -1699,7 +1699,7 @@
                                         });
 
                                         const jsonData = JSON.parse(response?.data?.success[i]?.firebaseData);
-                                        var package_id = res?.data?.success[i].packageId;
+                                        var package_id = response?.data?.success[i].packageId;
 
                                         syncDataToRealTimeDatabase(db, response?.data?.success[i]?.node, jsonData,opt,package_id);
 
