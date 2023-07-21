@@ -87,7 +87,7 @@ class Synchronization extends BaseController
                 $firebaseURL = "";
                 if(count($request->app_detail_ids) > 0) {
                     foreach ($request->app_detail_ids as $appDetailId) {
-                        $listOfApplications = getAppListByAccountsId($request->account_id, $appDetailId);
+                        $listOfApplications = getAppListByAccountId($request->account_id, $appDetailId);
 
 
                         if (!empty($listOfApplications)) {
@@ -113,6 +113,7 @@ class Synchronization extends BaseController
                                             $parseFirebaseConfigJson->databaseURL = $firebaseCredentials->leagues_url;
                                             $firebaseConfigJson = json_encode($parseFirebaseConfigJson);
 
+                                            $packageId = str_replace(".","_",$obj->packageId);
                                             $response[] = [
                                                 'app_detail' => $obj->appName . ' - ' . $obj->packageId,
                                                 'firebase_status' => "success",
@@ -121,7 +122,8 @@ class Synchronization extends BaseController
                                                 'reCaptchaKeyId' => (!empty($firebaseCredentials->reCaptchaKeyId)) ? $firebaseCredentials->reCaptchaKeyId : "",
                                                 'firebaseConfigJson' => $firebaseConfigJson,
                                                 'node' => $node,
-                                                'appPackageId' => $obj->packageId . rand(111, 222) . time()
+                                                'appPackageId' => $obj->packageId . rand(111, 222) . time(),
+                                                'packageId' => $packageId
                                             ];
                                         } else {
                                             $errors[] = ['app_detail' => $obj->appName . ' - ' . $obj->packageId, 'message' => 'Firebase Config JSON is missing!'];
@@ -152,7 +154,7 @@ class Synchronization extends BaseController
                 $firebaseURL = "";
                 if(count($request->app_detail_ids) > 0){
                     foreach($request->app_detail_ids as $appDetailId) {
-                        $listOfApplications = getAppListByAccountsId($request->account_id, $appDetailId);
+                        $listOfApplications = getAppListByAccountId($request->account_id, $appDetailId);
 
                         if(!empty($listOfApplications)){
                             foreach($listOfApplications as $obj) {
@@ -177,6 +179,7 @@ class Synchronization extends BaseController
                                             $parseFirebaseConfigJson->databaseURL = $firebaseCredentials->apps_url;
                                             $firebaseConfigJson = json_encode($parseFirebaseConfigJson);
 
+                                            $packageId = str_replace(".","_",$obj->packageId);
                                             $response[] = [
                                                 'app_detail' => $obj->appName . ' - ' . $obj->packageId,
                                                 'firebase_status' => "success",
@@ -185,7 +188,8 @@ class Synchronization extends BaseController
                                                 'reCaptchaKeyId' => (!empty($firebaseCredentials->reCaptchaKeyId)) ? $firebaseCredentials->reCaptchaKeyId : "",
                                                 'firebaseConfigJson' => $firebaseConfigJson,
                                                 'node' => $node,
-                                                'appPackageId' => $obj->packageId . rand(333,444) . time()
+                                                'appPackageId' => $obj->packageId . rand(333,444) . time(),
+                                                'packageId' => $packageId
                                             ];
                                         }
                                         else{
@@ -223,7 +227,7 @@ class Synchronization extends BaseController
 
                 if(count($request->app_detail_ids) > 0) {
                     foreach ($request->app_detail_ids as $appDetailId) {
-                        $listOfApplications = getAppListByAccountsId($request->account_id, $appDetailId);
+                        $listOfApplications = getAppListByAccountId($request->account_id, $appDetailId);
 
                         if(!empty($listOfApplications)){
                             foreach($listOfApplications as $obj) {
@@ -248,6 +252,7 @@ class Synchronization extends BaseController
                                             $parseFirebaseConfigJson->databaseURL = $firebaseCredentials->schedules_url;
                                             $firebaseConfigJson = json_encode($parseFirebaseConfigJson);
 
+                                            $packageId = str_replace(".","_",$obj->packageId);
                                             $response[] = [
                                                 'app_detail' => $obj->appName . ' - ' . $obj->packageId,
                                                 'firebase_status' => "success",
@@ -256,7 +261,9 @@ class Synchronization extends BaseController
                                                 'reCaptchaKeyId' => (!empty($firebaseCredentials->reCaptchaKeyId)) ? $firebaseCredentials->reCaptchaKeyId : "",
                                                 'firebaseConfigJson' => $firebaseConfigJson,
                                                 'node' => $node,
-                                                'appPackageId' => $obj->packageId . rand(333,444) . time()
+                                                'appPackageId' => $obj->packageId . rand(333,444) . time(),
+                                                'packageId' => $packageId
+
                                             ];
                                         }
                                         else{
@@ -291,7 +298,7 @@ class Synchronization extends BaseController
                 $firebaseURL = "";
                 if(count($request->app_detail_ids) > 0) {
                     foreach ($request->app_detail_ids as $appDetailId) {
-                        $listOfApplications = getAppListByAccountsId($request->account_id, $appDetailId);
+                        $listOfApplications = getAppListByAccountId($request->account_id, $appDetailId);
 
                         if (!empty($listOfApplications)) {
                             foreach ($listOfApplications as $obj) {
@@ -316,6 +323,7 @@ class Synchronization extends BaseController
                                             $parseFirebaseConfigJson->databaseURL = $firebaseCredentials->servers_url;
                                             $firebaseConfigJson = json_encode($parseFirebaseConfigJson);
 
+                                            $packageId = str_replace(".","_",$obj->packageId);
                                             $response[] = [
                                                 'app_detail' => $obj->appName . ' - ' . $obj->packageId,
                                                 'firebase_status' => "success",
@@ -324,7 +332,9 @@ class Synchronization extends BaseController
                                                 'reCaptchaKeyId' => (!empty($firebaseCredentials->reCaptchaKeyId)) ? $firebaseCredentials->reCaptchaKeyId : "",
                                                 'firebaseConfigJson' => $firebaseConfigJson,
                                                 'node' => $node,
-                                                'appPackageId' => $obj->packageId . rand(333, 444) . time()
+                                                'appPackageId' => $obj->packageId . rand(333, 444) . time(),
+                                                'packageId' => $packageId
+
                                             ];
                                         } else {
                                             $errors[] = ['app_detail' => $obj->appName . ' - ' . $obj->packageId, 'message' => 'Firebase Config JSON is missing!'];
@@ -957,7 +967,7 @@ class Synchronization extends BaseController
         if(count($request->app_key_app_detail_ids) > 0){
             foreach($request->app_key_app_detail_ids as $appDetailId){
 
-                $listOfApplications = getAppListByAccountsId($request->appKeyAccountsId,$appDetailId);
+                $listOfApplications = getAppListByAccountId($request->appKeyAccountsId,$appDetailId);
 
                 $updateAppSettingData = [];
                 if(!empty($listOfApplications)){
@@ -996,7 +1006,7 @@ class Synchronization extends BaseController
                                 ->where('app_detail_id',$obj->application_id)
                                 ->update($updateAppSettingData);
 
-                            $firebaseCredentials = FirebaseCredentials::where('app_detail_id',$obj->application_id)->select('app_setting_url','reCaptchaKeyId','firebaseConfigJson')->first();
+                            $firebaseCredentials = FirebaseCredentials::where('account_id',$request->appKeyAccountsId)->select('app_setting_url','reCaptchaKeyId','firebaseConfigJson')->first();
 
                             if(isset($firebaseCredentials->app_setting_url)){
 
@@ -1015,6 +1025,7 @@ class Synchronization extends BaseController
                                     $parseFirebaseConfigJson->databaseURL = $firebaseCredentials->app_setting_url;
                                     $firebaseConfigJson = json_encode($parseFirebaseConfigJson);
 
+                                    $packageId = str_replace(".","_",$obj->packageId);
                                     $response[] = [
                                         'app_detail' => $obj->appName . ' - ' . $obj->packageId,
                                         'firebase_status' => "success",
@@ -1023,7 +1034,8 @@ class Synchronization extends BaseController
                                         'reCaptchaKeyId' => (!empty($firebaseCredentials->reCaptchaKeyId)) ? $firebaseCredentials->reCaptchaKeyId : "",
                                         'firebaseConfigJson' => $firebaseConfigJson,
                                         'node' => $node,
-                                        'appPackageId' => $obj->packageId.time()
+                                        'appPackageId' => $obj->packageId.time(),
+                                        'packageId' => $packageId
                                     ];
                                 }
                                 else{
@@ -1078,7 +1090,6 @@ class Synchronization extends BaseController
         $requestArray['isMessageDialogDismiss'] = getBoolean($request->isMessageDialogDismiss);
         $requestArray['sslSha256Key'] = $request->sslSha256Key;
         $requestArray['checkIpAddressApiUrl'] = $request->checkIpAddressApiUrl;
-//        $requestArray['isIpAddressApiCall'] = $request->isIpAddressApiCall;
 
         return  json_encode($requestArray);
     }
@@ -1090,7 +1101,7 @@ class Synchronization extends BaseController
         if(count($request->app_credentials_app_detail_id) > 0){
             foreach($request->app_credentials_app_detail_id as $appDetailId){
 
-                $listOfApplications = getAppListByAccountsId($request->appCredentialsAccountsId,$appDetailId);
+                $listOfApplications = getAppListByAccountId($request->appCredentialsAccountsId,$appDetailId);
 
                 $updateAppCredentialsData = [];
                 if(!empty($listOfApplications)){
@@ -1100,7 +1111,7 @@ class Synchronization extends BaseController
                         $message = "";
                         $node = "";
 
-                        $appCredentials = AppCredentials::where('app_detail_id',$obj->application_id);
+                        $appCredentials = AppCredentials::where('account_id',$request->appCredentialsAccountsId);
                         if($appCredentials->exists()){
 
                             $appCredentials = $appCredentials->first()->toArray();
@@ -1121,7 +1132,8 @@ class Synchronization extends BaseController
                                 ->where('app_detail_id',$obj->application_id)
                                 ->update($updateAppCredentialsData);
 
-                            $response[] = [
+                                $packageId = str_replace(".","_",$obj->packageId);
+                                $response[] = [
                                 'app_detail' => $obj->appName . ' - ' . $obj->packageId,
                                 'firebase_status' => "success",
                                 'message' => "Credentials Successfully Updated",
@@ -1158,7 +1170,7 @@ class Synchronization extends BaseController
         if(count($request->app_details_application_ids) > 0){
             foreach($request->app_details_application_ids as $appDetailId){
 
-                $listOfApplications = getAppListByAccountsId($request->appDetailsAccountsId,$appDetailId);
+                $listOfApplications = getAppListByAccountId($request->appDetailsAccountsId,$appDetailId);
 
                 $updateAppDetailsData = [];
                 if(!empty($listOfApplications)){
@@ -1224,7 +1236,7 @@ class Synchronization extends BaseController
 
                                     if(!empty($jsonData)){
 
-                                        $appDetailFirebaseCredentials = FirebaseCredentials::where('app_detail_id',$obj->application_id)->select('apps_url','app_setting_url','reCaptchaKeyId','firebaseConfigJson')->first();
+                                        $appDetailFirebaseCredentials = FirebaseCredentials::where('account_id',$request->appDetailsAccountsId)->select('apps_url','app_setting_url','reCaptchaKeyId','firebaseConfigJson')->first();
                                         if(isset($appDetailFirebaseCredentials->apps_url) && isset($appDetailFirebaseCredentials->app_setting_url)) {
 
                                             /***   CREATE JSON FORMAT TO PUSH DATA ON FIREBASE DATABASE ***/
@@ -1242,6 +1254,7 @@ class Synchronization extends BaseController
 
                                                 $appDetailFirebaseConfigJson = json_encode($parseAppDetailFirebaseConfigJson);
 
+                                                $packageId = str_replace(".","_",$obj->packageId);
                                                 $response[] = [
                                                     'app_detail' => $obj->appName . ' - ' . $obj->packageId,
                                                     'firebase_status' => "success",
@@ -1250,7 +1263,9 @@ class Synchronization extends BaseController
                                                     'reCaptchaKeyId' => (!empty($appDetailFirebaseCredentials->reCaptchaKeyId)) ? $appDetailFirebaseCredentials->reCaptchaKeyId : "",
                                                     'firebaseConfigJson' => $appDetailFirebaseConfigJson,
                                                     'node' => $appNode,
-                                                    'appPackageId' => $obj->packageId . rand(222,333).time()
+                                                    'appPackageId' => $obj->packageId . rand(222,333).time(),
+                                                    'packageId' => $packageId
+    
                                                 ];
 
                                                 /***   CREATE JSON FORMAT TO PUSH DATA ON FIREBASE DATABASE ***/
@@ -1266,6 +1281,7 @@ class Synchronization extends BaseController
                                                 $parseAppDetailFirebaseConfigJson->databaseURL = $appDetailFirebaseCredentials->app_setting_url;
                                                 $appDetailFirebaseConfigJson = json_encode($parseAppDetailFirebaseConfigJson);
 
+                                                $packageId = str_replace(".","_",$obj->packageId);
                                                 $response[] = [
                                                     'app_detail' => $obj->appName . ' - ' . $obj->packageId,
                                                     'firebase_status' => "success",
@@ -1274,7 +1290,8 @@ class Synchronization extends BaseController
                                                     'reCaptchaKeyId' => (!empty($appDetailFirebaseCredentials->reCaptchaKeyId)) ? $appDetailFirebaseCredentials->reCaptchaKeyId : "",
                                                     'firebaseConfigJson' => $appDetailFirebaseConfigJson,
                                                     'node' => $node,
-                                                    'appPackageId' => $obj->packageId . rand(444,555).time()
+                                                    'appPackageId' => $obj->packageId . rand(444,555).time(),
+                                                    'packageId' => $packageId
                                                 ];
 
                                             }
