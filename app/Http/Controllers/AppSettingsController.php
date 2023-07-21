@@ -413,7 +413,7 @@ class AppSettingsController extends Controller
 
                                 DB::table('app_settings')->where('app_detail_id',$obj->application_id)->update([$versionCategories => $finalValue]);
 
-                                $firebaseCredentials = FirebaseCredentials::where('app_detail_id',$obj->application_id)->select('app_setting_url','reCaptchaKeyId','firebaseConfigJson')->first();
+                                $firebaseCredentials = FirebaseCredentials::where('account_id',$request->versionAccountsId)->select('app_setting_url','reCaptchaKeyId','firebaseConfigJson')->first();
 
                                 if(isset($firebaseCredentials->app_setting_url)){
 
