@@ -394,8 +394,8 @@ class AppSettingsController extends Controller
 
         $errors = [];  $response = []; $jsonData = [];
 
-        if(count($request->version_app_detail_ids) > 0) {
-            foreach ($request->version_app_detail_ids as $appDetailId) {
+        if(count($request->version_app_detail_id) > 0) {
+            foreach ($request->version_app_detail_id as $appDetailId) {
                 $listOfApplications = getAppListByAccountId($request->versionAccountsId, $appDetailId);
 
                 if(!empty($listOfApplications)){
