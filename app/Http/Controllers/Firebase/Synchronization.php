@@ -152,8 +152,8 @@ class Synchronization extends BaseController
                 $accountsDetail = getAccountDetailsById($accountsId);
 
                 $firebaseURL = "";
-                if(count($request->app_detail_id) > 0){
-                    foreach($request->app_detail_id as $appDetailId) {
+                if(count($request->app_detail_ids) > 0){
+                    foreach($request->app_detail_ids as $appDetailId) {
                         $listOfApplications = getAppListByAccountId($request->account_id, $appDetailId);
 
                         if(!empty($listOfApplications)){
