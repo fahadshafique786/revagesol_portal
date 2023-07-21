@@ -988,10 +988,6 @@ class Synchronization extends BaseController
                                 $updateAppSettingData['isFirebaseDatabaseAccess'] =  $request->isFirebaseDatabaseAccess;
                             }
 
-                            if(isset($request->isAppAuthKeysUsed) && ($request->isAppAuthKeysUsed >= 0)){
-                                $updateAppSettingData['isAppAuthKeysUsed'] =  $request->isAppAuthKeysUsed;
-                            }
-
                             if(isset($request->isServerLocalAuthKeyUsed) && ($request->isServerLocalAuthKeyUsed >= 0)){
                                 $updateAppSettingData['isServerLocalAuthKeyUsed'] =  $request->isServerLocalAuthKeyUsed;
                             }
@@ -1074,7 +1070,6 @@ class Synchronization extends BaseController
         $requestArray['isAppDetailsDatabaseSave'] = getBoolean($request->isAppDetailsDatabaseSave);
         $requestArray['isFirebaseDatabaseAccess'] = getBoolean($request->isFirebaseDatabaseAccess);
         $requestArray['isAppSigningKeyUsed'] = getBoolean($request->isAppSigningKeyUsed);
-        $requestArray['isAppAuthKeysUsed'] = getBoolean($request->isAppAuthKeysUsed);
         $requestArray['isServerLocalAuthKeyUsed'] = getBoolean($request->isServerLocalAuthKeyUsed);
         $requestArray['minimumVersionSupport'] = (int) $request->minimumVersionSupport;
         $requestArray['serverAuthKey1'] = $request->serverAuthKey1;

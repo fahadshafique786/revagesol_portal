@@ -26,7 +26,6 @@ class CreateAppSettingsTable extends Migration
             $table->enum('isAppDetailsDatabaseClear',['0','1'])->default('0');
             $table->enum('isAppDetailsDatabaseSave',['0','1'])->default('0');
             $table->enum('isFirebaseDatabaseAccess',['0','1'])->default('0');
-            $table->enum('isAppAuthKeysUsed',['0','1'])->default('0');
             $table->enum('isServerLocalAuthKeyUsed',['0','1'])->default('0');
             $table->enum('isSuspendApp',['0','1'])->default('0');
             $table->string('suspendAppMessage')->nullable();

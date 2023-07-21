@@ -385,27 +385,6 @@
 
                                         </div>
 
-                                        <label for="isAppAuthKeysUsed" class="col-sm-2 col-form-label">Is App Auth Keys Used</label>
-                                        <div class="col-sm-4  pt-2">
-
-                                            <label for="isAppAuthKeysUsed1" class="cursor-pointer">
-                                                <input type="radio" class="" id="isAppAuthKeysUsed1" name="isAppAuthKeysUsed" value="1"  />
-                                                <span class="">Yes</span>
-                                            </label>
-
-                                            <label for="isAppAuthKeysUsed0" class="cursor-pointer">
-                                                <input type="radio" class="" id="isAppAuthKeysUsed0" name="isAppAuthKeysUsed" value="0"  />
-                                                <span class="">No</span>
-                                            </label>
-
-                                        </div>
-
-
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-12">
-                                    <div class="form-group row">
 
 
                                         <label for="isServerLocalAuthKeyUsed" class="col-sm-2 col-form-label">Is Server Local Auth Keys Used</label>
@@ -422,6 +401,14 @@
 
                                         </div>
 
+
+                                    </div>
+
+                                    
+                                </div>
+
+                                <div class="col-sm-12">
+                                    <div class="form-group row">
 
                                         <label for="isFirebaseDatabaseAccess" class="col-sm-2 col-form-label">Is Firebase Database Access</label>
                                         <div class="col-sm-4  pt-2">
@@ -1289,11 +1276,10 @@
         var serverAuthKey2 =$("#serverAuthKey2").val().trim();
         var isAppSigningKeyUsed = $("input[name='isAppSigningKeyUsed']").is(":checked");
         var isFirebaseDatabaseAccess = $("input[name='isFirebaseDatabaseAccess']").is(":checked");
-        var isAppAuthKeysUsed = $("input[name='isAppAuthKeysUsed']").is(":checked");
         var isServerLocalAuthKeyUsed = $("input[name='isServerLocalAuthKeyUsed']").is(":checked");
 
         if(serverAuthKey1 || serverAuthKey2 || isAppSigningKeyUsed
-            || isFirebaseDatabaseAccess || isAppAuthKeysUsed || isServerLocalAuthKeyUsed ){
+            || isFirebaseDatabaseAccess || isServerLocalAuthKeyUsed ){
             validation = true;
         }
         else{

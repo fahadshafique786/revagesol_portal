@@ -22,7 +22,6 @@ class AppSettings extends Model
         'isAppDetailsDatabaseClear',
         'isAppDetailsDatabaseSave',
         'isFirebaseDatabaseAccess',
-        'isAppAuthKeysUsed',
         'isServerLocalAuthKeyUsed',
         'isSuspendApp',
         'suspendAppMessage',

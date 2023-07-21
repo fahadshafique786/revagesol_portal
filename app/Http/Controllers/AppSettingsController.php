@@ -251,7 +251,6 @@ class AppSettingsController extends Controller
         $requestArray['isAppDetailsDatabaseSave'] = getBoolean($request->isAppDetailsDatabaseSave);
         $requestArray['isFirebaseDatabaseAccess'] = getBoolean($request->isFirebaseDatabaseAccess);
         $requestArray['isAppSigningKeyUsed'] = getBoolean($request->isAppSigningKeyUsed);
-        $requestArray['isAppAuthKeysUsed'] = getBoolean($request->isAppAuthKeysUsed);
         $requestArray['isServerLocalAuthKeyUsed'] = getBoolean($request->isServerLocalAuthKeyUsed);
         $requestArray['minimumVersionSupport'] = (int) $request->minimumVersionSupport;
         $requestArray['serverAuthKey1'] = $request->serverAuthKey1;

@@ -274,21 +274,6 @@
 
                                 <div class="form-group row">
 
-                                    <label for="staticEmail" class="col-sm-2 col-form-label">Is App Auth Keys Used</label>
-                                    <div class="col-sm-4 pt-2">
-
-                                        <label for="isAppAuthKeysUsed1" class="cursor-pointer">
-                                            <input type="radio" class="" id="isAppAuthKeysUsed1" name="isAppAuthKeysUsed" value="1" {{(isset($appData->isAppAuthKeysUsed) && ($appData->isAppAuthKeysUsed)) ? 'checked' : "" }} />
-                                            <span class="">Yes</span>
-                                        </label>
-
-                                        <label for="isAppAuthKeysUsed0" class="cursor-pointer">
-                                            <input type="radio" class="" id="isAppAuthKeysUsed0" name="isAppAuthKeysUsed" value="0" {{((isset($appData->isAppAuthKeysUsed) && !$appData->isAppAuthKeysUsed) || (!$appSettingId)) ? 'checked' : "" }} />
-                                            <span class="">No</span>
-                                        </label>
-
-                                    </div>
-
                                     <label for="staticEmail" class="col-sm-2 col-form-label">Is Server Local Auth Keys Used</label>
                                     <div class="col-sm-4 pt-2">
 
@@ -303,6 +288,22 @@
                                         </label>
 
                                     </div>
+
+                                    <label for="isAppSigningKeyUsed" class="col-sm-2 col-form-label">Is App Signing Key Used</label>
+
+                                    <div class="col-sm-4 mt-2">
+                                        <label for="isAppSigningKeyUsed1" class="cursor-pointer">
+                                            <input type="radio" class="" id="isAppSigningKeyUsed1" name="isAppSigningKeyUsed" value="1"  {{(isset($appData->isAppSigningKeyUsed) && ($appData->isAppSigningKeyUsed)) ? 'checked' : "" }}   />
+                                            <span class="">Yes</span>
+                                        </label>
+
+                                        <label for="isAppSigningKeyUsed0" class="cursor-pointer">
+                                            <input type="radio" class="" id="isAppSigningKeyUsed0" name="isAppSigningKeyUsed" value="0"   {{((isset($appData->isAppSigningKeyUsed) && !$appData->isAppSigningKeyUsed) || (!$appSettingId)) ? 'checked' : "" }}  />
+                                            <span class="">No</span>
+                                        </label>
+
+                                    </div>
+
                                 </div>
 
                                 <div class="form-group row d-none">
@@ -353,26 +354,6 @@
                                             <input type="radio" class="" id="isFirebaseDatabaseAccess0" name="isFirebaseDatabaseAccess" value="0" {{((isset($appData->isFirebaseDatabaseAccess) && !$appData->isFirebaseDatabaseAccess) || (!$appSettingId)) ? 'checked' : "" }} />
                                             <span class="">No</span>
                                         </label>
-                                    </div>
-
-                                </div>
-
-
-                                <div class="form-group row">
-
-                                    <label for="isAppSigningKeyUsed" class="col-sm-2 col-form-label">Is App Signing Key Used</label>
-
-                                    <div class="col-sm-4 mt-2">
-                                        <label for="isAppSigningKeyUsed1" class="cursor-pointer">
-                                            <input type="radio" class="" id="isAppSigningKeyUsed1" name="isAppSigningKeyUsed" value="1"  {{(isset($appData->isAppSigningKeyUsed) && ($appData->isAppSigningKeyUsed)) ? 'checked' : "" }}   />
-                                            <span class="">Yes</span>
-                                        </label>
-
-                                        <label for="isAppSigningKeyUsed0" class="cursor-pointer">
-                                            <input type="radio" class="" id="isAppSigningKeyUsed0" name="isAppSigningKeyUsed" value="0"   {{((isset($appData->isAppSigningKeyUsed) && !$appData->isAppSigningKeyUsed) || (!$appSettingId)) ? 'checked' : "" }}  />
-                                            <span class="">No</span>
-                                        </label>
-
                                     </div>
 
                                 </div>
