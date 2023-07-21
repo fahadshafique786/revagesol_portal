@@ -1586,6 +1586,9 @@
                                     const jsonData = JSON.parse(response?.data?.success[i]?.firebaseData);
                                     var package_id = response?.data?.success[i].packageId;
 
+                                    // console.log("Package ID");
+                                    // console.log(package_id);
+
                                     pushDataToRealTimeDatabase(db,response?.data?.success[i]?.node, jsonData,opt,package_id)
 
                                 }
@@ -1805,7 +1808,7 @@
             timer: 3000
         });
 
-        set(ref(db,'/'+package_id+'/'),AppDetails)
+        set(ref(db,'/'+package_id+'/'),AppSettings)
             .then(() => {
 
                 Toast.fire({
