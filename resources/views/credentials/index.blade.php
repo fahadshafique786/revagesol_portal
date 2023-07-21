@@ -367,7 +367,7 @@
                         $('#account_id').val(res.account_id);
                         $('#server_auth_key').val(res.server_auth_key);
                         $('#stream_key').val(res.stream_key);
-\                        $('#appSigningKey').val(res.appSigningKey);
+                       $('#appSigningKey').val(res.appSigningKey);
                         $('#versionCode').val(res.versionCode);
                         $('#ajax-model').modal('show');
 
