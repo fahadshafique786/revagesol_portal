@@ -31,7 +31,6 @@ class AppSettings extends Model
         'serverAuthKey2',
         'appDetailsDatabaseClearVersion',
         'isMessageDialogDismiss',
-        'isServerTokenFetch',
         'sslSha256Key',
         'checkIpAddressApiUrl',
         'isIpAddressApiCall',

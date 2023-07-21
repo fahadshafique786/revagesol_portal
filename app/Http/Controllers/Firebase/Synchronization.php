@@ -988,10 +988,6 @@ class Synchronization extends BaseController
                                 $updateAppSettingData['isFirebaseDatabaseAccess'] =  $request->isFirebaseDatabaseAccess;
                             }
 
-                            if(isset($request->isServerTokenFetch) && ($request->isServerTokenFetch >= 0)){
-                                $updateAppSettingData['isServerTokenFetch'] =  $request->isServerTokenFetch;
-                            }
-
                             if(isset($request->isAppAuthKeysUsed) && ($request->isAppAuthKeysUsed >= 0)){
                                 $updateAppSettingData['isAppAuthKeysUsed'] =  $request->isAppAuthKeysUsed;
                             }
@@ -1085,7 +1081,6 @@ class Synchronization extends BaseController
         $requestArray['serverAuthKey2'] = $request->serverAuthKey2;
         $requestArray['appDetailsDatabaseClearVersion'] = (float) $request->appDetailsDatabaseClearVersion;
         $requestArray['isMessageDialogDismiss'] = getBoolean($request->isMessageDialogDismiss);
-        $requestArray['isServerTokenFetch'] = getBoolean($request->isServerTokenFetch);
         $requestArray['sslSha256Key'] = $request->sslSha256Key;
         $requestArray['checkIpAddressApiUrl'] = $request->checkIpAddressApiUrl;
 //        $requestArray['isIpAddressApiCall'] = $request->isIpAddressApiCall;

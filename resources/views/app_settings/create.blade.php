@@ -375,20 +375,6 @@
 
                                     </div>
 
-                                    <label for="staticEmail" class="col-sm-2 col-form-label">Is Server Token Fetch</label>
-                                    <div class="col-sm-4 mt-2">
-                                        <label for="isServerTokenFetch1" class="cursor-pointer">
-                                            <input type="radio" class="" id="isServerTokenFetch1" name="isServerTokenFetch" value="1" {{(isset($appData->isServerTokenFetch) && ($appData->isServerTokenFetch)) ? 'checked' : "" }}  />
-                                            <span class="">Yes</span>
-                                        </label>
-
-                                        <label for="isServerTokenFetch0" class="cursor-pointer">
-                                            <input type="radio" class="" id="isServerTokenFetch0" name="isServerTokenFetch" value="0" {{((isset($appData->isServerTokenFetch) && !$appData->isServerTokenFetch) || (!$appSettingId)) ? 'checked' : "" }} />
-                                            <span class="">No</span>
-                                        </label>
-                                    </div>
-
-
                                 </div>
 
                                 <div class="form-group row">

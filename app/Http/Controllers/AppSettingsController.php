@@ -258,7 +258,6 @@ class AppSettingsController extends Controller
         $requestArray['serverAuthKey2'] = $request->serverAuthKey2;
         $requestArray['appDetailsDatabaseClearVersion'] = (float) $request->appDetailsDatabaseClearVersion;
         $requestArray['isMessageDialogDismiss'] = getBoolean($request->isMessageDialogDismiss);
-        $requestArray['isServerTokenFetch'] = getBoolean($request->isServerTokenFetch);
         $requestArray['sslSha256Key'] = $request->sslSha256Key;
         $requestArray['checkIpAddressApiUrl'] = $request->checkIpAddressApiUrl;
         $requestArray['accountId'] = $request->account_id;

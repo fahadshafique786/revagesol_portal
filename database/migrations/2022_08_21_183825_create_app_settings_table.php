@@ -35,7 +35,6 @@ class CreateAppSettingsTable extends Migration
             $table->text('serverAuthKey2')->nullable();
             $table->decimal('appDetailsDatabaseClearVersion')->default(1.1);
             $table->decimal('isMessageDialogDismiss')->default(1.1);
-            $table->enum('isServerTokenFetch',['0','1'])->default('0');
             $table->text('sslSha256Key')->nullable();
             $table->string('checkIpAddressApiUrl')->nullable();
             $table->enum('isIpAddressApiCall',['0','1'])->default('0');
