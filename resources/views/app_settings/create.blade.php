@@ -73,25 +73,9 @@
                                         <input type="hidden" readonly id="appSettingId" name="appSettingId"  value="{{$appSettingId}}"/>
                                     </div>
 
-                                    <label for="staticEmail" class="col-sm-2 col-form-label">Stream Key</label>
+                                    <label for="staticEmail" class="col-sm-2 col-form-label">Auth Helper Key</label>
                                     <div class="col-sm-4">
-                                        <input type="text" class="form-control" name="streamKey" id="streamKey" value="{{(isset($appData->streamKey) && ($appData->streamKey)) ? $appData->streamKey : "" }}" required>
-                                    </div>
-
-                                </div>
-
-                                <div class="form-group row">
-
-                                    <label for="appAuthKey1" class="col-sm-2 col-form-label" id="">App Auth Key 1</label>
-                                    <div class="col-sm-4">
-                                        <input type="text"  class="form-control" name="appAuthKey1" id="appAuthKey1" value="{{(isset($appData->appAuthKey1) && ($appData->appAuthKey1)) ? $appData->appAuthKey1 : "" }}" required />
-                                        <span class="text-danger" id="appAuthKey1Error"></span>
-                                    </div>
-
-                                    <label for="appAuthKey2" class="col-sm-2 col-form-label">App Auth Key 2</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" class="form-control" name="appAuthKey2" id="appAuthKey2" value="{{(isset($appData->appAuthKey2) && ($appData->appAuthKey2)) ? $appData->appAuthKey2 : "" }}" required>
-                                        <span class="text-danger" id="appAuthKey2Error"></span>
+                                        <input type="text" class="form-control" name="authHelperKey" id="authHelperKey" value="{{(isset($appData->authHelperKey) && ($appData->authHelperKey)) ? $appData->authHelperKey : '' }}" required>
                                     </div>
 
                                 </div>
@@ -101,13 +85,13 @@
 
                                     <label for="serverAuthKey1" class="col-sm-2 col-form-label">Server Auth Key 1</label>
                                     <div class="col-sm-4">
-                                        <input type="text" class="form-control" name="serverAuthKey1" id="serverAuthKey1" value="{{(isset($appData->serverAuthKey1) && ($appData->serverAuthKey1)) ? $appData->serverAuthKey1 : "" }}" required />
+                                        <input type="text" class="form-control" name="serverAuthKey1" id="serverAuthKey1" value="{{(isset($appData->serverAuthKey1) && ($appData->serverAuthKey1)) ? $appData->serverAuthKey1 : '' }}" required />
                                     </div>
 
 
                                     <label for="serverAuthKey2" class="col-sm-2 col-form-label">Server Auth Key 2</label>
                                     <div class="col-sm-4">
-                                        <input type="text" class="form-control" name="serverAuthKey2" id="serverAuthKey2" value="{{(isset($appData->serverAuthKey2) && ($appData->serverAuthKey2)) ? $appData->serverAuthKey2 : "" }}" required/>
+                                        <input type="text" class="form-control" name="serverAuthKey2" id="serverAuthKey2" value="{{(isset($appData->serverAuthKey2) && ($appData->serverAuthKey2)) ? $appData->serverAuthKey2 : '' }}" required/>
                                     </div>
 
                                 </div>
@@ -117,12 +101,12 @@
 
                                     <label for="staticEmail" class="col-sm-2 col-form-label">Server Api Base Url</label>
                                     <div class="col-sm-4">
-                                        <input type="text" class="form-control" name="serverApiBaseUrl" id="serverApiBaseUrl" value="{{(isset($appData->serverApiBaseUrl) && ($appData->serverApiBaseUrl)) ? $appData->serverApiBaseUrl : "" }}" required>
+                                        <input type="text" class="form-control" name="serverApiBaseUrl" id="serverApiBaseUrl" value="{{(isset($appData->serverApiBaseUrl) && ($appData->serverApiBaseUrl)) ? $appData->serverApiBaseUrl : '' }}" required>
                                     </div>
 
                                     <label for="checkIpAddressApiUrl" class="col-sm-2 col-form-label mt-1">Check Ip Address Api Url</label>
                                     <div class="col-sm-4 mt-2">
-                                        <input type="text" class="form-control" name="checkIpAddressApiUrl" id="checkIpAddressApiUrl" value="{{(isset($appData->checkIpAddressApiUrl) && ($appData->checkIpAddressApiUrl)) ? $appData->checkIpAddressApiUrl : "" }}" required>
+                                        <input type="text" class="form-control" name="checkIpAddressApiUrl" id="checkIpAddressApiUrl" value="{{(isset($appData->checkIpAddressApiUrl) && ($appData->checkIpAddressApiUrl)) ? $appData->checkIpAddressApiUrl : '' }}" required>
                                     </div>
 
 
@@ -157,7 +141,7 @@
                                                        data-currentValue="{{(isset($appData->appDetailsDatabaseVersion) && ($appData->appDetailsDatabaseVersion)) ? $appData->appDetailsDatabaseVersion : '1.1' }}"
                                                        class="form-control w-50 d-inline-block notAllowedAlphabets versionControlInput"
                                                        name="appDetailsDatabaseVersion" id="appDetailsDatabaseVersion"
-                                                       value="{{(isset($appData->appDetailsDatabaseVersion) && ($appData->appDetailsDatabaseVersion)) ? $appData->appDetailsDatabaseVersion : "1.1" }}"
+                                                       value="{{(isset($appData->appDetailsDatabaseVersion) && ($appData->appDetailsDatabaseVersion)) ? $appData->appDetailsDatabaseVersion : '1.1' }}"
                                                        required />
 
                                                 <button type="button" class="plus numbers" >+</button>

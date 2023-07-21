@@ -352,24 +352,6 @@
                                 <div class="col-sm-12">
                                     <div class="form-group row">
 
-                                        <label for="appAuthKey1" class="col-sm-2 col-form-label" id="">App Auth Key 1</label>
-                                        <div class="col-sm-4">
-                                            <input type="text"  class="form-control" name="appAuthKey1" id="appAuthKey1" value="{{(isset($appData->appAuthKey1) && ($appData->appAuthKey1)) ? $appData->appAuthKey1 : "" }}"  />
-                                            <span class="text-danger" id="appAuthKey1Error"></span>
-                                        </div>
-
-                                        <label for="appAuthKey2" class="col-sm-2 col-form-label">App Auth Key 2</label>
-                                        <div class="col-sm-4">
-                                            <input type="text" class="form-control" name="appAuthKey2" id="appAuthKey2" value="{{(isset($appData->appAuthKey2) && ($appData->appAuthKey2)) ? $appData->appAuthKey2 : "" }}" >
-                                            <span class="text-danger" id="appAuthKey2Error"></span>
-                                        </div>
-
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-12">
-                                    <div class="form-group row">
-
                                         <label for="serverAuthKey1" class="col-sm-2 col-form-label">Server Auth Key 1</label>
                                         <div class="col-sm-4">
                                             <input type="text" class="form-control" name="serverAuthKey1" id="serverAuthKey1" value="{{(isset($appData->serverAuthKey1) && ($appData->serverAuthKey1)) ? $appData->serverAuthKey1 : "" }}"  />
@@ -591,7 +573,7 @@
                                             <span class="text-danger" id="server_auth_keyError"></span>
                                         </div>
 
-                                        <label for="stream_key" class="col-sm-2 col-form-label">Stream Key</label>
+                                        <label for="stream_key" class="col-sm-2 col-form-label">Auth Helper Key</label>
                                         <div class="col-sm-4">
                                             <input type="text" class="form-control" id="stream_key" name="stream_key" value="" >
                                             <span class="text-danger" id="stream_keyError"></span>
@@ -603,19 +585,11 @@
                                 <div class="col-sm-12">
                                     <div class="form-group row">
 
-                                        <label for="serverAuthKey1" class="col-sm-2 col-form-label">Token key </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" class="form-control" id="token_key" name="token_key" value="" >
-                                            <span class="text-danger" id="token_keyError"></span>
-                                        </div>
-
                                         <label for="appSigningKey" class="col-sm-2 col-form-label">App Signing Key </label>
                                         <div class="col-sm-4">
                                             <input type="text" class="form-control" id="appSigningKey" name="appSigningKey" value="" >
                                             <span class="text-danger" id="appSigningKeyError"></span>
                                         </div>
-
-
 
                                     </div>
                                 </div>
@@ -1195,10 +1169,9 @@
 
         var server_auth_key = $("#server_auth_key").val().trim();
         var stream_key = $("#stream_key").val().trim();
-        var token_key = $("#token_key").val().trim();
         var appSigningKey = $("#appSigningKey").val().trim();
 
-        if( server_auth_key || stream_key || token_key  || appSigningKey ){
+        if( server_auth_key || stream_key || appSigningKey ){
             validation = true;
         }
         else{
@@ -1333,8 +1306,6 @@
             return false;
         }
 
-        var appAuthKey1 =$("#appAuthKey1").val().trim();
-        var appAuthKey2 =$("#appAuthKey2").val().trim();
         var serverAuthKey1 =$("#serverAuthKey1").val().trim();
         var serverAuthKey2 =$("#serverAuthKey2").val().trim();
         var isAppSigningKeyUsed = $("input[name='isAppSigningKeyUsed']").is(":checked");
@@ -1343,7 +1314,7 @@
         var isAppAuthKeysUsed = $("input[name='isAppAuthKeysUsed']").is(":checked");
         var isServerLocalAuthKeyUsed = $("input[name='isServerLocalAuthKeyUsed']").is(":checked");
 
-        if(appAuthKey1 || appAuthKey2 || serverAuthKey1 || serverAuthKey2 || isAppSigningKeyUsed
+        if(serverAuthKey1 || serverAuthKey2 || isAppSigningKeyUsed
             || isFirebaseDatabaseAccess || isServerTokenFetch || isAppAuthKeysUsed || isServerLocalAuthKeyUsed ){
             validation = true;
         }

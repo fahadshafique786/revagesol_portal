@@ -220,21 +220,6 @@ class Applications extends BaseController
                         ->where('packageId', $packageId)
                         ->select('id','account_id');
 
-                    /*** Get Key From Database By using Package ID ***/
-
-                    if ($appDetails->exists()) {
-                        $appId = $appDetails->first()->id;
-                        $accountId = $appDetails->first()->account_id;
-                        $appCredentials = DB::table('app_credentials')
-                            ->select('token_key')
-                            ->where('account_id', $accountId);
-
-                        if ($appCredentials->exists()) {
-                            $appCredentials = $appCredentials->first();
-                            $tokenKey = $appCredentials->token_key;;
-                        }
-                    }
-
                     $serverLabel = $serverType->first()->label;
 
                     if($serverLabel == "flussonic"){

@@ -972,14 +972,6 @@ class Synchronization extends BaseController
 
                             $appSettings = $appSettings->first()->toArray();
 
-                            if(isset($request->appAuthKey1) && !empty($request->appAuthKey1)){
-                                $updateAppSettingData['appAuthKey1'] =  $request->appAuthKey1;
-                            }
-
-                            if(isset($request->appAuthKey2) && !empty($request->appAuthKey2)){
-                                $updateAppSettingData['appAuthKey2'] =  $request->appAuthKey2;
-                            }
-
                             if(isset($request->serverAuthKey1) && !empty($request->serverAuthKey1)){
                                 $updateAppSettingData['serverAuthKey1'] =  $request->serverAuthKey1;
                             }
@@ -1075,13 +1067,11 @@ class Synchronization extends BaseController
     public function createFirebaseJsonFormat($request){
 
         $requestArray = [];
-        $requestArray['appAuthKey1'] = $request->appAuthKey1;
-        $requestArray['appAuthKey2'] = $request->appAuthKey2;
         $requestArray['appCacheId'] =  (float) number_format($request->appCacheId,1);
         $requestArray['appDetailsDatabaseVersion'] = (float) number_format($request->appDetailsDatabaseVersion,1);
         $requestArray['appSharedPrefId'] =  (float) number_format($request->appSharedPrefId,1);
         $requestArray['serverApiBaseUrl'] = $request->serverApiBaseUrl;
-        $requestArray['streamKey'] = $request->streamKey;
+        $requestArray['authHelperKey'] = $request->authHelperKey;
         $requestArray['isAppClearCache'] = getBoolean($request->isAppClearCache);
         $requestArray['isAppClearSharedPref'] = getBoolean($request->isAppClearSharedPref);
         $requestArray['isAppDetailsDatabaseClear'] = getBoolean($request->isAppDetailsDatabaseClear);
@@ -1131,10 +1121,6 @@ class Synchronization extends BaseController
 
                             if(isset($request->stream_key) && !empty($request->stream_key)){
                                 $updateAppCredentialsData['stream_key'] =  $request->stream_key;
-                            }
-
-                            if(isset($request->token_key) && !empty($request->token_key)){
-                                $updateAppCredentialsData['token_key'] =  $request->token_key;
                             }
 
                             if(isset($request->appSigningKey) && !empty($request->appSigningKey)){

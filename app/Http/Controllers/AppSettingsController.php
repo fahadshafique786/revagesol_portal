@@ -240,13 +240,11 @@ class AppSettingsController extends Controller
     public function createFirebaseJsonFormat($request,$packageId = null){
 
         $requestArray = [];
-        $requestArray['appAuthKey1'] = $request->appAuthKey1;
-        $requestArray['appAuthKey2'] = $request->appAuthKey2;
         $requestArray['appCacheId'] =  (float) number_format($request->appCacheId,1);
         $requestArray['appDetailsDatabaseVersion'] = (float) number_format($request->appDetailsDatabaseVersion,1);
         $requestArray['appSharedPrefId'] =  (float) number_format($request->appSharedPrefId,1);
         $requestArray['serverApiBaseUrl'] = $request->serverApiBaseUrl;
-        $requestArray['streamKey'] = $request->streamKey;
+        $requestArray['authHelperKey'] = $request->authHelperKey;
         $requestArray['isAppClearCache'] = getBoolean($request->isAppClearCache);
         $requestArray['isAppClearSharedPref'] = getBoolean($request->isAppClearSharedPref);
         $requestArray['isAppDetailsDatabaseClear'] = getBoolean($request->isAppDetailsDatabaseClear);

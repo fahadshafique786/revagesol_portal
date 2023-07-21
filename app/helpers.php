@@ -349,7 +349,7 @@ if ( ! function_exists('verifyToken')) {
             isset($headers['Ipaddress']) && !empty($headers['Ipaddress'])
         ) {
 
-            $streamKey = "";
+            $authHelperKey = "";
             $secretKey = "";
 
             $authToken = $headers['Authorization'];
@@ -378,7 +378,7 @@ if ( ! function_exists('verifyToken')) {
 
                 if ($appCredentials->exists()) {
                     $appCredentials = $appCredentials->first();
-                    $streamKey = $appCredentials->stream_key;
+                    $authHelperKey = $appCredentials->stream_key;
                     $secretKey = $appCredentials->server_auth_key;;
                 } else {
                     $appCredentials = 0;
@@ -387,7 +387,7 @@ if ( ! function_exists('verifyToken')) {
             }
 
 
-            $userHashString = $streamKey . $ipAddress . $userStartTime . $userEndTime . $secretKey . $userSalt;
+            $userHashString = $authHelperKey . $ipAddress . $userStartTime . $userEndTime . $secretKey . $userSalt;
             $hashSha1Generated = sha1($userHashString);
 
 

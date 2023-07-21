@@ -193,7 +193,7 @@ class ApiTokenService {
             ){
 
                 $response =  [];
-                $streamKey = ""; $secretKey = "";
+                $authHelperKey = ""; $secretKey = "";
 
                 $authToken = $headers['Authorization'];
                 $packageId = $headers['Packageid'];
@@ -223,7 +223,7 @@ class ApiTokenService {
 
                     if($appCredentials->exists()){
                         $appCredentials = $appCredentials->first();
-                        $streamKey = $appCredentials->stream_key;
+                        $authHelperKey = $appCredentials->stream_key;
 
                         $appSetting = DB::table('app_settings')
                             ->select('isAppSigningKeyUsed')
@@ -238,7 +238,7 @@ class ApiTokenService {
                 }
 
 
-                $userHashString = $streamKey.$ipAddress.$userStartTime.$userEndTime.$secretKey.$userSalt;
+                $userHashString = $authHelperKey.$ipAddress.$userStartTime.$userEndTime.$secretKey.$userSalt;
                 $hashSha1Generated = sha1($userHashString);
                 $hashSha256Generated =  hash('sha256',$userHashString);
 

@@ -95,19 +95,7 @@ class AppCredentialsController extends Controller
 
             if($validation->exists()){
                 $validationResponse['message'] = "The given data was invalid.";
-                $validationResponse['errors']['server_auth_key'] = "The stream key already exists!";
-
-                return Response::json($validationResponse,422);
-            }
-
-            $validation = AppCredentials::where('token_key',$request->token_key)
-                ->where('account_id',$request->account_id)
-                ->where('id','!=',$request->id);
-
-
-            if($validation->exists()){
-                $validationResponse['message'] = "The given data was invalid.";
-                $validationResponse['errors']['token_key'] = "The Token key already exists!";
+                $validationResponse['errors']['server_auth_key'] = "The auth helper key already exists!";
 
                 return Response::json($validationResponse,422);
             }
@@ -160,18 +148,7 @@ class AppCredentialsController extends Controller
             if($validation->exists()){
 
                 $validationResponse['message'] = "The given data was invalid.";
-                $validationResponse['errors']['stream_key'] = "This stream key already exists!";
-
-                return Response::json($validationResponse,422);
-            }
-
-            $validation = AppCredentials::where('token_key',$request->token_key)
-                ->where('account_id',$request->account_id);
-
-            if($validation->exists()){
-
-                $validationResponse['message'] = "The given data was invalid.";
-                $validationResponse['errors']['token_key'] = "This token key already exists!";
+                $validationResponse['errors']['stream_key'] = "This auth helper key already exists!";
 
                 return Response::json($validationResponse,422);
             }
@@ -194,8 +171,7 @@ class AppCredentialsController extends Controller
         $input['server_auth_key'] = $request->server_auth_key;
         $input['account_id'] = $request->account_id;
         $input['stream_key'] = $request->stream_key;
-        $input['token_key'] = $request->token_key;
-        $input['app_detail_id'] = 0; //$request->app_detail_id;
+        $input['app_detail_id'] = 0;
         $input['appSigningKey'] = $request->appSigningKey;
         $input['versionCode'] = $request->versionCode;
 
@@ -267,7 +243,6 @@ class AppCredentialsController extends Controller
                     $response[$i]['appSigningKey'] = $obj->appSigningKey;
                     $response[$i]['versionCode'] = $obj->versionCode;
                     $response[$i]['stream_key'] = $obj->stream_key;
-                    $response[$i]['token_key'] = $obj->token_key;
                     if(auth()->user()->hasRole('super-admin') || auth()->user()->can('manage-credentials'))
                     {
                         $response[$i]['action'] = '<a href="javascript:void(0)" class="btn edit" data-account_id="'.$obj->account_id.'" data-id="'. $obj->id .'"><i class="fa fa-edit  text-info"></i></a>

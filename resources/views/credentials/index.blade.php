@@ -68,7 +68,7 @@
                                     <th scope="col">Server Auth Key</th>
                                     <th scope="col">App Signing key</th>
                                     <th scope="col">Minimum Version Code</th>
-                                    <th scope="col">Stream Key</th>
+                                    <th scope="col">Auth Helper Key</th>
                                     <th scope="col">Token Key</th>
                                     <th scope="col">Action</th>
                                 </tr>
@@ -166,21 +166,9 @@
                             <div class="form-group row">
 
                                 <div class="col-sm-12">
-                                    <label for="stream_key" class="control-label d-block"> Stream Key </label>
+                                    <label for="stream_key" class="control-label d-block"> Auth Helper Key </label>
                                     <input type="text" class="form-control" id="stream_key" name="stream_key" value="" required="">
                                     <span class="text-danger" id="stream_keyError"></span>
-
-                                </div>
-
-
-                            </div>
-
-                            <div class="form-group row">
-
-                                <div class="col-sm-12">
-                                    <label for="token_key" class="control-label d-block"> Token key </label>
-                                    <input type="text" class="form-control" id="token_key" name="token_key" value="" required="">
-                                    <span class="text-danger" id="token_keyError"></span>
 
                                 </div>
 
@@ -278,7 +266,6 @@
                     { data: 'appSigningKey', name: 'appSigningKey' },
                     { data: 'versionCode', name: 'versionCode' },
                     { data: 'stream_key', name: 'stream_key' },
-                    { data: 'token_key', name: 'token_key' },
 
                     {data: 'action', name: 'action', orderable: false , searchable:false},
                 ],
@@ -355,7 +342,7 @@
 
                 var id = $(this).data('id');
                 
-                $('#server_auth_keyError,#stream_keyError,#token_keyError,#appSigningKeyError,#versionCodeError,#account_idError').text('');
+                $('#server_auth_keyError,#stream_keyError,#appSigningKeyError,#versionCodeError,#account_idError').text('');
 
                 var account_id =  $(this).data('account_id');
 
@@ -380,8 +367,7 @@
                         $('#account_id').val(res.account_id);
                         $('#server_auth_key').val(res.server_auth_key);
                         $('#stream_key').val(res.stream_key);
-                        $('#token_key').val(res.token_key);
-                        $('#appSigningKey').val(res.appSigningKey);
+\                        $('#appSigningKey').val(res.appSigningKey);
                         $('#versionCode').val(res.versionCode);
                         $('#ajax-model').modal('show');
 
@@ -437,7 +423,7 @@
                 $("#btn-save"). attr("disabled", true);
 
 
-                $('#server_auth_keyError,#stream_keyError,#token_keyError,#appSigningKeyError,#versionCodeError').text('');
+                $('#server_auth_keyError,#stream_keyError,#appSigningKeyError,#versionCodeError').text('');
 
 
                 $.ajax({
@@ -494,7 +480,6 @@
                         $('#server_auth_keyError').text(response.responseJSON.errors.server_auth_key);
                         $('#versionCodeError').text(response.responseJSON.errors.versionCode);
                         $('#stream_keyError').text(response.responseJSON.errors.stream_key);
-                        $('#token_keyError').text(response.responseJSON.errors.token_key);
                         $('#appSigningKeyError').text(response.responseJSON.errors.appSigningKey);
 
                     }

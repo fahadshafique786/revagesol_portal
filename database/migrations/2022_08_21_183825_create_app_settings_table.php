@@ -16,13 +16,11 @@ class CreateAppSettingsTable extends Migration
         Schema::create('app_settings', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('app_detail_id')->index();
-            $table->text('appAuthKey1')->nullable();
-            $table->text('appAuthKey2')->nullable();
             $table->decimal('appCacheId')->default(1.1);
             $table->decimal('appDetailsDatabaseVersion')->default(1.1);
             $table->decimal('appSharedPrefId')->default(1.1);
             $table->string('serverApiBaseUrl')->nullable();
-            $table->string('streamKey')->nullable();
+            $table->string('authHelperKey')->nullable();
             $table->enum('isAppClearCache',['0','1'])->default('0');
             $table->enum('isAppClearSharedPref',['0','1'])->default('0');
             $table->enum('isAppDetailsDatabaseClear',['0','1'])->default('0');

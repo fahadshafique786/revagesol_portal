@@ -17,7 +17,6 @@ class AppCredentials extends Model
         'appSigningKey',
         'versionCode',
         'stream_key',
-        'token_key'
     ];
 
 }

@@ -22,7 +22,6 @@ class CreateAppCredentialsTable extends Migration
             $table->string('appSigningKey')->index()->nullable();
             $table->integer('versionCode')->default(0);
             $table->string('stream_key')->index()->nullable();
-            $table->text('token_key')->index()->nullable();
             $table->timestamps();
         });
     }
