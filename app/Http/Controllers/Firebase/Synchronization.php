@@ -1237,6 +1237,7 @@ class Synchronization extends BaseController
                                     if(!empty($jsonData)){
 
                                         $appDetailFirebaseCredentials = FirebaseCredentials::where('account_id',$request->appDetailsAccountsId)->select('apps_url','app_setting_url','reCaptchaKeyId','firebaseConfigJson')->first();
+                                        
                                         if(isset($appDetailFirebaseCredentials->apps_url) && isset($appDetailFirebaseCredentials->app_setting_url)) {
 
                                             /***   CREATE JSON FORMAT TO PUSH DATA ON FIREBASE DATABASE ***/
@@ -1248,7 +1249,6 @@ class Synchronization extends BaseController
                                             $parseAppDetailFirebaseConfigJson = json_decode($appDetailFirebaseConfigJson);
 
                                             if (!empty($parseAppDetailFirebaseConfigJson)) {
-//                                                $errors[] = ['app_detail' =>  $obj->accountsName . ' - ' . $obj->packageId , 'message' => 'Firebase Configuration Parameters not found for this Application!' ];
 
                                                 $parseAppDetailFirebaseConfigJson->databaseURL = $appDetailFirebaseCredentials->apps_url;
 
@@ -1306,47 +1306,6 @@ class Synchronization extends BaseController
                                     else{
                                         $errors[] = ['app_detail' =>  $obj->accountsName . ' - ' . $obj->packageId , 'message' => 'Data not found!' ];
                                     }
-
-                                    /******* App Settings Sync to Firebase **********/
-
-//                                    $firebaseCredentials = FirebaseCredentials::where('app_detail_id',$obj->application_id)->select('app_setting_url','reCaptchaKeyId','firebaseConfigJson')->first();
-
-//                                    if(isset($firebaseCredentials->app_setting_url)){
-//
-//                                        /***   CREATE JSON FORMAT TO PUSH DATA ON FIREBASE DATABASE ***/
-//
-//                                        $appSettings = getAppSettingDataByAppId($obj->application_id);
-//
-//                                        $jsonData  = $this->createFirebaseJsonFormat($appSettings);
-//                                        $node = "AppSettings";
-//
-//                                        $firebaseConfigJson = trim(preg_replace('/\s\s+/', ' ', $firebaseCredentials->firebaseConfigJson));
-//
-//                                        $parseFirebaseConfigJson = json_decode($firebaseConfigJson);
-//
-//                                        if(!empty($parseFirebaseConfigJson)){
-//                                            $parseFirebaseConfigJson->databaseURL = $firebaseCredentials->app_setting_url;
-//                                            $firebaseConfigJson = json_encode($parseFirebaseConfigJson);
-//
-//                                            $response[] = [
-//                                                'app_detail' => $obj->accountsName . ' - ' . $obj->packageId,
-//                                                'firebase_status' => "success",
-//                                                'message' => "Keys Successfully Found!",
-//                                                'firebaseData' => $jsonData,
-//                                                'reCaptchaKeyId' => (!empty($firebaseCredentials->reCaptchaKeyId)) ? $firebaseCredentials->reCaptchaKeyId : "",
-//                                                'firebaseConfigJson' => $firebaseConfigJson,
-//                                                'node' => $node,
-//                                                'appPackageId' => $obj->packageId
-//                                            ];
-//                                        }
-//                                        else{
-//                                            $errors[] = ['app_detail' =>  $obj->accountsName . ' - ' . $obj->packageId , 'message' => 'Firebase Config JSON is missing!' ];
-//                                        }
-//                                    }
-//                                    else{
-//                                        $errors[] = ['app_detail' =>  $obj->accountsName . ' - ' . $obj->packageId , 'message' => 'Firebase Credentials for App Setting URL not found!' ];
-//                                    }
-
                                 }
                                 else{
                                     $errors[] = ['app_detail' =>  $obj->accountsName . ' - ' . $obj->packageId , 'message' => 'Failed due to incorrect decimal value!' ];
