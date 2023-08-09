@@ -12,15 +12,15 @@ use DB;
 
 class CountryController extends Controller
 {
-    protected $roleAssignedApplications;
+    protected $roleAssignedAccounts;
 
     public function __construct()
     {
         $this->middleware('auth');
         $this->middleware('role_or_permission:super-admin|view-block-app-countries', ['only' => ['index','showBlockedAppsView','fetchCountryData','getRemainingAppsForBlockedCountriesOptions','fetchBlockedAppsList']]);
-        $this->middleware('role_or_permission:super-admin|view-applications', ['only' => ['index','showBlockedAppsView','fetchCountryData','getRemainingAppsForBlockedCountriesOptions','fetchBlockedAppsList']]);
+        $this->middleware('role_or_permission:super-admin|view-accounts', ['only' => ['index','showBlockedAppsView','fetchCountryData','getRemainingAppsForBlockedCountriesOptions','fetchBlockedAppsList']]);
         $this->middleware('role_or_permission:super-admin|manage-block-app-countries',['only' => ['edit','storeBlockedApplications','syncBlockedApplications','destroy','deleteAll']]);
-        $this->middleware('role_or_permission:super-admin|manage-applications',['only' => ['index','storeBlockedApplications','syncBlockedApplications','destroy','deleteAll']]);
+        $this->middleware('role_or_permission:super-admin|manage-accounts',['only' => ['index','storeBlockedApplications','syncBlockedApplications','destroy','deleteAll']]);
     }
 
     public function index()
@@ -60,7 +60,7 @@ class CountryController extends Controller
 
     public function getRemainingAppsForBlockedCountriesOptions(Request $request){ // for edit case
 
-        $this->roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
+        $this->roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
 
         $appIdClause = "";
         $accountsIdClause = "";
@@ -76,8 +76,8 @@ class CountryController extends Controller
             $accountsIdClause = " AND app.account_id = ". $request->account_id;
         }
 
-        if(!empty($this->roleAssignedApplications)){
-            $permissionAppIdClause .= " AND app.id IN (".implode(",",$this->roleAssignedApplications).")";
+        if(!empty($this->roleAssignedAccounts)){
+            $permissionAppIdClause .= " AND app.account_id IN (".implode(",",$this->roleAssignedAccounts).")";
         }
 
         $remainingApplications = DB::select(DB::raw('SELECT * FROM app_details app WHERE NOT EXISTS (SELECT * FROM blocked_applications bap WHERE bap.application_id = app.id '.$appIdClause.' ) '.$permissionAppIdClause.' '.$accountsIdClause));
@@ -101,7 +101,15 @@ class CountryController extends Controller
         $remainingApplications = DB::select(DB::raw('SELECT * FROM app_details app WHERE NOT EXISTS (SELECT * FROM blocked_applications bap WHERE bap.application_id = app.id ) '));
 
         $countries = Country::all();
-        $accountsList = Accounts::all();
+
+        $this->roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
+        if(!empty($this->roleAssignedAccounts)){
+            $accountsList = Accounts::whereIn('id',$this->roleAssignedAccounts)->orderBy('id','DESC')->get();
+        }
+        else{
+            $accountsList = Accounts::orderBy('id','DESC')->get();
+        }
+        
         return view('application.blocked_applications')
             ->with('applications',$remainingApplications)
             ->with('accountsList',$accountsList)
@@ -112,13 +120,13 @@ class CountryController extends Controller
     {
         if(request()->ajax()) {
 
-            $this->roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
+            $this->roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
 
             $response = array();
             $FilterData = AppDetails::select(['app_details.id as app_id','app_details.packageId','app_details.appName','app_details.isProxyEnable']);
 
-            if(!empty($this->roleAssignedApplications)){
-                $FilterData = $FilterData->whereIn('id',$this->roleAssignedApplications);
+            if(!empty($this->roleAssignedAccounts)){
+                $FilterData = $FilterData->whereIn('account_id',$this->roleAssignedAccounts);
             }
 
             if(isset($request->filter_accounts_id) && !empty($request->filter_accounts_id) && $request->filter_accounts_id != '-1'){
@@ -190,8 +198,9 @@ class CountryController extends Controller
 
     public function destroy(Request $request)
     {
-        $roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
-        if(!in_array($request->id,$roleAssignedApplications)){
+        $account_id = getAccountIdByAppId($request->id);
+        $roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
+        if(!in_array($account_id,$roleAssignedAccounts)){
             return Response::json(["message"=>"You are not allowed to perform this action!"],403);
         }
         
@@ -202,8 +211,9 @@ class CountryController extends Controller
 
     public function storeBlockedApplications(Request $request)
     {
-        $roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
-        if(!in_array($request->application_id,$roleAssignedApplications)){
+        $account_id = getAccountIdByAppId($request->application_id);
+        $roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
+        if(!in_array($account_id,$roleAssignedAccounts)){
             return Response::json(["message"=>"You are not allowed to perform this action!"],403);
         }
 

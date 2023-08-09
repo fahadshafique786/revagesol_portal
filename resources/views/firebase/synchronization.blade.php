@@ -277,7 +277,7 @@
 
         @endif
 
-        @if(auth()->user()->hasRole('super-admin') || (auth()->user()->can('view-manage-sync_apps_data') && auth()->user()->can('view-applications')  && auth()->user()->can('manage-applications')))
+        @if(auth()->user()->hasRole('super-admin') || (auth()->user()->can('view-manage-sync_apps_data') && auth()->user()->can('view-accounts')  && auth()->user()->can('manage-accounts')))
 
         <!-- Small boxes (Stat box3) -->
         <div class="row">
@@ -352,24 +352,6 @@
                                 <div class="col-sm-12">
                                     <div class="form-group row">
 
-                                        <label for="appAuthKey1" class="col-sm-2 col-form-label" id="">App Auth Key 1</label>
-                                        <div class="col-sm-4">
-                                            <input type="text"  class="form-control" name="appAuthKey1" id="appAuthKey1" value="{{(isset($appData->appAuthKey1) && ($appData->appAuthKey1)) ? $appData->appAuthKey1 : "" }}"  />
-                                            <span class="text-danger" id="appAuthKey1Error"></span>
-                                        </div>
-
-                                        <label for="appAuthKey2" class="col-sm-2 col-form-label">App Auth Key 2</label>
-                                        <div class="col-sm-4">
-                                            <input type="text" class="form-control" name="appAuthKey2" id="appAuthKey2" value="{{(isset($appData->appAuthKey2) && ($appData->appAuthKey2)) ? $appData->appAuthKey2 : "" }}" >
-                                            <span class="text-danger" id="appAuthKey2Error"></span>
-                                        </div>
-
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-12">
-                                    <div class="form-group row">
-
                                         <label for="serverAuthKey1" class="col-sm-2 col-form-label">Server Auth Key 1</label>
                                         <div class="col-sm-4">
                                             <input type="text" class="form-control" name="serverAuthKey1" id="serverAuthKey1" value="{{(isset($appData->serverAuthKey1) && ($appData->serverAuthKey1)) ? $appData->serverAuthKey1 : "" }}"  />
@@ -403,43 +385,7 @@
 
                                         </div>
 
-                                        <label for="isServerTokenFetch" class="col-sm-2 col-form-label">Is Server Token Fetch</label>
-                                        <div class="col-sm-4  pt-2">
 
-                                            <label for="isServerTokenFetch1" class="cursor-pointer">
-                                                <input type="radio" class="" id="isServerTokenFetch1" name="isServerTokenFetch" value="1"  />
-                                                <span class="">Yes</span>
-                                            </label>
-
-                                            <label for="isServerTokenFetch0" class="cursor-pointer">
-                                                <input type="radio" class="" id="isServerTokenFetch0" name="isServerTokenFetch" value="0"  />
-                                                <span class="">No</span>
-                                            </label>
-
-                                        </div>
-
-
-
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-12">
-                                    <div class="form-group row">
-
-                                        <label for="isAppAuthKeysUsed" class="col-sm-2 col-form-label">Is App Auth Keys Used</label>
-                                        <div class="col-sm-4  pt-2">
-
-                                            <label for="isAppAuthKeysUsed1" class="cursor-pointer">
-                                                <input type="radio" class="" id="isAppAuthKeysUsed1" name="isAppAuthKeysUsed" value="1"  />
-                                                <span class="">Yes</span>
-                                            </label>
-
-                                            <label for="isAppAuthKeysUsed0" class="cursor-pointer">
-                                                <input type="radio" class="" id="isAppAuthKeysUsed0" name="isAppAuthKeysUsed" value="0"  />
-                                                <span class="">No</span>
-                                            </label>
-
-                                        </div>
 
                                         <label for="isServerLocalAuthKeyUsed" class="col-sm-2 col-form-label">Is Server Local Auth Keys Used</label>
                                         <div class="col-sm-4  pt-2">
@@ -455,12 +401,14 @@
 
                                         </div>
 
+
                                     </div>
+
+                                    
                                 </div>
 
                                 <div class="col-sm-12">
                                     <div class="form-group row">
-
 
                                         <label for="isFirebaseDatabaseAccess" class="col-sm-2 col-form-label">Is Firebase Database Access</label>
                                         <div class="col-sm-4  pt-2">
@@ -591,7 +539,7 @@
                                             <span class="text-danger" id="server_auth_keyError"></span>
                                         </div>
 
-                                        <label for="stream_key" class="col-sm-2 col-form-label">Stream Key</label>
+                                        <label for="stream_key" class="col-sm-2 col-form-label">Auth Helper Key</label>
                                         <div class="col-sm-4">
                                             <input type="text" class="form-control" id="stream_key" name="stream_key" value="" >
                                             <span class="text-danger" id="stream_keyError"></span>
@@ -603,19 +551,11 @@
                                 <div class="col-sm-12">
                                     <div class="form-group row">
 
-                                        <label for="serverAuthKey1" class="col-sm-2 col-form-label">Token key </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" class="form-control" id="token_key" name="token_key" value="" >
-                                            <span class="text-danger" id="token_keyError"></span>
-                                        </div>
-
                                         <label for="appSigningKey" class="col-sm-2 col-form-label">App Signing Key </label>
                                         <div class="col-sm-4">
                                             <input type="text" class="form-control" id="appSigningKey" name="appSigningKey" value="" >
                                             <span class="text-danger" id="appSigningKeyError"></span>
                                         </div>
-
-
 
                                     </div>
                                 </div>
@@ -1134,12 +1074,13 @@
                                 });
 
                                 const jsonData = JSON.parse(response?.data?.success[i]?.firebaseData);
+                                var package_id = response?.data?.success[i].packageId;
 
                                 if(response?.data?.success[i]?.node == "AppDetails"){
-                                    syncDataToRealTimeDatabase(db, response?.data?.success[i]?.node, jsonData,opt);
+                                    syncDataToRealTimeDatabase(db, response?.data?.success[i]?.node, jsonData,opt,package_id);
                                 }
                                 else{
-                                    pushDataToRealTimeDatabase(db, response?.data?.success[i]?.node, jsonData,opt)
+                                    pushDataToRealTimeDatabase(db, response?.data?.success[i]?.node, jsonData,opt,package_id)
                                 }
 
                             }
@@ -1195,10 +1136,9 @@
 
         var server_auth_key = $("#server_auth_key").val().trim();
         var stream_key = $("#stream_key").val().trim();
-        var token_key = $("#token_key").val().trim();
         var appSigningKey = $("#appSigningKey").val().trim();
 
-        if( server_auth_key || stream_key || token_key  || appSigningKey ){
+        if( server_auth_key || stream_key || appSigningKey ){
             validation = true;
         }
         else{
@@ -1333,18 +1273,14 @@
             return false;
         }
 
-        var appAuthKey1 =$("#appAuthKey1").val().trim();
-        var appAuthKey2 =$("#appAuthKey2").val().trim();
         var serverAuthKey1 =$("#serverAuthKey1").val().trim();
         var serverAuthKey2 =$("#serverAuthKey2").val().trim();
         var isAppSigningKeyUsed = $("input[name='isAppSigningKeyUsed']").is(":checked");
         var isFirebaseDatabaseAccess = $("input[name='isFirebaseDatabaseAccess']").is(":checked");
-        var isServerTokenFetch = $("input[name='isServerTokenFetch']").is(":checked");
-        var isAppAuthKeysUsed = $("input[name='isAppAuthKeysUsed']").is(":checked");
         var isServerLocalAuthKeyUsed = $("input[name='isServerLocalAuthKeyUsed']").is(":checked");
 
-        if(appAuthKey1 || appAuthKey2 || serverAuthKey1 || serverAuthKey2 || isAppSigningKeyUsed
-            || isFirebaseDatabaseAccess || isServerTokenFetch || isAppAuthKeysUsed || isServerLocalAuthKeyUsed ){
+        if(serverAuthKey1 || serverAuthKey2 || isAppSigningKeyUsed
+            || isFirebaseDatabaseAccess || isServerLocalAuthKeyUsed ){
             validation = true;
         }
         else{
@@ -1461,8 +1397,9 @@
                                 });
 
                                 const jsonData = JSON.parse(response?.data?.success[i]?.firebaseData);
+                                var package_id = response?.data?.success[i].packageId;
 
-                                pushDataToRealTimeDatabase(db, response?.data?.success[i]?.node, jsonData,opt)
+                                pushDataToRealTimeDatabase(db, response?.data?.success[i]?.node, jsonData,opt,package_id)
 
                             }
                         }
@@ -1647,14 +1584,15 @@
                                     });
 
                                     const jsonData = JSON.parse(response?.data?.success[i]?.firebaseData);
+                                    var package_id = response?.data?.success[i].packageId;
 
-                                    pushDataToRealTimeDatabase(db, response?.data?.success[i]?.node, jsonData,opt)
+                                    console.log("Package ID");
+                                    console.log(package_id);
+
+                                    pushDataToRealTimeDatabase(db,response?.data?.success[i]?.node, jsonData,opt,package_id)
 
                                 }
                             }
-                        }
-                        else{
-//                            showHideBtnSpinner(opt.btnId,opt.btnText,opt.btnAddClass,opt.btnRemoveClass,false);
                         }
 
                 },
@@ -1761,8 +1699,9 @@
                                         });
 
                                         const jsonData = JSON.parse(response?.data?.success[i]?.firebaseData);
+                                        var package_id = response?.data?.success[i].packageId;
 
-                                        syncDataToRealTimeDatabase(db, response?.data?.success[i]?.node, jsonData,opt);
+                                        syncDataToRealTimeDatabase(db, response?.data?.success[i]?.node, jsonData,opt,package_id);
 
                                     }
 
@@ -1857,7 +1796,7 @@
 
     }));
 
-    async function pushDataToRealTimeDatabase(db,node,AppSettings,opt) {
+    async function pushDataToRealTimeDatabase(db,node,AppSettings,opt,package_id) {
         
         var Toast = Swal.mixin({
             toast: true,
@@ -1866,9 +1805,7 @@
             timer: 3000
         });
 
-        set(ref(db), {
-            AppSettings
-        })
+        set(ref(db,'/'+package_id+'/'),AppSettings)
             .then(() => {
 
                 Toast.fire({
@@ -1894,7 +1831,7 @@
 
     }
 
-    async function syncDataToRealTimeDatabase(db,node,jsonData,opt) {
+    async function syncDataToRealTimeDatabase(db,node,jsonData,opt,package_id) {
 
         var Toast = Swal.mixin({
             toast: true,
@@ -1906,9 +1843,7 @@
         switch(node) {
             case 'AppDetails':
                 const AppDetails = jsonData;
-                set(ref(db), {
-                    AppDetails
-                })
+                set(ref(db,'/'+package_id+'/'),AppDetails)
                 .then(() => {
 
                     Toast.fire({
@@ -1927,90 +1862,6 @@
                     showHideBtnSpinner(opt.btnId,opt.btnText,opt.btnAddClass,opt.btnRemoveClass,false);
                 });
 
-                break;
-
-            case 'Leagues':
-
-                let Leagues = jsonData;
-
-                set(ref(db), {
-                    Leagues
-                })
-                    .then(() => {
-
-                        Toast.fire({
-                            icon: "success",
-                            title: "Data has been pushed successfully"
-                        })
-
-                    })
-                    .catch((error) => {
-
-                        Toast.fire({
-                            icon:  "error",
-                            title: 'Synchronization Failed due to ' + error
-                        });
-
-                        showHideBtnSpinner(opt.btnId,opt.btnText,opt.btnAddClass,opt.btnRemoveClass,false);
-                    });
-
-                break;
-            case "Schedules":
-
-                const Schedules = jsonData;
-
-                set(ref(db), {
-                    Schedules
-                })
-                    .then(() => {
-
-                        Toast.fire({
-                            icon: "success",
-                            title: "Data has been pushed successfully"
-                        })
-
-                        console.log("Success!");
-
-                    })
-                    .catch((error) => {
-
-                        Toast.fire({
-                            icon:  "error",
-                            title: 'Synchronization Failed due to ' + error
-                        });
-
-                        showHideBtnSpinner(opt.btnId,opt.btnText,opt.btnAddClass,opt.btnRemoveClass,false);
-
-                    });
-                // code block
-                break;
-
-            case "Servers":
-
-                const Servers = jsonData;
-                set(ref(db), {
-                    Servers
-                })
-                    .then(() => {
-
-                        Toast.fire({
-                            icon: "success",
-                            title: "Data has been pushed successfully"
-                        })
-
-                        console.log("Success!");
-
-                    })
-                    .catch((error) => {
-
-                        Toast.fire({
-                            icon:  "error",
-                            title: 'Synchronization Failed due to ' + error
-                        });
-
-                        showHideBtnSpinner(opt.btnId,opt.btnText,opt.btnAddClass,opt.btnRemoveClass,false);
-
-                    });
                 break;
             default:
             // code block

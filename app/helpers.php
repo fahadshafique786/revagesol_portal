@@ -5,6 +5,7 @@ use App\Models\Accounts;
 use App\Models\AppDetails;
 use Illuminate\Support\Facades\DB;
 use App\Models\RoleHasApplication;
+use App\Models\RoleHasAccount;
 use App\Models\Country;
 use App\Models\BlockedApplication;
 use App\Models\FirebaseCredentials;
@@ -85,6 +86,15 @@ if ( ! function_exists('getPackageIdByAppId')) {
         $application = AppDetails::where('id',$appDetailId)->select(['packageId'])->first();
 
         return (!empty($application)) ? $application->packageId : null;
+    }
+}
+
+if ( ! function_exists('getAccountIdByAppId')) {
+    function getAccountIdByAppId($appDetailId)
+    {
+        $application = AppDetails::where('id',$appDetailId)->select(['account_id'])->first();
+
+        return (!empty($application)) ? $application->account_id : null;
     }
 }
 
@@ -339,7 +349,7 @@ if ( ! function_exists('verifyToken')) {
             isset($headers['Ipaddress']) && !empty($headers['Ipaddress'])
         ) {
 
-            $streamKey = "";
+            $authHelperKey = "";
             $secretKey = "";
 
             $authToken = $headers['Authorization'];
@@ -368,7 +378,7 @@ if ( ! function_exists('verifyToken')) {
 
                 if ($appCredentials->exists()) {
                     $appCredentials = $appCredentials->first();
-                    $streamKey = $appCredentials->stream_key;
+                    $authHelperKey = $appCredentials->stream_key;
                     $secretKey = $appCredentials->server_auth_key;;
                 } else {
                     $appCredentials = 0;
@@ -377,7 +387,7 @@ if ( ! function_exists('verifyToken')) {
             }
 
 
-            $userHashString = $streamKey . $ipAddress . $userStartTime . $userEndTime . $secretKey . $userSalt;
+            $userHashString = $authHelperKey . $ipAddress . $userStartTime . $userEndTime . $secretKey . $userSalt;
             $hashSha1Generated = sha1($userHashString);
 
 
@@ -532,6 +542,24 @@ if ( ! function_exists('getApplicationsByRoleId'))
 
             return $applicationArray;
 //                return rtrim($commaSeparatedIds,',');
+        }
+        return false;
+    }
+}
+
+if ( ! function_exists('getAccountsByRoleId'))
+{
+    function getAccountsByRoleId($roleId){
+
+        $accountsList = RoleHasAccount::select('account_id')->where('role_id',$roleId)->get()->toArray();
+        if(!empty($accountsList)){
+
+            $accountsArray = [];
+            foreach($accountsList as $obj){
+                $accountsArray [] = $obj['account_id'];
+            }
+
+            return $accountsArray;
         }
         return false;
     }

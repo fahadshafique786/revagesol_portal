@@ -11,28 +11,35 @@ use Illuminate\Support\Facades\DB;
 
 class AppCredentialsController extends Controller
 {
-    protected $roleAssignedApplications;
+    protected $roleAssignedAccounts;
 
     public function __construct()
     {
         $this->middleware('auth');
         $this->middleware('role_or_permission:super-admin|view-credentials', ['only' => ['index','fetchAppCredentialsList']]);
-        $this->middleware('role_or_permission:super-admin|view-applications', ['only' => ['index','fetchAppCredentialsList']]);
+        $this->middleware('role_or_permission:super-admin|view-accounts', ['only' => ['index','fetchAppCredentialsList']]);
         $this->middleware('role_or_permission:super-admin|manage-credentials',['only' => ['edit','store','destroy','deleteAll']]);
-        $this->middleware('role_or_permission:super-admin|manage-applications',['only' => ['index','store','destroy','deleteAll']]);
+        $this->middleware('role_or_permission:super-admin|manage-accounts',['only' => ['index','store','destroy','deleteAll']]);
     }
 
     public function index()
     {
         $appsList = AppDetails::all();
-        $accountsList = Accounts::orderBy('id','DESC')->get();
+
+        $this->roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
+        if(!empty($this->roleAssignedAccounts)){
+            $accountsList = Accounts::whereIn('id',$this->roleAssignedAccounts)->orderBy('id','DESC')->get();
+        }
+        else{
+            $accountsList = Accounts::orderBy('id','DESC')->get();
+        }
 
         $appListWithoutCredentials = DB::select(DB::raw('
         SELECT *
-       FROM app_details app
-       WHERE NOT EXISTS (SELECT *
+           FROM accounts acc
+           WHERE NOT EXISTS (SELECT *
                                 FROM app_credentials ac
-                                WHERE ac.app_detail_id = app.id
+                                WHERE ac.account_id = acc.id
                                       );
         '));
 
@@ -42,20 +49,23 @@ class AppCredentialsController extends Controller
             ->with('remainingAppsList',$appListWithoutCredentials);
     }
 
-
     public function store(Request $request)
     {
-        $roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
-        if(!in_array($request->app_detail_id,$roleAssignedApplications)){
+        $roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
+        if(!in_array($request->account_id,$roleAssignedAccounts)){
             return Response::json(["message"=>"You are not allowed to perform this action!"],403);
         }
 
-        if(!empty($request->id))
+        $this->validate($request, [
+            'account_id' => 'required|exists:accounts,id',
+        ]);
+
+        if(!empty($request->id)) // for edit case
         {
             $validationResponse = [];
 
             $validation = AppCredentials::where('appSigningKey',$request->appSigningKey)
-                ->where('app_detail_id',$request->app_detail_id)
+                ->where('account_id',$request->account_id)
                 ->where('id','!=',$request->id);
 
 
@@ -67,7 +77,7 @@ class AppCredentialsController extends Controller
             }
 
             $validation = AppCredentials::where('server_auth_key',$request->server_auth_key)
-                ->where('app_detail_id',$request->app_detail_id)
+                ->where('account_id',$request->account_id)
                 ->where('id','!=',$request->id);
 
 
@@ -79,31 +89,19 @@ class AppCredentialsController extends Controller
             }
 
             $validation = AppCredentials::where('stream_key',$request->stream_key)
-                ->where('app_detail_id',$request->app_detail_id)
+                ->where('account_id',$request->account_id)
                 ->where('id','!=',$request->id);
 
 
             if($validation->exists()){
                 $validationResponse['message'] = "The given data was invalid.";
-                $validationResponse['errors']['server_auth_key'] = "The stream key already exists!";
-
-                return Response::json($validationResponse,422);
-            }
-
-            $validation = AppCredentials::where('token_key',$request->token_key)
-                ->where('app_detail_id',$request->app_detail_id)
-                ->where('id','!=',$request->id);
-
-
-            if($validation->exists()){
-                $validationResponse['message'] = "The given data was invalid.";
-                $validationResponse['errors']['token_key'] = "The Token key already exists!";
+                $validationResponse['errors']['server_auth_key'] = "The auth helper key already exists!";
 
                 return Response::json($validationResponse,422);
             }
 
             $validation = AppCredentials::where('versionCode',$request->versionCode)
-                ->where('app_detail_id',$request->app_detail_id)
+                ->where('account_id',$request->account_id)
                 ->where('id','!=',$request->id);
 
 
@@ -116,12 +114,12 @@ class AppCredentialsController extends Controller
 
         }
         else
-        {
+        { // for add new case
 
             $validationResponse = [];
 
             $validation = AppCredentials::where('appSigningKey',$request->appSigningKey)
-                ->where('app_detail_id',$request->app_detail_id);
+                ->where('account_id',$request->account_id);
 
             if($validation->exists()){
 
@@ -133,7 +131,7 @@ class AppCredentialsController extends Controller
             }
 
             $validation = AppCredentials::where('server_auth_key',$request->server_auth_key)
-                ->where('app_detail_id',$request->app_detail_id);
+                ->where('account_id',$request->account_id);
 
             if($validation->exists()){
 
@@ -145,30 +143,19 @@ class AppCredentialsController extends Controller
             }
 
             $validation = AppCredentials::where('stream_key',$request->stream_key)
-                ->where('app_detail_id',$request->app_detail_id);
+                ->where('account_id',$request->account_id);
 
             if($validation->exists()){
 
                 $validationResponse['message'] = "The given data was invalid.";
-                $validationResponse['errors']['stream_key'] = "This stream key already exists!";
-
-                return Response::json($validationResponse,422);
-            }
-
-            $validation = AppCredentials::where('token_key',$request->token_key)
-                ->where('app_detail_id',$request->app_detail_id);
-
-            if($validation->exists()){
-
-                $validationResponse['message'] = "The given data was invalid.";
-                $validationResponse['errors']['token_key'] = "This token key already exists!";
+                $validationResponse['errors']['stream_key'] = "This auth helper key already exists!";
 
                 return Response::json($validationResponse,422);
             }
 
 
             $validation = AppCredentials::where('versionCode',$request->versionCode)
-                ->where('app_detail_id',$request->app_detail_id);
+                ->where('account_id',$request->account_id);
 
             if($validation->exists()){
 
@@ -182,9 +169,9 @@ class AppCredentialsController extends Controller
 
         $input = array();
         $input['server_auth_key'] = $request->server_auth_key;
+        $input['account_id'] = $request->account_id;
         $input['stream_key'] = $request->stream_key;
-        $input['token_key'] = $request->token_key;
-        $input['app_detail_id'] = $request->app_detail_id;
+        $input['app_detail_id'] = 0;
         $input['appSigningKey'] = $request->appSigningKey;
         $input['versionCode'] = $request->versionCode;
 
@@ -197,7 +184,6 @@ class AppCredentialsController extends Controller
         return response()->json(['success' => true]);
     }
 
-
     public function edit(Request $request)
     {
         $where = array('id' => $request->id);
@@ -207,9 +193,10 @@ class AppCredentialsController extends Controller
 
     public function destroy(Request $request)
     {
-        $database = AppCredentials::where('id',$request->id)->select('app_detail_id')->first();
-        $roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
-        if(!in_array($database->app_detail_id,$roleAssignedApplications)){
+        $database = AppCredentials::where('id',$request->id)->select('account_id')->first();
+        $roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
+        
+        if(!in_array($database->account_id,$roleAssignedAccounts)){
             return Response::json(["message"=>"You are not allowed to perform this action!"],403);
         }
         
@@ -222,26 +209,21 @@ class AppCredentialsController extends Controller
 
         if(request()->ajax()) {
 
-            $this->roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
+            $this->roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
 
             $response = array();
-            $Filterdata = AppCredentials::select('app_credentials.*','app_details.appName','app_details.packageId as packageId');
+            $Filterdata = AppCredentials::select('app_credentials.*','accounts.name as accountName');
 
-
-            if(isset($request->filter_app_id) && !empty($request->filter_app_id) && ($request->filter_app_id != '-1')){
-                $Filterdata = $Filterdata->where('app_credentials.app_detail_id',$request->filter_app_id);
-            }
-
-            $Filterdata = $Filterdata->join('app_details', function ($join) {
-                $join->on('app_details.id', '=', 'app_credentials.app_detail_id');
+            $Filterdata = $Filterdata->join('accounts', function ($join) {
+                $join->on('accounts.id', '=', 'app_credentials.account_id');
             });
 
-            if(!empty($this->roleAssignedApplications)){
-                $Filterdata = $Filterdata->whereIn('app_credentials.app_detail_id',$this->roleAssignedApplications);
+            if(!empty($this->roleAssignedAccounts)){
+                $Filterdata = $Filterdata->whereIn('app_credentials.account_id',$this->roleAssignedAccounts);
             }
 
             if($request->filter_app_id == '-1' && isset($request->filter_accounts_id) && !empty($request->filter_accounts_id) && ($request->filter_accounts_id != '-1') ){
-                $Filterdata = $Filterdata->where('app_details.account_id',$request->filter_accounts_id);
+                $Filterdata = $Filterdata->where('app_credentials.account_id',$request->filter_accounts_id);
             }
 
             $Filterdata = $Filterdata->orderBy('app_credentials.id','asc')->get();
@@ -256,15 +238,14 @@ class AppCredentialsController extends Controller
 
                     $response[$i]['checkbox'] = '<input type="checkbox" class="sub_chk" data-id="'.$obj->id.'">';
                     $response[$i]['srno'] = $i + 1;
-                    $response[$i]['appName'] = $obj->appName . ' - ' . $obj->packageId;
+                    $response[$i]['account_id'] = $obj->accountName;
                     $response[$i]['server_auth_key'] = $obj->server_auth_key;
                     $response[$i]['appSigningKey'] = $obj->appSigningKey;
                     $response[$i]['versionCode'] = $obj->versionCode;
                     $response[$i]['stream_key'] = $obj->stream_key;
-                    $response[$i]['token_key'] = $obj->token_key;
                     if(auth()->user()->hasRole('super-admin') || auth()->user()->can('manage-credentials'))
                     {
-                        $response[$i]['action'] = '<a href="javascript:void(0)" class="btn edit" data-application_id="'.$obj->app_detail_id.'" data-id="'. $obj->id .'"><i class="fa fa-edit  text-info"></i></a>
+                        $response[$i]['action'] = '<a href="javascript:void(0)" class="btn edit" data-account_id="'.$obj->account_id.'" data-id="'. $obj->id .'"><i class="fa fa-edit  text-info"></i></a>
 											<a href="javascript:void(0)" class="btn delete " data-id="'. $obj->id .'"><i class="fa fa-trash-alt text-danger"></i></a>';
                     }
                     else
@@ -282,42 +263,41 @@ class AppCredentialsController extends Controller
         }
     }
 
-
-    /****** Get Apps List not saved in App Credentials ***********/
-
+    /***** Get Apps List not saved in App Credentials ***********/
 
     public function getAppsOptions(Request $request){
 
-        $this->roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
+        $this->roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
 
         DB::enableQueryLog();
-        $appIdClause = "";
-        if(isset($request->appId) && !empty($request->appId)){
-            $appIdClause = " OR app.id = ". $request->appId;
+        $accountIdClause = "";
+
+        if(isset($request->account_id) && !empty($request->account_id)){
+            $accountIdClause = " OR acc.id = ". $request->account_id;
         }
 
         if(isset($request->accountsId) && !empty($request->accountsId) && ($request->accountsId != "-1")){
-            $appIdClause .= " AND app.account_id = ". $request->accountsId;
+            $accountIdClause .= " AND acc.id = ". $request->accountsId;
         }
 
-        if(!empty($this->roleAssignedApplications)){
-            $appIdClause .= " AND app.id IN (".implode(",",$this->roleAssignedApplications).")";
+        if(!empty($this->roleAssignedAccounts)){
+            $accountIdClause .= " AND acc.id IN (".implode(",",$this->roleAssignedAccounts).")";
         }
 
         $appListWithoutCredentials = DB::select(DB::raw('
         SELECT *
-       FROM app_details app
-       WHERE NOT EXISTS (SELECT *
+        FROM accounts acc
+        WHERE NOT EXISTS (SELECT *
                                 FROM app_credentials ac
-                                WHERE ac.app_detail_id = app.id
+                                WHERE ac.account_id = acc.id
                         )
-        '.$appIdClause.'
+        '.$accountIdClause.'
         '));
 
-        $options = '<option value="">Select App </option>';
+        $options = '<option value="">Select Account </option>';
         if(!empty($appListWithoutCredentials)){
             foreach($appListWithoutCredentials as $obj){
-                $options .= '<option value="'.$obj->id.'">   '  .   $obj->appName  . ' - '  . $obj->packageId   .   '    </option>';
+                $options .= '<option value="'.$obj->id.'">   '  .   $obj->name .   '    </option>';
             }
         }
 

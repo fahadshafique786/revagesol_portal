@@ -35,6 +35,11 @@ class CreateAppDetailsTable extends Migration
             $table->enum('isScreenAdsLimit',['0','1'])->default('0');
             $table->integer('appOpenIntervalHour')->default(3);
             $table->integer('minimumVersionSupport')->nullable();
+            $table->string('pagesUrl')->nullable();
+            $table->integer('pagesCounter')->default(0);
+            $table->enum('pagesExtension',['jpg','png'])->default('jpg');
+            $table->enum('isOnlineCode',['0','1'])->default('0');
+            $table->enum('isPagesAlgo',['0','1'])->default('1');
             $table->string('startAppId')->default('0000');
             $table->string('newAppPackage')->nullable();
             $table->string('ourAppPackage')->nullable();

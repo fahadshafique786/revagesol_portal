@@ -187,15 +187,17 @@ class ApiTokenService {
 
             if(
                 isset($headers['Authorization']) && !empty($headers['Authorization'])  &&
+                isset($headers['Accountid']) && !empty($headers['Accountid'])  &&
                 isset($headers['Packageid']) && !empty($headers['Packageid']) &&
                 isset($headers['Ipaddress']) && !empty($headers['Ipaddress'])
             ){
 
                 $response =  [];
-                $streamKey = ""; $secretKey = "";
+                $authHelperKey = ""; $secretKey = "";
 
                 $authToken = $headers['Authorization'];
                 $packageId = $headers['Packageid'];
+                $accountId = $headers['Accountid'];
                 $ipAddress = $headers['Ipaddress'];
                 $headerVersionCode = (isset($headers['Versioncode'])) ? (int) $headers['Versioncode'] : 0;
 
@@ -208,24 +210,24 @@ class ApiTokenService {
 
 
                 $appDetails =   DB::table('app_details')
-                    ->where('packageId',$packageId)
+                    // ->where('packageId',$packageId)
+                    ->where('account_id',$accountId)
                     ->select('id');
 
                 /*** Get Key From Database By using Package ID ***/
 
                 if($appDetails->exists()){
-                    $appId = $appDetails->first()->id;
                     $appCredentials =   DB::table('app_credentials')
                         ->select('stream_key','server_auth_key','appSigningKey','versionCode')
-                        ->where('app_detail_id',$appId);
+                        ->where('account_id',$accountId);
 
                     if($appCredentials->exists()){
                         $appCredentials = $appCredentials->first();
-                        $streamKey = $appCredentials->stream_key;
+                        $authHelperKey = $appCredentials->stream_key;
 
                         $appSetting = DB::table('app_settings')
                             ->select('isAppSigningKeyUsed')
-                            ->where('app_detail_id',$appId)->first();
+                            ->where('account_id',$accountId)->first();
 
                         $secretKey = (($appSetting->isAppSigningKeyUsed == "1" || $appSetting->isAppSigningKeyUsed == "1") && ($headerVersionCode >= $appCredentials->versionCode ) ) ? $appCredentials->appSigningKey :  $appCredentials->server_auth_key ;
                     }
@@ -236,12 +238,14 @@ class ApiTokenService {
                 }
 
 
-                $userHashString = $streamKey.$ipAddress.$userStartTime.$userEndTime.$secretKey.$userSalt;
+                $userHashString = $authHelperKey.$ipAddress.$userStartTime.$userEndTime.$secretKey.$userSalt;
                 $hashSha1Generated = sha1($userHashString);
                 $hashSha256Generated =  hash('sha256',$userHashString);
 
                 $ourSha1GeneratedToken = $hashSha1Generated.'-'.$userSalt.'-'.$userEndTime.'-'.$userStartTime;
                 $ourSha256GeneratedToken = $hashSha256Generated.'-'.$userSalt.'-'.$userEndTime.'-'.$userStartTime;
+
+                // dd("ourSha1GeneratedToken" , $ourSha1GeneratedToken , "authToken", $authToken , "ourSha256GeneratedToken", $ourSha256GeneratedToken );
 
                 if($ourSha1GeneratedToken != $authToken && $ourSha256GeneratedToken != $authToken) {
                     $response['code'] = 403;
@@ -253,8 +257,10 @@ class ApiTokenService {
             else{
 
                 $response['code'] = 401;
-                $response['message'] = "Unauthorized Request!";
+                $response['message'] = "Unauthorized Request! 786";
                 $response['data'] = null;
+                // dd($response,$headers);
+
                 return $response;
             }
 

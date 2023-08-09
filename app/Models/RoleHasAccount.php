@@ -5,16 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SponsorAds extends Model
+class RoleHasAccount extends Model
 {
     use HasFactory;
 
     protected $fillable = [
+        'role_id',
         'account_id',
-        'app_detail_id',
-        'adName',
-        'adUrlImage',
-        'clickAdToGo',
-        'isAdShow',
+        'application_id',
     ];
+
 }

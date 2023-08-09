@@ -15,6 +15,7 @@ class CreateAdmobAdsTable extends Migration
     {
         Schema::create('admob_ads', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('account_id')->default(0);
             $table->unsignedBigInteger('app_detail_id')->index();
             $table->string('adName')->nullable();
             $table->string('adUId')->nullable();

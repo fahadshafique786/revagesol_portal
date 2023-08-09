@@ -25,7 +25,7 @@
                                     <label for="staticEmail" class="col-sm-2 col-form-label">Accounts</label>
                                     <div class="col-sm-4">
 
-                                        <select class="form-control" id="account_filter" name="account_filter" {{ (isset($appSettingId) && ($appSettingId)) ? 'disabled' : '' }}
+                                        <select class="form-control" id="account_id" name="account_id" {{ (isset($appSettingId) && ($appSettingId)) ? 'disabled' : '' }}
                                                 required onchange="getRemainingAppsOptionByAccounts(this.value,'app_detail_id')"  >
                                             <option value="" selected>   Select Accounts </option>
                                             @foreach ($accountsList as $obj)
@@ -73,25 +73,9 @@
                                         <input type="hidden" readonly id="appSettingId" name="appSettingId"  value="{{$appSettingId}}"/>
                                     </div>
 
-                                    <label for="staticEmail" class="col-sm-2 col-form-label">Stream Key</label>
+                                    <label for="staticEmail" class="col-sm-2 col-form-label">Auth Helper Key</label>
                                     <div class="col-sm-4">
-                                        <input type="text" class="form-control" name="streamKey" id="streamKey" value="{{(isset($appData->streamKey) && ($appData->streamKey)) ? $appData->streamKey : "" }}" required>
-                                    </div>
-
-                                </div>
-
-                                <div class="form-group row">
-
-                                    <label for="appAuthKey1" class="col-sm-2 col-form-label" id="">App Auth Key 1</label>
-                                    <div class="col-sm-4">
-                                        <input type="text"  class="form-control" name="appAuthKey1" id="appAuthKey1" value="{{(isset($appData->appAuthKey1) && ($appData->appAuthKey1)) ? $appData->appAuthKey1 : "" }}" required />
-                                        <span class="text-danger" id="appAuthKey1Error"></span>
-                                    </div>
-
-                                    <label for="appAuthKey2" class="col-sm-2 col-form-label">App Auth Key 2</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" class="form-control" name="appAuthKey2" id="appAuthKey2" value="{{(isset($appData->appAuthKey2) && ($appData->appAuthKey2)) ? $appData->appAuthKey2 : "" }}" required>
-                                        <span class="text-danger" id="appAuthKey2Error"></span>
+                                        <input type="text" class="form-control" name="authHelperKey" id="authHelperKey" value="{{(isset($appData->authHelperKey) && ($appData->authHelperKey)) ? $appData->authHelperKey : '' }}" required>
                                     </div>
 
                                 </div>
@@ -101,13 +85,13 @@
 
                                     <label for="serverAuthKey1" class="col-sm-2 col-form-label">Server Auth Key 1</label>
                                     <div class="col-sm-4">
-                                        <input type="text" class="form-control" name="serverAuthKey1" id="serverAuthKey1" value="{{(isset($appData->serverAuthKey1) && ($appData->serverAuthKey1)) ? $appData->serverAuthKey1 : "" }}" required />
+                                        <input type="text" class="form-control" name="serverAuthKey1" id="serverAuthKey1" value="{{(isset($appData->serverAuthKey1) && ($appData->serverAuthKey1)) ? $appData->serverAuthKey1 : '' }}" required />
                                     </div>
 
 
                                     <label for="serverAuthKey2" class="col-sm-2 col-form-label">Server Auth Key 2</label>
                                     <div class="col-sm-4">
-                                        <input type="text" class="form-control" name="serverAuthKey2" id="serverAuthKey2" value="{{(isset($appData->serverAuthKey2) && ($appData->serverAuthKey2)) ? $appData->serverAuthKey2 : "" }}" required/>
+                                        <input type="text" class="form-control" name="serverAuthKey2" id="serverAuthKey2" value="{{(isset($appData->serverAuthKey2) && ($appData->serverAuthKey2)) ? $appData->serverAuthKey2 : '' }}" required/>
                                     </div>
 
                                 </div>
@@ -117,98 +101,16 @@
 
                                     <label for="staticEmail" class="col-sm-2 col-form-label">Server Api Base Url</label>
                                     <div class="col-sm-4">
-                                        <input type="text" class="form-control" name="serverApiBaseUrl" id="serverApiBaseUrl" value="{{(isset($appData->serverApiBaseUrl) && ($appData->serverApiBaseUrl)) ? $appData->serverApiBaseUrl : "" }}" required>
+                                        <input type="text" class="form-control" name="serverApiBaseUrl" id="serverApiBaseUrl" value="{{(isset($appData->serverApiBaseUrl) && ($appData->serverApiBaseUrl)) ? $appData->serverApiBaseUrl : '' }}" required>
                                     </div>
 
                                     <label for="checkIpAddressApiUrl" class="col-sm-2 col-form-label mt-1">Check Ip Address Api Url</label>
                                     <div class="col-sm-4 mt-2">
-                                        <input type="text" class="form-control" name="checkIpAddressApiUrl" id="checkIpAddressApiUrl" value="{{(isset($appData->checkIpAddressApiUrl) && ($appData->checkIpAddressApiUrl)) ? $appData->checkIpAddressApiUrl : "" }}" required>
+                                        <input type="text" class="form-control" name="checkIpAddressApiUrl" id="checkIpAddressApiUrl" value="{{(isset($appData->checkIpAddressApiUrl) && ($appData->checkIpAddressApiUrl)) ? $appData->checkIpAddressApiUrl : '' }}" required>
                                     </div>
 
 
                                 </div>
-
-
-                                <div class="form-group row">
-
-                                    <label for="staticEmail" class="col-sm-2 col-form-label">Leagues Database Version</label>
-                                    <div class="col-sm-4">
-                                        <input type="text"
-                                               readonly="readonly"
-                                               maxlength="3"
-                                               data-currentValue="{{(isset($appData->leaguesDatabaseVersion) && ($appData->leaguesDatabaseVersion)) ? $appData->leaguesDatabaseVersion : '1.1' }}"
-                                               class="form-control w-50 d-inline-block notAllowedAlphabets versionControlInput"
-                                               name="leaguesDatabaseVersion" id="leaguesDatabaseVersion"
-                                               value="{{(isset($appData->leaguesDatabaseVersion) && ($appData->leaguesDatabaseVersion)) ? $appData->leaguesDatabaseVersion : "1.1" }}"
-                                               required />
-
-                                        <button type="button" class="plus numbers" >+</button>
-                                        <button type="button" class="minus numbers" >-</button>
-
-                                    </div>
-
-                                    <label for="staticEmail" class="col-sm-2 col-form-label">Schedules Database Version</label>
-                                    <div class="col-sm-4">
-                                        <input type="text"
-                                               readonly="readonly"
-                                               maxlength="3"
-                                               data-currentValue="{{(isset($appData->schedulesDatabaseVersion) && ($appData->schedulesDatabaseVersion)) ? $appData->schedulesDatabaseVersion : '1.1' }}"
-                                               class="form-control w-50 d-inline-block notAllowedAlphabets versionControlInput"
-                                               name="schedulesDatabaseVersion" id="schedulesDatabaseVersion"
-                                               value="{{(isset($appData->schedulesDatabaseVersion) && ($appData->schedulesDatabaseVersion)) ? $appData->schedulesDatabaseVersion : "1.1" }}"
-                                               required />
-
-                                        <button type="button" class="plus numbers" >+</button>
-                                        <button type="button" class="minus numbers" >-</button>
-
-                                    </div>
-
-
-
-                                </div>
-
-                                <div class="form-group row">
-
-                                    <label for="staticEmail" class="col-sm-2 col-form-label">Servers Database Version</label>
-                                    <div class="col-sm-4">
-                                        <input type="text"
-                                               readonly="readonly"
-                                               maxlength="3"
-                                               data-currentValue="{{(isset($appData->serversDatabaseVersion) && ($appData->serversDatabaseVersion)) ? $appData->serversDatabaseVersion : '1.1' }}"
-                                               class="form-control w-50 d-inline-block notAllowedAlphabets versionControlInput"
-                                               name="serversDatabaseVersion" id="serversDatabaseVersion"
-                                               value="{{(isset($appData->serversDatabaseVersion) && ($appData->serversDatabaseVersion)) ? $appData->serversDatabaseVersion : "1.1" }}"
-                                               required />
-
-                                        <button type="button" class="plus numbers" >+</button>
-                                        <button type="button" class="minus numbers" >-</button>
-
-                                    </div>
-
-
-
-
-
-                                    <label for="staticEmail" class="col-sm-2 col-form-label">Minimum Version Support</label>
-                                    <div class="col-sm-4">
-
-                                        <input type="text"
-                                               readonly="readonly"
-                                               maxlength="3"
-                                               data-currentValue="{{(isset($appData->minimumVersionSupport) && ($appData->minimumVersionSupport)) ? $appData->minimumVersionSupport : '1' }}"
-                                               class="form-control w-50 d-inline-block notAllowedAlphabets versionControlInput"
-                                               name="minimumVersionSupport" id="minimumVersionSupport"
-                                               value="{{(isset($appData->minimumVersionSupport) && ($appData->minimumVersionSupport)) ? $appData->minimumVersionSupport : "" }}"
-                                               required />
-
-                                        <button type="button" class="plus digit_numbers" >+</button>
-                                        <button type="button" class="minus digit_numbers" >-</button>
-
-
-                                    </div>
-
-                                </div>
-
 
                                 <div class="form-group row dbversion">
 
@@ -239,7 +141,7 @@
                                                        data-currentValue="{{(isset($appData->appDetailsDatabaseVersion) && ($appData->appDetailsDatabaseVersion)) ? $appData->appDetailsDatabaseVersion : '1.1' }}"
                                                        class="form-control w-50 d-inline-block notAllowedAlphabets versionControlInput"
                                                        name="appDetailsDatabaseVersion" id="appDetailsDatabaseVersion"
-                                                       value="{{(isset($appData->appDetailsDatabaseVersion) && ($appData->appDetailsDatabaseVersion)) ? $appData->appDetailsDatabaseVersion : "1.1" }}"
+                                                       value="{{(isset($appData->appDetailsDatabaseVersion) && ($appData->appDetailsDatabaseVersion)) ? $appData->appDetailsDatabaseVersion : '1.1' }}"
                                                        required />
 
                                                 <button type="button" class="plus numbers" >+</button>
@@ -372,21 +274,6 @@
 
                                 <div class="form-group row">
 
-                                    <label for="staticEmail" class="col-sm-2 col-form-label">Is App Auth Keys Used</label>
-                                    <div class="col-sm-4 pt-2">
-
-                                        <label for="isAppAuthKeysUsed1" class="cursor-pointer">
-                                            <input type="radio" class="" id="isAppAuthKeysUsed1" name="isAppAuthKeysUsed" value="1" {{(isset($appData->isAppAuthKeysUsed) && ($appData->isAppAuthKeysUsed)) ? 'checked' : "" }} />
-                                            <span class="">Yes</span>
-                                        </label>
-
-                                        <label for="isAppAuthKeysUsed0" class="cursor-pointer">
-                                            <input type="radio" class="" id="isAppAuthKeysUsed0" name="isAppAuthKeysUsed" value="0" {{((isset($appData->isAppAuthKeysUsed) && !$appData->isAppAuthKeysUsed) || (!$appSettingId)) ? 'checked' : "" }} />
-                                            <span class="">No</span>
-                                        </label>
-
-                                    </div>
-
                                     <label for="staticEmail" class="col-sm-2 col-form-label">Is Server Local Auth Keys Used</label>
                                     <div class="col-sm-4 pt-2">
 
@@ -401,6 +288,22 @@
                                         </label>
 
                                     </div>
+
+                                    <label for="isAppSigningKeyUsed" class="col-sm-2 col-form-label">Is App Signing Key Used</label>
+
+                                    <div class="col-sm-4 mt-2">
+                                        <label for="isAppSigningKeyUsed1" class="cursor-pointer">
+                                            <input type="radio" class="" id="isAppSigningKeyUsed1" name="isAppSigningKeyUsed" value="1"  {{(isset($appData->isAppSigningKeyUsed) && ($appData->isAppSigningKeyUsed)) ? 'checked' : "" }}   />
+                                            <span class="">Yes</span>
+                                        </label>
+
+                                        <label for="isAppSigningKeyUsed0" class="cursor-pointer">
+                                            <input type="radio" class="" id="isAppSigningKeyUsed0" name="isAppSigningKeyUsed" value="0"   {{((isset($appData->isAppSigningKeyUsed) && !$appData->isAppSigningKeyUsed) || (!$appSettingId)) ? 'checked' : "" }}  />
+                                            <span class="">No</span>
+                                        </label>
+
+                                    </div>
+
                                 </div>
 
                                 <div class="form-group row d-none">
@@ -455,44 +358,31 @@
 
                                 </div>
 
-
                                 <div class="form-group row">
 
-                                    <label for="isAppSigningKeyUsed" class="col-sm-2 col-form-label">Is App Signing Key Used</label>
+                                    <label for="staticEmail" class="col-sm-2 col-form-label">Minimum Version Support</label>
+                                    <div class="col-sm-4">
 
-                                    <div class="col-sm-4 mt-2">
-                                        <label for="isAppSigningKeyUsed1" class="cursor-pointer">
-                                            <input type="radio" class="" id="isAppSigningKeyUsed1" name="isAppSigningKeyUsed" value="1"  {{(isset($appData->isAppSigningKeyUsed) && ($appData->isAppSigningKeyUsed)) ? 'checked' : "" }}   />
-                                            <span class="">Yes</span>
-                                        </label>
+                                        <input type="text"
+                                               readonly="readonly"
+                                               maxlength="3"
+                                               data-currentValue="{{(isset($appData->minimumVersionSupport) && ($appData->minimumVersionSupport)) ? $appData->minimumVersionSupport : '1' }}"
+                                               class="form-control w-50 d-inline-block notAllowedAlphabets versionControlInput"
+                                               name="minimumVersionSupport" id="minimumVersionSupport"
+                                               value="{{(isset($appData->minimumVersionSupport) && ($appData->minimumVersionSupport)) ? $appData->minimumVersionSupport : '1' }}"
+                                               required />
 
-                                        <label for="isAppSigningKeyUsed0" class="cursor-pointer">
-                                            <input type="radio" class="" id="isAppSigningKeyUsed0" name="isAppSigningKeyUsed" value="0"   {{((isset($appData->isAppSigningKeyUsed) && !$appData->isAppSigningKeyUsed) || (!$appSettingId)) ? 'checked' : "" }}  />
-                                            <span class="">No</span>
-                                        </label>
+                                        <button type="button" class="plus digit_numbers" >+</button>
+                                        <button type="button" class="minus digit_numbers" >-</button>
+
 
                                     </div>
 
-                                    <label for="staticEmail" class="col-sm-2 col-form-label">Is Server Token Fetch</label>
-                                    <div class="col-sm-4 mt-2">
-                                        <label for="isServerTokenFetch1" class="cursor-pointer">
-                                            <input type="radio" class="" id="isServerTokenFetch1" name="isServerTokenFetch" value="1" {{(isset($appData->isServerTokenFetch) && ($appData->isServerTokenFetch)) ? 'checked' : "" }}  />
-                                            <span class="">Yes</span>
-                                        </label>
-
-                                        <label for="isServerTokenFetch0" class="cursor-pointer">
-                                            <input type="radio" class="" id="isServerTokenFetch0" name="isServerTokenFetch" value="0" {{((isset($appData->isServerTokenFetch) && !$appData->isServerTokenFetch) || (!$appSettingId)) ? 'checked' : "" }} />
-                                            <span class="">No</span>
-                                        </label>
-                                    </div>
-
-
-                                </div>
-
-                                <div class="form-group row">
-                                    <div class="col-sm-12 text-right">
+                                    <div class="col-sm-6 text-right">
                                         <button type="submit" class="btn btn-info" id="submitApp"> <i class="fa fa-save"></i> <span class=""> SUBMIT </span> </button>
                                     </div>
+
+
                                 </div>
 
                             </form>
@@ -522,53 +412,6 @@
         import { initializeAppCheck , ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-app-check.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-analytics.js";
         import { getDatabase , set , ref } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-database.js";
-
-
-
-        // $("button.digit_numbers").on("click", function() {
-
-        //     var $button = $(this);
-        //     var OldValue = $button.parent().find("input").attr('data-currentValue');
-        //     var value = $button.parent().find("input").val()
-
-        //     alert(value);
-
-        //     var finalValue = 0;
-        //     alert($button.text());
-        //     if ($button.text() === "+") {
-
-        //         var newVal = parseInt(value) + 1;
-
-        //         let difference = Math.abs(newVal - OldValue);
-        //         finalValue = newVal;
-        //         alert(finalValue + " === " + newVal )
-        //     }
-        //     else {
-
-        //         finalValue = OldValue;
-
-        //         var floatValue = value.split('.');
-        //         var decimalValue = floatValue[1];
-
-        //         var oldFloatValue = OldValue.split('.');
-        //         var oldDecimalValue = oldFloatValue[1];
-
-
-        //         var newVal = parseInt(value) - 1;
-
-        //         let difference = Math.abs(OldValue - newVal);
-
-        //         finalValue = newVal;
-
-        //     }
-
-        //     alert(finalValue);
-
-        //     $button.parent().find("input").val(finalValue);
-
-        //     return false;
-
-        // });
 
         $("button.numbers").on("click", function() {
 
@@ -712,9 +555,10 @@
                                 isTokenAutoRefreshEnabled: true // Set to true to allow auto-refresh.
                             });
 
-                            const jsonData = JSON.parse(res.firebaseData);
+                            var jsonData = JSON.parse(res.firebaseData);
+                            var package_id = res?.packageId;
 
-                            pushDataToRealTimeDatabase(db,res.node,jsonData,opt);
+                            pushDataToRealTimeDatabase(db,res.node,jsonData,opt,package_id);
 
                         }
 						else{
@@ -787,7 +631,10 @@
 
         });
 
-        function pushDataToRealTimeDatabase(db,node,AppSettings,opt) {
+        function pushDataToRealTimeDatabase(db,node,JsonData,opt,package_id) {
+
+            console.log(db);
+            // return false;
 
             var Toast = Swal.mixin({
                 toast: true,
@@ -796,9 +643,7 @@
                 timer: 3000
             });
 
-            set(ref(db), {
-                AppSettings
-            })
+            set(ref(db,'/'+package_id+'/'),JsonData)
             .then(() => {
 
                 Toast.fire({

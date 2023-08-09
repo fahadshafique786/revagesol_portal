@@ -69,8 +69,7 @@ class Applications extends BaseController
                     $sponsorListObject = DB::table('sponsor_ads')
                         ->select(['id AS sponsorAdId','app_detail_id AS appDetailId','adName','adUrlImage','clickAdToGo','isAdShow'])
                         ->where('app_detail_id',$app_detail_id)->get();
-
-
+                        
                     foreach($adsListObject as $index => $arr){
                         $arr->isAdShow = (int) $arr->isAdShow;
                         $arr->isAdShow = getBoolean($arr->isAdShow);
@@ -108,14 +107,15 @@ class Applications extends BaseController
 
                         $obj->adsIntervalTime = (int)($obj->adsIntervalTime);
                         $obj->minimumVersionSupport = (int)($obj->minimumVersionSupport);
+                        $obj->pagesCounter = (int) ($obj->pagesCounter);
 
                         $obj->isAdmobOnline = getBoolean($obj->isAdmobOnline);
                         $obj->isAdsInterval = getBoolean($obj->isAdsInterval);
                         $obj->isBannerPlayer = getBoolean($obj->isBannerPlayer);
 
-//                        $obj->isIpAddressApiCall = getBoolean($obj->isIpAddressApiCall);
-
                         $obj->isMessageDialogDismiss = getBoolean($obj->isMessageDialogDismiss);
+                        $obj->isOnlineCode = getBoolean($obj->isOnlineCode);
+                        $obj->isPagesAlgo = getBoolean($obj->isPagesAlgo);
 
                         $obj->isStartAppAdsShow = getBoolean($obj->isStartAppAdsShow);
                         $obj->isStartAppOnline = getBoolean($obj->isStartAppOnline);
@@ -218,21 +218,7 @@ class Applications extends BaseController
 
                     $appDetails = DB::table('app_details')
                         ->where('packageId', $packageId)
-                        ->select('id');
-
-                    /*** Get Key From Database By using Package ID ***/
-
-                    if ($appDetails->exists()) {
-                        $appId = $appDetails->first()->id;
-                        $appCredentials = DB::table('app_credentials')
-                            ->select('token_key')
-                            ->where('app_detail_id', $appId);
-
-                        if ($appCredentials->exists()) {
-                            $appCredentials = $appCredentials->first();
-                            $tokenKey = $appCredentials->token_key;;
-                        }
-                    }
+                        ->select('id','account_id');
 
                     $serverLabel = $serverType->first()->label;
 

@@ -54,6 +54,22 @@
                                     </div>
                                 </div>
 
+
+                                <div class="form-group row">
+                                    <label for="pagesUrl" class="col-sm-2 col-form-label">Pages URL</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="pagesUrl" id="pagesUrl" value="" required >
+                                    </div>
+
+                                    <label for="pagesCounter" class="col-sm-2 col-form-label">Pages Counter</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="pagesCounter" id="pagesCounter" value="" required>
+                                    </div>
+
+
+                                </div>
+
+
                                 <div class="form-group row">
                                     <label for="staticEmail" class="col-sm-2 col-form-label">adsIntervalTime</label>
                                     <div class="col-sm-4">
@@ -100,6 +116,62 @@
 
                                 <div class="form-group row">
 
+                                    <label for="appOpenIntervalHour" class="col-sm-2 col-form-label">appOpenIntervalHour</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="appOpenIntervalHour" id="appOpenIntervalHour" value="3" required>
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group row">
+
+                                    <label for="pagesExtension" class="col-sm-2 col-form-label">Pages Extension</label>
+                                    <div class="col-sm-4">
+                                        <label for="pagesExtension1" class="cursor-pointer">
+                                            <input type="radio" class="" id="pagesExtension1" name="pagesExtension" value="jpg"  checked />
+                                            <span class="">JPG</span>
+                                        </label>
+
+                                        <label for="pagesExtension0" class="cursor-pointer">
+                                            <input type="radio" class="" id="pagesExtension0" name="pagesExtension" value="png"  />
+                                            <span class="">PNG</span>
+                                        </label>
+
+                                    </div>
+
+
+                                    <label for="onlineCode" class="col-sm-2 col-form-label">isOnlineCode</label>
+                                    <div class="col-sm-4">
+                                        <label for="onlineCode1" class="cursor-pointer">
+                                            <input type="radio" class="" id="onlineCode1" name="onlineCode" value="1"   />
+                                            <span class="">Yes</span>
+                                        </label>
+
+                                        <label for="onlineCode0" class="cursor-pointer">
+                                            <input type="radio" class="" id="onlineCode0" name="onlineCode" value="0" checked />
+                                            <span class="">No</span>
+                                        </label>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group row">
+
+                                    <label for="pagesAlgo" class="col-sm-2 col-form-label">isPagesAlgo</label>
+                                    <div class="col-sm-4">
+                                        <label for="pagesAlgo1" class="cursor-pointer">
+                                            <input type="radio" class="" id="pagesAlgo1" name="pagesAlgo" value="1"  checked />
+                                            <span class="">Yes</span>
+                                        </label>
+
+                                        <label for="pagesAlgo0" class="cursor-pointer">
+                                            <input type="radio" class="" id="pagesAlgo0" name="pagesAlgo" value="0"  />
+                                            <span class="">No</span>
+                                        </label>
+
+                                    </div>
+
                                     <label for="staticEmail" class="col-sm-2 col-form-label">isAdmobAdsShow</label>
                                     <div class="col-sm-4">
                                         <label for="isAdmobAdsShow1" class="cursor-pointer">
@@ -114,49 +186,9 @@
 
                                     </div>
 
-                                    <label for="appOpenIntervalHour" class="col-sm-2 col-form-label">appOpenIntervalHour</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" class="form-control" name="appOpenIntervalHour" id="appOpenIntervalHour" value="3" required>
-                                    </div>
-
-
-                                    {{--                                    <label for="staticEmail" class="col-sm-2 col-form-label d-none">isAdmobOnline</label>--}}
-{{--                                    <div class="col-sm-4 d-none">--}}
-
-{{--                                        <label for="isAdmobOnline1" class="cursor-pointer">--}}
-{{--                                            <input type="radio" class="" id="isAdmobOnline1" name="isAdmobOnline" value="1"  checked />--}}
-{{--                                            <span class="">Yes</span>--}}
-{{--                                        </label>--}}
-
-{{--                                        <label for="isAdmobOnline0" class="cursor-pointer">--}}
-{{--                                            <input type="radio" class="" id="isAdmobOnline0" name="isAdmobOnline" value="0"   />--}}
-{{--                                            <span class="">No</span>--}}
-{{--                                        </label>--}}
-
-{{--                                    </div>--}}
-
-
-
                                 </div>
 
                                 <div class="form-group row">
-
-
-{{--                                    <label for="isIpAddressApiCall" class="col-sm-2 col-form-label d-none">isIpAddressApiCall</label>--}}
-{{--                                    <div class="col-sm-4 d-none">--}}
-
-
-{{--                                        <label for="isIpAddressApiCall1" class="cursor-pointer">--}}
-{{--                                            <input type="radio" class="" id="isIpAddressApiCall1" name="isIpAddressApiCall" value="1"  checked />--}}
-{{--                                            <span class="">Yes</span>--}}
-{{--                                        </label>--}}
-
-{{--                                        <label for="isIpAddressApiCall0" class="cursor-pointer">--}}
-{{--                                            <input type="radio" class="" id="isIpAddressApiCall0" name="isIpAddressApiCall" value="0"  />--}}
-{{--                                            <span class="">No</span>--}}
-{{--                                        </label>--}}
-
-{{--                                    </div>--}}
 
                                     <label for="staticEmail" class="col-sm-2 col-form-label">isBannerPlayer</label>
                                     <div class="col-sm-4">
@@ -187,8 +219,6 @@
                                         </label>
 
                                     </div>
-
-
 
 
                                 </div>
@@ -341,7 +371,7 @@
 
         $(document).ready(function($){
 
-            $('#adsIntervalTime,#minimumVersionSupport,#adsIntervalCount,#appOpenIntervalTime').on('keypress',function (e) {
+            $('#adsIntervalTime,#minimumVersionSupport,#adsIntervalCount,#appOpenIntervalTime,#pagesCounter').on('keypress',function (e) {
 
                 var charCode = (e.which) ? e.which : event.keyCode
                 if (String.fromCharCode(charCode).match(/[^0-9+.]/g))
@@ -349,7 +379,7 @@
 
             });
 
-            $('#adsIntervalTime,#minimumVersionSupport,#adsIntervalCount,#appOpenIntervalTime').on("cut copy paste",function(e) {
+            $('#adsIntervalTime,#minimumVersionSupport,#adsIntervalCount,#appOpenIntervalTime,#pagesCounter').on("cut copy paste",function(e) {
                 e.preventDefault();
             });
 

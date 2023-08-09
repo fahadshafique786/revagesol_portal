@@ -255,16 +255,10 @@ return [
 
     'synchronizationTypes' => [
         'apps_url'      => 'Sync App Details',
-        'leagues_url'   => 'Sync Leagues',
-        'schedules_url' => 'Sync Schedules',
-        'servers_url'   => 'Sync Servers'
     ],
 
     'versionCategories' => [
         'appDetailsDatabaseVersion'      => 'App Details Database Version',
-        'leaguesDatabaseVersion'   => 'Leagues Database Version',
-        'schedulesDatabaseVersion' => 'Schedules Database Version',
-        'serversDatabaseVersion'   => 'Servers Database Version',
         'appDetailsDatabaseClearVersion'   => 'App Detail Database Clear Version',
         'appCacheId'   => 'App Cache Id',
         'appSharedPrefId'   => 'App Shared Pref Id',

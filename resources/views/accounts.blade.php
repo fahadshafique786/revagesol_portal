@@ -220,6 +220,13 @@
 
         $(document).ready(function($){
 
+            var Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+            });
+
             callDataTableWithFilters();
 
             $.ajaxSetup({
@@ -255,8 +262,6 @@
 
                 $('#sport_logoError').text('');
 
-                $("input[name=accounts_type]").removeAttr('checked');
-
                 $.ajax({
                     type:"POST",
                     url: "{{ url('admin/edit-Account') }}",
@@ -281,7 +286,7 @@
                             $("#sport_logo").attr('disabled','disabled');
                         }
 
-                    }
+                    },
                 });
             });
 
@@ -298,9 +303,24 @@
                         success: function(res){
                             var dataTablePageInfo = Table_obj.page.info();
                             Table_obj.page(dataTablePageInfo.page).draw('page');
-                            // callDataTableWithFilters();
-                            // location.reload();
+                        },
+                        error:function (response) {
+                            if(response?.status == 403){
+                                Toast.fire({
+                                    icon: 'error',
+                                    title: response.responseJSON.message
+                                });
+                            }
+                            else{
+                                Toast.fire({
+                                    icon: 'error',
+                                    title: 'Network Error Occured!'
+                                });
+                                
+                            }
+
                         }
+
                     });
                 }
             });
@@ -327,16 +347,16 @@
                 $('#sport_logoError').text('');
 
 
-                    if($("#image_required1").prop('checked') && !$("#sport_logo_hidden").val()){
+                if($("#image_required1").prop('checked') && !$("#sport_logo_hidden").val()){
 
-                        if(!$("#sport_logo").val()){
-                            alert("Please select accounts logo!")
-                            $("#btn-save").html('Save');
-                            $("#btn-save"). attr("disabled", false);
-                            $('#sport_logoError').text('Please select logo!');
-                            return false;
-                        }
+                    if(!$("#sport_logo").val()){
+                        alert("Please select accounts logo!")
+                        $("#btn-save").html('Save');
+                        $("#btn-save"). attr("disabled", false);
+                        $('#sport_logoError').text('Please select logo!');
+                        return false;
                     }
+                }
 
 
                 $.ajax({
@@ -360,10 +380,24 @@
                         $("#btn-save"). attr("disabled", false);
                     },
                     error:function (response) {
+                        if(response?.status == 403){
+                            Toast.fire({
+                                icon: 'error',
+                                title: response.responseJSON.message
+                            });
+                        }
+                        else{
+                            Toast.fire({
+                                icon: 'error',
+                                title: 'Network Error Occured!'
+                            });
+                            
+                            $('#nameError').text(response.responseJSON?.errors?.name);
+                            $('#image_requiredError').text(response.responseJSON?.errors?.image_required);
+                        }
+   
                         $("#btn-save").html(' Save');
                         $("#btn-save"). attr("disabled", false);
-                        $('#nameError').text(response.responseJSON.errors.name);
-                        $('#image_requiredError').text(response.responseJSON.errors.image_required);
                     }
                 });
             }));

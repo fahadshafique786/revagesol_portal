@@ -15,7 +15,6 @@ class AppDetails extends Model
 //    ];
 
     protected $fillable = [
-
         'account_id',
         'packageId',
         'appName',
@@ -36,6 +35,11 @@ class AppDetails extends Model
         'isScreenAdsLimit',
         'appOpenIntervalHour',
         'minimumVersionSupport',
+        'pagesUrl',
+        'pagesCounter',
+        'pagesExtension',
+        'isOnlineCode',
+        'isPagesAlgo',
         'startAppId',
         'newAppPackage',
         'ourAppPackage',

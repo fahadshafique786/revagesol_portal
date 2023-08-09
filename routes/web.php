@@ -174,6 +174,7 @@ Route::group(
         Route::post('/apps-list-options/all', [AppDetailsController::class, 'getAppsListWithAllOption']);
         Route::post('/apps-list-options-no-permissions/all', [AppDetailsController::class, 'getAppsListWithAllOptionNoPermissions']);
         Route::post('/roles/accounts/apps-options', [AppDetailsController::class, 'getRolesAppsListByAccounts']);
+        Route::post('/roles/accounts/options', [AppDetailsController::class, 'getRolesAccountsListByRoleId']);
         Route::post('/remaining-apps-options', [AppDetailsController::class, 'getRemainingAppsForAppSettingOptions']);
         Route::get('/pagination/applications/fetch_data', [AppDetailsController::class, 'fetchData']);
         Route::post('/app-detail/proxy/change-status', [AppDetailsController::class, 'updateProxyStatus']);

@@ -12,7 +12,7 @@ use Response;
 
 class AppSettingsController extends Controller
 {
-    protected $roleAssignedApplications;
+    protected $roleAssignedAccounts;
 
     public function __construct()
     {
@@ -24,7 +24,7 @@ class AppSettingsController extends Controller
 
     public function index()
     {
-        $this->roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
+        $this->roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
 
         $appsList = AppSettings::select('app_settings.id as id','appName','appLogo','packageId','accounts.name as accounts_name')
             ->join('app_details', function ($join) {
@@ -35,7 +35,12 @@ class AppSettingsController extends Controller
             })
             ->get();
 
-        $accountsList = Accounts::orderBy('id','DESC')->get();
+        if(!empty($this->roleAssignedAccounts)){
+            $accountsList = Accounts::whereIn('id',$this->roleAssignedAccounts)->orderBy('id','DESC')->get();
+        }
+        else{
+            $accountsList = Accounts::orderBy('id','DESC')->get();
+        }
 
         return view('app_settings.index')
             ->with('appsList',$appsList)
@@ -45,26 +50,21 @@ class AppSettingsController extends Controller
 
     public function create($appSettingId = false)
     {
+        $this->roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
+        if(!empty($this->roleAssignedAccounts)){
+            $accountsList = Accounts::whereIn('id',$this->roleAssignedAccounts)->orderBy('id','DESC')->get();
+        }
+        else{
+            $accountsList = Accounts::orderBy('id','DESC')->get();
+        }
+
         if(!$appSettingId){
 
-            // for create new form
-
-//            $appListWithoutCredentials = DB::select(DB::raw('
-//
-//            SELECT *
-//            FROM app_details app
-//            WHERE NOT EXISTS
-//                (SELECT *
-//                    FROM app_settings s
-//                    WHERE s.app_detail_id = app.id
-//                );
-//            '));
-//
-            $accountsList = Accounts::orderBy('id','DESC')->get();
-
+            // for create new for            
+            
             $appData = [];
 
-          $appListWithoutCredentials = [];
+            $appListWithoutCredentials = [];
 
             return view('app_settings.create')
                 ->with('appsList',$appListWithoutCredentials)
@@ -100,10 +100,6 @@ class AppSettingsController extends Controller
             '.$appIdClause.'
             '));
 
-//            dd(DB::getQueryLog());
-
-            $accountsList = Accounts::orderBy('id','DESC')->get();
-
             return view('app_settings.create')
                 ->with('appData',$appSettingData)
                 ->with('appsList',$excludedApps)
@@ -116,16 +112,13 @@ class AppSettingsController extends Controller
 
     public function store(Request $request , $app_setting_id = false)
     {
-
-        
-
         /*** Validation BEGIN ****/
         if(!empty($app_setting_id))
         {
-            $appSetting = AppSettings::where('id',$app_setting_id)->select(['app_detail_id'])->first();
+            $appSetting = AppSettings::where('id',$app_setting_id)->select(['app_detail_id','account_id'])->first();
 
-            $roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
-            if(!in_array($appSetting->app_detail_id,$roleAssignedApplications)){
+            $roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
+            if(!in_array($appSetting->account_id,$roleAssignedAccounts)){
                 return Response::json(["message"=>"You are not allowed to perform this action!"],403);
             }
     
@@ -169,13 +162,24 @@ class AppSettingsController extends Controller
         $node = "";
         $jsonData = [];
 
-        $firebaseCredentials = FirebaseCredentials::where('app_detail_id',$appDetailId)->select('app_setting_url','reCaptchaKeyId','firebaseConfigJson')->first();
+    
+        if(!empty($request->account_id)){
+            $accountId = $request->account_id;
+        }
+        else{
+            $accountId = $appSetting->account_id;
+            $request->merge(['account_id' => $accountId]);           
+        }
+        
+        
+        $packageId = getPackageIdByAppId($appDetailId);
+        $firebaseCredentials = FirebaseCredentials::where('account_id',$accountId)->select('app_setting_url','reCaptchaKeyId','firebaseConfigJson')->first();
 
         if(isset($firebaseCredentials->app_setting_url)){
 
             /***   CREATE JSON FORMAT TO PUSH DATA ON FIREBASE DATABASE ***/
 
-            $jsonData  = $this->createFirebaseJsonFormat($request);
+            $jsonData  = $this->createFirebaseJsonFormat($request,$packageId);
             $node = "AppSettings";
 
             $firebaseConfigJson = trim(preg_replace('/\s\s+/', ' ', $firebaseCredentials->firebaseConfigJson));
@@ -207,10 +211,13 @@ class AppSettingsController extends Controller
             $status = "success";
         }
 
+        $packageId = str_replace(".","_",$packageId);
+
         return response()->json(['status' => $status,
             'firebase_status' => $firebaseStatus,
             'message' => $message,
             'appSetting' => $appSetting->id,
+            'packageId' => $packageId,
             'firebaseData' => $jsonData,
             'reCaptchaKeyId' => (!empty($firebaseCredentials->reCaptchaKeyId)) ? $firebaseCredentials->reCaptchaKeyId : "",
             'firebaseConfigJson' => $firebaseConfigJson,
@@ -220,9 +227,9 @@ class AppSettingsController extends Controller
 
     public function destroy(Request $request)
     {
-        $database = AppSettings::where('id',$request->id)->select('app_detail_id')->first();
-        $roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
-        if(!in_array($database->app_detail_id,$roleAssignedApplications)){
+        $database = AppSettings::where('id',$request->id)->select('account_id')->first();
+        $roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
+        if(!in_array($database->account_id,$roleAssignedAccounts)){
             return Response::json(["message"=>"You are not allowed to perform this action!"],403);
         }
         
@@ -230,38 +237,40 @@ class AppSettingsController extends Controller
         return response()->json(['success' => true]);
     }
 
-    public function createFirebaseJsonFormat($request){
+    public function createFirebaseJsonFormat($request,$packageId = null){
 
         $requestArray = [];
-        $requestArray['appAuthKey1'] = $request->appAuthKey1;
-        $requestArray['appAuthKey2'] = $request->appAuthKey2;
         $requestArray['appCacheId'] =  (float) number_format($request->appCacheId,1);
         $requestArray['appDetailsDatabaseVersion'] = (float) number_format($request->appDetailsDatabaseVersion,1);
         $requestArray['appSharedPrefId'] =  (float) number_format($request->appSharedPrefId,1);
-        $requestArray['leaguesDatabaseVersion'] =  (float) number_format($request->leaguesDatabaseVersion,1);
-        $requestArray['schedulesDatabaseVersion'] =  (float) number_format($request->schedulesDatabaseVersion,1);
         $requestArray['serverApiBaseUrl'] = $request->serverApiBaseUrl;
-        $requestArray['serversDatabaseVersion'] =  (float) number_format($request->serversDatabaseVersion,1);
-        $requestArray['streamKey'] = $request->streamKey;
+        $requestArray['authHelperKey'] = $request->authHelperKey;
         $requestArray['isAppClearCache'] = getBoolean($request->isAppClearCache);
         $requestArray['isAppClearSharedPref'] = getBoolean($request->isAppClearSharedPref);
         $requestArray['isAppDetailsDatabaseClear'] = getBoolean($request->isAppDetailsDatabaseClear);
         $requestArray['isAppDetailsDatabaseSave'] = getBoolean($request->isAppDetailsDatabaseSave);
         $requestArray['isFirebaseDatabaseAccess'] = getBoolean($request->isFirebaseDatabaseAccess);
         $requestArray['isAppSigningKeyUsed'] = getBoolean($request->isAppSigningKeyUsed);
-        $requestArray['isAppAuthKeysUsed'] = getBoolean($request->isAppAuthKeysUsed);
         $requestArray['isServerLocalAuthKeyUsed'] = getBoolean($request->isServerLocalAuthKeyUsed);
         $requestArray['minimumVersionSupport'] = (int) $request->minimumVersionSupport;
         $requestArray['serverAuthKey1'] = $request->serverAuthKey1;
         $requestArray['serverAuthKey2'] = $request->serverAuthKey2;
         $requestArray['appDetailsDatabaseClearVersion'] = (float) $request->appDetailsDatabaseClearVersion;
         $requestArray['isMessageDialogDismiss'] = getBoolean($request->isMessageDialogDismiss);
-        $requestArray['isServerTokenFetch'] = getBoolean($request->isServerTokenFetch);
         $requestArray['sslSha256Key'] = $request->sslSha256Key;
         $requestArray['checkIpAddressApiUrl'] = $request->checkIpAddressApiUrl;
-//        $requestArray['isIpAddressApiCall'] = $request->isIpAddressApiCall;
+        $requestArray['accountId'] = $request->account_id;
 
-        return  json_encode($requestArray);
+        // if(!empty($packageId)){
+        //     $nodeArray = [];
+        //     $packageId = str_replace('.','_',$packageId);
+        //     $nodeArray[$packageId] = $requestArray;
+        //     return  json_encode($nodeArray);
+        // }
+        // else{
+            return  json_encode($requestArray);
+        // }
+
     }
 
     public function pushJsonToFirebaseDatabase($JSON,$FIREBASE_URL,$NODE,$REQUEST_METHOD){
@@ -303,7 +312,7 @@ class AppSettingsController extends Controller
 
     public function getApplicationSettingsCardView(Request $request){
 
-        $this->roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
+        $this->roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
 
         $appsList = AppSettings::select('app_settings.id as id','appName','appLogo','packageId','accounts.name as accounts_name')
             ->join('app_details', function ($join) {
@@ -320,8 +329,8 @@ class AppSettingsController extends Controller
             });
         }
 
-        if(!empty($this->roleAssignedApplications)){
-            $appsList = $appsList->whereIn('app_settings.app_detail_id',$this->roleAssignedApplications);
+        if(!empty($this->roleAssignedAccounts)){
+            $appsList = $appsList->whereIn('app_settings.account_id',$this->roleAssignedAccounts);
         }
 
         if(isset($request->accountsId) && !empty($request->accountsId) && $request->accountsId != '-1'){
@@ -360,9 +369,9 @@ class AppSettingsController extends Controller
                 });
             }
 
-            $this->roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
-            if(!empty($this->roleAssignedApplications)){
-                $appsList = $appsList->whereIn('app_details.id',$this->roleAssignedApplications);
+            $this->roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
+            if(!empty($this->roleAssignedAccounts)){
+                $appsList = $appsList->whereIn('app_details.account_id',$this->roleAssignedAccounts);
             }
         
 
@@ -378,13 +387,6 @@ class AppSettingsController extends Controller
 
     public function updateDatabaseVersion(Request $request){
 
-//        if($request->version_app_detail_id == "all"){
-//            $listOfApplications = getAppListByAccountsId($request->versionAccountsId);
-//        }
-//        else{
-//            $listOfApplications = getAppListByAccountsId($request->versionAccountsId,$request->version_app_detail_id);
-//        }
-
         $accountsId = $request->versionAccountsId;
         $accountsDetail = getAccountDetailsById($accountsId);
 
@@ -394,7 +396,7 @@ class AppSettingsController extends Controller
 
         if(count($request->version_app_detail_ids) > 0) {
             foreach ($request->version_app_detail_ids as $appDetailId) {
-                $listOfApplications = getAppListByAccountsId($request->versionAccountsId, $appDetailId);
+                $listOfApplications = getAppListByAccountId($request->versionAccountsId, $appDetailId);
 
                 if(!empty($listOfApplications)){
                     foreach ($listOfApplications as $obj) {
@@ -411,12 +413,13 @@ class AppSettingsController extends Controller
 
                                 DB::table('app_settings')->where('app_detail_id',$obj->application_id)->update([$versionCategories => $finalValue]);
 
-                                $firebaseCredentials = FirebaseCredentials::where('app_detail_id',$obj->application_id)->select('app_setting_url','reCaptchaKeyId','firebaseConfigJson')->first();
+                                $firebaseCredentials = FirebaseCredentials::where('account_id',$request->versionAccountsId)->select('app_setting_url','reCaptchaKeyId','firebaseConfigJson')->first();
 
                                 if(isset($firebaseCredentials->app_setting_url)){
 
                                     /***   CREATE JSON FORMAT TO PUSH DATA ON FIREBASE DATABASE ***/
 
+                                    // dd($obj->application_id);
                                     $appSettings = getAppSettingDataByAppId($obj->application_id);
 
                                     $jsonData  = $this->createFirebaseJsonFormat($appSettings);
@@ -430,6 +433,8 @@ class AppSettingsController extends Controller
                                         $parseFirebaseConfigJson->databaseURL = $firebaseCredentials->app_setting_url;
                                         $firebaseConfigJson = json_encode($parseFirebaseConfigJson);
 
+                                        $packageId = str_replace(".","_",$obj->packageId);
+
                                         $response[] = [
                                             'app_detail' => $obj->accountsName . ' - ' . $obj->packageId,
                                             'firebase_status' => "success",
@@ -438,7 +443,8 @@ class AppSettingsController extends Controller
                                             'reCaptchaKeyId' => (!empty($firebaseCredentials->reCaptchaKeyId)) ? $firebaseCredentials->reCaptchaKeyId : "",
                                             'firebaseConfigJson' => $firebaseConfigJson,
                                             'node' => $node,
-                                            'appPackageId' => $obj->packageId
+                                            'appPackageId' => $obj->packageId,
+                                            'packageId' => $packageId
                                         ];
                                     }
                                     else{

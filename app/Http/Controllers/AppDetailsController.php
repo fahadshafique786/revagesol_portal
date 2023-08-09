@@ -12,13 +12,14 @@ use App\Models\AppDetails;
 use App\Models\Accounts;
 use App\Models\SponsorAds;
 use App\Models\RoleHasApplication;
+use App\Models\RoleHasAccount;
 use Illuminate\Support\Facades\DB;
 use Response;
 use Auth;
 
 class AppDetailsController extends Controller
 {
-    protected $roleAssignedApplications;
+    protected $roleAssignedAccounts;
     public $imageUrl;
     public $sponsorImageUrl;
 
@@ -29,14 +30,16 @@ class AppDetailsController extends Controller
 
         $this->middleware('auth');
         $this->middleware('role_or_permission:super-admin|view-applications', ['only' => ['index','getApplicationCardView']]);
+        $this->middleware('role_or_permission:super-admin|view-accounts', ['only' => ['index','getApplicationCardView']]);
         $this->middleware('role_or_permission:super-admin|manage-applications',['only' => ['create','edit','store','destroy','deleteAll']]);
+        $this->middleware('role_or_permission:super-admin|manage-accounts',['only' => ['create','edit','store','destroy','deleteAll']]);
 
     }
 
 
     public function index(Request $request)
     {
-        $this->roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
+        $this->roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
 
         $appsList = AppDetails::select('app_details.id as id','appName','appLogo','packageId','accounts.name as accounts_name')
             ->join('accounts', function ($join) {
@@ -45,7 +48,12 @@ class AppDetailsController extends Controller
 
         $appsList = $appsList->get();
 
-        $accountsList = Accounts::orderBy('id','DESC')->get();
+        if(!empty($this->roleAssignedAccounts)){
+            $accountsList = Accounts::whereIn('id',$this->roleAssignedAccounts)->orderBy('id','DESC')->get();
+        }
+        else{
+            $accountsList = Accounts::orderBy('id','DESC')->get();
+        }
 
         return view('application.index')
             ->with('accountsList',$accountsList)
@@ -55,7 +63,14 @@ class AppDetailsController extends Controller
 
     public function create()
     {
-        $accountsList = Accounts::orderBy('id','DESC')->get();
+        $this->roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
+        if(!empty($this->roleAssignedAccounts)){
+            $accountsList = Accounts::whereIn('id',$this->roleAssignedAccounts)->orderBy('id','DESC')->get();
+        }
+        else{
+            $accountsList = Accounts::orderBy('id','DESC')->get();
+        }
+
         return view('application.create')
         ->with('accountsList',$accountsList);
     }
@@ -65,7 +80,13 @@ class AppDetailsController extends Controller
     {
         $appData = AppDetails::where('id',$application_id)->first();
 
-        $accountsList = Accounts::orderBy('id','DESC')->get();
+        $this->roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
+        if(!empty($this->roleAssignedAccounts)){
+            $accountsList = Accounts::whereIn('id',$this->roleAssignedAccounts)->orderBy('id','DESC')->get();
+        }
+        else{
+            $accountsList = Accounts::orderBy('id','DESC')->get();
+        }
 
 
         return view('application.edit')
@@ -79,22 +100,22 @@ class AppDetailsController extends Controller
     {
         if(!empty($application_id))
         {
-            $roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
-            if(!in_array($application_id,$roleAssignedApplications)){
+            $roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
+            if(!in_array($request->account_id,$roleAssignedAccounts)){
                 return Response::json(["message"=>"You are not allowed to perform this action!"],403);
             }
 
             $this->validate($request, [
                 'appName' => 'required',
                 'packageId' => 'required|unique:app_details,packageId,'.$application_id,
-                'account_id' => 'required',
+                'account_id' => 'required|exists:accounts,id',
                 'admobAppId' => 'required',
                 'adsIntervalTime' => 'required',
                 'adsIntervalCount' => 'required',
-//                'checkIpAddressApiUrl' => 'required',
                 'startAppId' => 'required',
                 'newAppPackage' => 'required',
                 'ourAppPackage' => 'required',
+                'pagesUrl' => 'required',
             ]);
         }
         else
@@ -103,14 +124,14 @@ class AppDetailsController extends Controller
                 'appName' => 'required',
                 'packageId' => 'required|unique:app_details',
                 'appName' => 'required',
-                'account_id' => 'required',
+                'account_id' => 'required|exists:accounts,id',
                 'admobAppId' => 'required',
                 'adsIntervalTime' => 'required',
                 'adsIntervalCount' => 'required',
-//                'checkIpAddressApiUrl' => 'required',
                 'startAppId' => 'required',
                 'newAppPackage' => 'required',
                 'ourAppPackage' => 'required',
+                'pagesUrl' => 'required',
             ]);
         }
 
@@ -165,7 +186,7 @@ class AppDetailsController extends Controller
 
         $jsonData = [];
 
-        $firebaseCredentials = FirebaseCredentials::where('app_detail_id',$appDetailId)->select('apps_url','reCaptchaKeyId','firebaseConfigJson')->first();
+        $firebaseCredentials = FirebaseCredentials::where('account_id',$request->account_id)->select('apps_url','reCaptchaKeyId','firebaseConfigJson')->first();
 
         if(isset($firebaseCredentials->apps_url)){
 
@@ -191,15 +212,18 @@ class AppDetailsController extends Controller
             $message  =  "Firebase credentials not found!";
         }
 
-        if(empty($application_id)){
-            $roleId = auth()->user()->roles()->first()->id;
-            RoleHasApplication::create(["role_id"=> $roleId , "application_id" => $appDetailResponse->id ]);
-        }
+        // if(empty($application_id)){
+        //     $roleId = auth()->user()->roles()->first()->id;
+        //     RoleHasApplication::create(["role_id"=> $roleId , "application_id" => $appDetailResponse->id ]);
+        // }
+
+        $packageId = str_replace(".","_",$request->packageId);
 
         return response()->json(['status' => $status,
             'firebase_status' => $firebaseStatus,
             'message' => $message,
             'appSetting' => $appDetailId,
+            'packageId' => $packageId,
             'firebaseData' => $jsonData,
             'reCaptchaKeyId' => (!empty($firebaseCredentials->reCaptchaKeyId)) ? $firebaseCredentials->reCaptchaKeyId : "",
             'firebaseConfigJson' => $firebaseConfigJson,
@@ -211,8 +235,10 @@ class AppDetailsController extends Controller
 
     public function destroy(Request $request)
     {
-        $roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
-        if(!in_array($request->id,$roleAssignedApplications)){
+        $account_id = getAccountIdByAppId($request->id);
+        $roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
+
+        if(!in_array($account_id,$roleAssignedAccounts)){
             return Response::json(["message"=>"You are not allowed to perform this action!"],403);
         }
         
@@ -255,7 +281,7 @@ class AppDetailsController extends Controller
     public function getApplicationCardView(Request $request){
 
 
-        $this->roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
+        $this->roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
 
         DB::enableQueryLog();
 
@@ -272,8 +298,8 @@ class AppDetailsController extends Controller
             });
         }
 
-        if(!empty($this->roleAssignedApplications)){
-            $appsList = $appsList->whereIn('app_details.id',$this->roleAssignedApplications);
+        if(!empty($this->roleAssignedAccounts)){
+            $appsList = $appsList->whereIn('app_details.account_id',$this->roleAssignedAccounts);
         }
 
 
@@ -313,9 +339,9 @@ class AppDetailsController extends Controller
                 });
             }
 
-            $this->roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
-            if(!empty($this->roleAssignedApplications)){
-                $appsList = $appsList->whereIn('app_details.id',$this->roleAssignedApplications);
+            $this->roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
+            if(!empty($this->roleAssignedAccounts)){
+                $appsList = $appsList->whereIn('app_details.account_id',$this->roleAssignedAccounts);
             }
 
             $totalApps = $appsList->count();
@@ -329,21 +355,21 @@ class AppDetailsController extends Controller
 
     public function getApplicationListOptions(Request $request){
 
-        $this->roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
+        $this->roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
 
         if(!empty($request->account_id) && $request->account_id != "-1"){
             $appList = AppDetails::where('account_id',$request->account_id);
 
-            if(!empty($this->roleAssignedApplications)){
-                $appList = $appList->whereIn('id',$this->roleAssignedApplications);
+            if(!empty($this->roleAssignedAccounts)){
+                $appList = $appList->whereIn('account_id',$this->roleAssignedAccounts);
             }
                 
             $appList = $appList->get();
         }
         else{
 
-            if(!empty($this->roleAssignedApplications)){
-                $appList = AppDetails->whereIn('id',$this->roleAssignedApplications)->get();
+            if(!empty($this->roleAssignedAccounts)){
+                $appList = AppDetails->whereIn('account_id',$this->roleAssignedAccounts)->get();
             }
             else{
                 $appList = AppDetails::get();
@@ -397,14 +423,14 @@ class AppDetailsController extends Controller
 
     public function getAppsListWithAllOption(Request $request){
 
-        $this->roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
+        $this->roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
 
         if(!empty($request->account_id) && $request->account_id != "-1"){
 
             $appList = AppDetails::where('account_id',$request->account_id);
 
-            if(!empty($this->roleAssignedApplications)){
-                $appList = $appList->whereIn('id',$this->roleAssignedApplications);
+            if(!empty($this->roleAssignedAccounts)){
+                $appList = $appList->whereIn('account_id',$this->roleAssignedAccounts);
             }
                 
             $appList = $appList->get();
@@ -412,8 +438,8 @@ class AppDetailsController extends Controller
         }
         else{
 
-            if(!empty($this->roleAssignedApplications)){
-                $appList = AppDetails->whereIn('id',$this->roleAssignedApplications)->get();
+            if(!empty($this->roleAssignedAccounts)){
+                $appList = AppDetails->whereIn('account_id',$this->roleAssignedAccounts)->get();
             }
             else{
                 $appList = AppDetails::get();
@@ -472,27 +498,72 @@ class AppDetailsController extends Controller
         return $options;
     }
 
-    public function mergeAccountsAppsList($appsList , $rolesApplications,$commonApps){
+    public function getRolesAccountsListByRoleId(Request $request){
+
+        $commonApps = [];
+        $accountsList = [];
+
+        if(isset($request->accounts) && !empty($request->accounts)){
+            if($request->un_select_all_option == "false"){
+                $accountsList = array_intersect($array1, $request->accounts);
+            }
+        }
+        
+        // if(!empty($request->account_id) && $request->account_id != "-1"){
+        //     $appList = AppDetails::whereIn('account_id',$request->account_id);       
+        //     $currentSelectedApps = [];
+
+        //     $array1 = $appList->pluck('id')->toArray();
+            
+        //     if(isset($request->accounts) && !empty($request->accounts)){
+        //         if($request->un_select_all_option == "false"){
+        //             $commonApps = array_intersect($array1, $request->accounts);
+        //         }
+        //     }
+            
+        //     $appList = $appList->get();
+
+        // }
+        // else{
+
+        //     return ""; // on demand during qa  ( might be possible it can be temporary )
+
+        //     // $appList = AppDetails::get();
+        // }
+
+        $rolesAccounts = RoleHasAccount::where('role_id',$request->role_id)->where('role_id','!=',1)->pluck('account_id')->toArray();
+
+        $commonAccounts = array_intersect($rolesAccounts, $request->accounts);
+
+
+        $accountsList = Accounts::whereIn('id',$request->accounts)->select('id','name')->get();
+        
+        $options = $this->mergeAccountsList($accountsList,$rolesAccounts);
+
+        return $options;
+    }
+
+    public function mergeAccountsList($accountsList , $rolesAccounts){
 
         $options = '';
-        if(!empty($appsList) && sizeof($appsList) > 0){
-            if(count($rolesApplications) > 0){
-                foreach($appsList as $obj){
+        if(!empty($accountsList) && sizeof($accountsList) > 0){
+            if(count($rolesAccounts) > 0){
+                foreach($accountsList as $obj){
                         $isSelected = "";
-                        if(in_array($obj->id,$rolesApplications) || in_array($obj->id,$commonApps) ){
+                        if(in_array($obj->id,$rolesAccounts)){
                             $isSelected = "selected";
                         }
-                        $options .= '<option value="'.$obj->id.'" '.$isSelected.' >   '  .   $obj->appName   .  ' - ' . $obj->packageId . '    </option>';
+                        $options .= '<option value="'.$obj->id.'" '.$isSelected.' >   '  .   $obj->name . '    </option>';
                 }
                 return $options;
             }
             else{
-                foreach($appsList as $obj){
+                foreach($accountsList as $obj){
                     $isSelected = "";
-                    if(in_array($obj->id,$rolesApplications) || in_array($obj->id,$commonApps) ){
+                    if(in_array($obj->id,$rolesAccounts)){
                         $isSelected = "selected";
                     }
-                    $options .= '<option value="'.$obj->id.'" '.$isSelected.' >   '  .   $obj->appName   .  ' - ' . $obj->packageId . '    </option>';
+                    $options .= '<option value="'.$obj->id.'" '.$isSelected.' >   '  .   $obj->name . '    </option>';
                 }
             }
         }
@@ -643,7 +714,7 @@ class AppDetailsController extends Controller
 
             foreach($dataObject as $index => $obj){
 
-                $obj->accountsId = $obj->account_id;
+                $obj->accountId = $obj->account_id;
 
                 unset($obj->account_id);
                 unset($obj->created_at);
@@ -658,6 +729,8 @@ class AppDetailsController extends Controller
                 $obj->isAdmobOnline = getBoolean($obj->isAdmobOnline);
                 $obj->isAdsInterval = getBoolean($obj->isAdsInterval);
                 $obj->isBannerPlayer = getBoolean($obj->isBannerPlayer);
+                $obj->isPagesAlgo = getBoolean($obj->isPagesAlgo);
+                $obj->isOnlineCode = getBoolean($obj->isOnlineCode);
 
 
                 $obj->isMessageDialogDismiss = getBoolean($obj->isMessageDialogDismiss);
@@ -684,8 +757,11 @@ class AppDetailsController extends Controller
     }
 
     public function updateProxyStatus(Request $request){
-        $roleAssignedApplications = getApplicationsByRoleId(auth()->user()->roles()->first()->id);
-        if(!in_array($request->application_id,$roleAssignedApplications)){
+        
+        $account_id = getAccountIdByAppId($request->application_id);
+
+        $roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
+        if(!in_array($account_id,$roleAssignedAccounts)){
             return Response::json(["message"=>"You are not allowed to perform this action!"],403);
         }
 

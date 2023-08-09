@@ -75,48 +75,38 @@
 
                 <div class="form-group row">
 
-                    <div class="col-sm-12 isShowAppListOptions d-none">
+                    <div class="col-sm-12 isShowAccountListOptions d-none">
                         <label for="name" class="control-label">Is Show Applications List </label><br/>
-                        <label for="isShowAppList1" class="cursor-pointer">
+                        <label for="isShowAccountList1" class="cursor-pointer">
                             <input type="radio" class="" checked
-                                   id="isShowAppList1" name="isShowAppList" value="1"   />
+                                   id="isShowAccountList1" name="isShowAccountList" value="1"   />
                             <span class="">Yes</span>
                         </label>
 
-                        <label for="isShowAppList0" class="cursor-pointer">
+                        <label for="isShowAccountList0" class="cursor-pointer">
                             <input type="radio" class="" 
-                             id="isShowAppList0" name="isShowAppList" value="0"  />
+                             id="isShowAccountList0" name="isShowAccountList" value="0"  />
                             <span class="">No</span>
                         </label>
-                        <span class="text-danger" id="isShowAppListError"></span>
+                        <span class="text-danger" id="isShowAccountListError"></span>
                     </div>
 
-                    <div class="col-sm-12 applicationListRow">
+                    <div class="col-sm-10 accountListRow">
                         <label for="name" class="control-label">Accounts</label><br/>
-                        <select required   multiple="multiple" class="form-control js-example-basic-multiple" id="account_filter" name="account_id[]" onchange="getRolesAppsListByAccounts('account_filter','application_ids',false);$('#selectAllAccountsData').prop('checked',false);"  >
-                            <option value="">   Select Accounts </option>
+                        <!-- getRolesAppsListByAccounts('account_filter','account_ids',false); -->
+                        <select required   multiple="multiple" class="form-control js-example-basic-multiple" id="account_ids" name="account_id[]" onchange="$('#selectAllAccountsData').prop('checked',false);"  >
                             @foreach ($accountsList as $obj)
                                 <option value="{{ $obj->id }}" >{{ $obj->name }}</option>
                             @endforeach
                         </select>
 
                         <br/>
-                        <span class="text-danger" id="accounts_filterError"></span>
+                        <span class="text-danger" id="account_idsError"></span>
                     </div>
 
-                    <div class="col-sm-10 applicationListRow">
-                        <label for="name" class="control-label">Applications</label><br/>
-                        <select class="js-example-basic-multiple" id="application_ids" name="application_ids[]" multiple="multiple" required>
-                            <!-- @foreach($applications as $app)
-                                <option value="{{$app->id}}" selected>{{$app->appName . ' - ' . $app->packageId }}</option>
-                            @endforeach -->
-                        </select><br/>
-                        <span class="text-danger" id="application_idsError"></span>
-                    </div>
-
-                    <div class="col-sm-2 applicationListRow mt-4">
+                    <div class="col-sm-2 accountListRow mt-4">
                         <label for="selectAllAccountsData" class="col-form-label">
-                            <input type="checkbox" id="selectAllAccountsData" > &nbsp; Select All Apps
+                            <input type="checkbox" id="selectAllAccountsData" > &nbsp; Select All Accounts
                         </label>
                     </div>                    
 
@@ -205,17 +195,14 @@
         $("#selectAllAccountsData").click(function(){
 
             if($("#selectAllAccountsData").is(':checked') ){
-                $("#application_ids > option").prop("selected","selected");
-                $("#application_ids").trigger("change");
+                $("#account_ids > option").prop("selected","selected");
+                $("#account_ids").trigger("change");
+                $("#selectAllAccountsData").prop('checked','true')
             }else{
 
-                // $('#account_filter').trigger('change');
+                // $("#account_ids").val(null).trigger("change");
+                getRolesAccountsList("account_ids",true);                
 
-                getRolesAppsListByAccounts("account_filter","application_ids",true);                
-
-                // $("#application_ids > option").removeAttr("selected");
-                // $("#application_ids").select2("val", "");
-                // $("#application_ids").trigger("change");
             }
         });
 
@@ -223,7 +210,7 @@
 
             $('#id').val("");
 
-            $('#application_ids').val(null).trigger('change');
+            $('#account_ids').val(null).trigger('change');
 
             $("#permissionss option").attr('selected','selected');
 
@@ -235,21 +222,21 @@
 
             $("#permissionss").select2();
 
-            // $("#application_ids > option").prop("selected","selected");// Select All Options
-            // $("#application_ids").trigger("change");
+            // $("#account_ids > option").prop("selected","selected");// Select All Options
+            // $("#account_ids").trigger("change");
             
 
-            $('#account_filter option:eq(1)').attr('selected', 'selected');
-            $("#account_filter").trigger("change");
+            $('#account_ids option:eq(0)').attr('selected', 'selected');
+            $("#account_ids").trigger("change");
 
 
-            // getApplicationListOptionByAccountsNoPermission($("#account_filter").val(),'application_ids','-1');            
+            // getApplicationListOptionByAccountsNoPermission($("#account_filter").val(),'account_ids','-1');            
 
-            enableDisableApplicationInput(1);
+            // enableDisableAccountInput(1);
 
             setTimeout(function(){
-                // $('#application_ids').val(null).trigger('change');
-                // if($("#application_ids option").length > 1){
+                // $('#account_ids').val(null).trigger('change');
+                // if($("#account_ids option").length > 1){
                 //     $("#selectAllAccountsData").prop("checked",true);
                 // }
                 $('#ajax-model').modal('show');
@@ -258,23 +245,22 @@
         });
 
         $(document).on('change', '#permissionss', function (e) {
-            // enableDisableApplicationInput(0);
+            // enableDisableAccountInput(0);
 
-            $("#isShowAppList0").prop('checked','checked');
+            $("#isShowAccountList0").prop('checked','checked');
 
             permissionArr = [];
             $("#permissionss :selected").map(function(i, el) {
 
-                if($(el).text() == 'view-applications'  || $(el).text() == 'manage-applications' ){
+                if($(el).text() == 'view-accounts'  || $(el).text() == 'manage-accounts' ){
                     permissionArr.push($(el).text());
                 }
 
-                if($.inArray("view-applications",permissionArr) >= 0) {
-                    if ($.inArray("manage-applications", permissionArr) >= 0) {
+                if($.inArray("view-accounts",permissionArr) >= 0) {
+                    if ($.inArray("manage-accounts", permissionArr) >= 0) {
 
-                        enableDisableApplicationInput(1);
-                        // $(".isShowAppListOptions").show();
-                        $("#isShowAppList1").prop('checked', 'checked');
+                        enableDisableAccountInput(1);
+                        $("#isShowAccountList1").prop('checked', 'checked');
                         return false;
                     }
                 }
@@ -283,21 +269,21 @@
 
         });
 
-        $('#application_ids').on('select2:unselect', function (e) {
+        $('#account_ids').on('select2:unselect', function (e) {
             var data = e.params.data;
 
-            if($("#application_ids :selected").length == 0){
-                $("#permissionss option[value=20]").prop("selected",false);
-                $("#permissionss option[value=19]").prop("selected",false);
+            if($("#account_ids :selected").length == 0){
+                $("#permissionss option[value=9]").prop("selected",false);
+                $("#permissionss option[value=10]").prop("selected",false);
                 $("#permissionss").select2();
-                enableDisableApplicationInput(0);
+                enableDisableAccountInput(0);
             }
 
         });
 
         $("#permissionss").on("select2:unselect", function (e) {
-            if(e.params.data.text == 'view-applications'  || e.params.data.text == 'manage-applications' ){
-                    enableDisableApplicationInput(0);
+            if(e.params.data.text == 'view-accounts'  || e.params.data.text == 'manage-accounts' ){
+                    enableDisableAccountInput(0);
                     return false;
             }
         });
@@ -306,15 +292,14 @@
             permissionArr = [];
             $("#permissionss :selected").map(function(i, el) {
 
-                if($(el).text() == 'view-applications'  || $(el).text() == 'manage-applications' ){
+                if($(el).text() == 'view-accounts'  || $(el).text() == 'manage-accounts' ){
                     permissionArr.push($(el).text());
                 }
 
-                if($.inArray("view-applications",permissionArr) >= 0){
-                    if($.inArray("manage-applications",permissionArr) >= 0){
-                        enableDisableApplicationInput(1);
-                        // $(".isShowAppListOptions").show();
-                        $("#isShowAppList1").prop('checked','checked');
+                if($.inArray("view-accounts",permissionArr) >= 0){
+                    if($.inArray("manage-accounts",permissionArr) >= 0){
+                        enableDisableAccountInput(1);
+                        $("#isShowAccountList1").prop('checked','checked');
                         return false;
                     }
                 }
@@ -325,7 +310,7 @@
 
         $('body').on('click', '.editRole', function () {
             
-            $('#account_filter').val(null).trigger('change');
+            $('#account_ids').val(null).trigger('change');
 
             var id = $(this).data('id');
 
@@ -337,10 +322,10 @@
 
             $("#permissionss").select2();
 
-            $("#application_ids").select2();
+            $("#account_ids").select2();
             
-            $('#account_filter option:eq(1)').removeAttr('selected');
-            $("#account_filter").trigger("change");
+            $('#account_ids option:eq(0)').removeAttr('selected');
+            $("#account_ids").trigger("change");
 
             $.ajax({
                 type:"POST",
@@ -362,7 +347,7 @@
                     // if(res?.account_id){
                     //     $('#account_filter').val(res?.account_id);
                     //     $("#account_filter").select2("val", $("#account_filter").select2("val").concat(res?.account_id));
-                    //     getApplicationListOptionByAccountsNoPermission(res?.account_id,'application_ids','-1');
+                    //     getApplicationListOptionByAccountsNoPermission(res?.account_id,'account_ids','-1');
                     // }
 
                     setTimeout(() => {
@@ -373,32 +358,25 @@
                         });
 
 
-                        $("#application_ids").select2("val","");
+                        $("#account_ids").select2("val","");
 
-                        if(res.role_has_application?.length > 0){
-                            $.each(res.role_has_application,function(key,obj){
+                        if(res.role_has_accounts?.length > 0){
+                            $.each(res.role_has_accounts,function(key,obj){
 
-                                $("#application_ids").select2("val", $("#application_ids").select2("val").concat(obj.application_id));
+                                $("#account_ids").select2("val", $("#account_ids").select2("val").concat(obj.account_id));
                             });
 
-                            $("#isShowAppList1").prop('checked','checked');
+                            $("#isShowAccountList1").prop('checked','checked');
 
                         }
                         else{
-                            $("#isShowAppList0").prop('checked','checked');
+                            $("#isShowAccountList0").prop('checked','checked');
                         }
 
-                        if(res.role_has_accounts_id?.length > 0){
-                            $.each(res.role_has_accounts_id,function(key,obj){
-                                $("#account_filter").select2("val", $("#account_filter").select2("val").concat(obj.account_id));
-                            });
-                        }
-
-                        if($.inArray("view-applications",res.permissions) >= 0){
-                            if($.inArray("manage-applications",res.permissions) >= 0){
-                                enableDisableApplicationInput(1);
-                                // $(".isShowAppListOptions").show();
-                                $("#isShowAppList1").prop('checked','checked');
+                        if($.inArray("view-accounts",res.permissions) >= 0){
+                            if($.inArray("manage-accounts",res.permissions) >= 0){
+                                enableDisableAccountInput(1);
+                                $("#isShowAccountList1").prop('checked','checked');
                                 return false;
                             }
                         }
@@ -408,8 +386,8 @@
                     }, 2000);
 
                     setTimeout(() => {
-                        var total_apps = $('#application_ids option').length - 1;
-                        if(total_apps == $('#application_ids option:selected').length){
+                        var total_apps = $('#account_ids option').length - 1;
+                        if(total_apps == $('#account_ids option:selected').length){
                             $("#selectAllAccountsData").prop("checked",true);
                         }
 
@@ -497,14 +475,28 @@
 
     });
 
+    function getRolesAccountsList(account_id_field_id,unSelectAllOption,disableFirstOption = false){
+
+        $.ajax({
+            type:"POST",
+            url: "{{ url('admin/roles/accounts/options') }}",
+            data: { un_select_all_option : unSelectAllOption  , role_id : $("#id").val() , accounts : $("#account_ids").val()  , disable_first_option : disableFirstOption},
+            success: function(response){
+                $("#"+account_id_field_id).html(response);
+                $("#"+account_id_field_id).trigger("change");
+            }
+        });
+
+    }
+
     function getRolesAppsListByAccounts(account_id,application_id,unSelectAllOption,disableFirstOption = false){
 
         $.ajax({
             type:"POST",
             url: "{{ url('admin/roles/accounts/apps-options') }}",
-            data: { account_id : $("#"+account_id).val() , un_select_all_option : unSelectAllOption  , role_id : $("#id").val() , applications : $("#application_ids").val()  , disable_first_option : disableFirstOption},
+            data: { account_id : $("#"+account_id).val() , un_select_all_option : unSelectAllOption  , role_id : $("#id").val() , applications : $("#account_ids").val()  , disable_first_option : disableFirstOption},
             success: function(response){
-                $('#application_ids').val(null).trigger('change');
+                $('#account_ids').val(null).trigger('change');
                 $("#"+application_id).html(response);
                 // $("#"+application_id + " option").prop("selected",true);
                 $("#"+application_id).trigger("change");
@@ -513,19 +505,19 @@
 
     }
 
-    function enableDisableApplicationInput(bool){
+    function enableDisableAccountInput(bool){
         if(bool == "1"){
-            $(".applicationListRow").show();
+            $(".accountListRow").show();
             $("select[name=account_id]").prop("disabled",false);
-            $("#application_ids").select2("enable",true);
-            $("input[name=isShowAppList]").prop("disabled",false);
+            $("#account_ids").select2("enable",true);
+            $("input[name=isShowAccountList]").prop("disabled",false);
         }
         else{
-            $(".applicationListRow").hide();
+            $(".accountListRow").hide();
             $("select[name=account_id]").prop("disabled",true);
-            $("#application_ids").select2("enable",false);
-            $("input[name=isShowAppList]").prop("disabled",true);
-            $("#application_ids").val(null).trigger("change");
+            $("#account_ids").select2("enable",false);
+            $("input[name=isShowAccountList]").prop("disabled",true);
+            $("#account_ids").val(null).trigger("change");
         }
     }
 

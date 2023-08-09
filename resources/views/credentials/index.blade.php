@@ -13,7 +13,7 @@
                             <div class="row mb-3">
 
                                 <div class="col-sm-4">
-                                    <select class="form-control" id="account_filter" name="account_filter" onchange="getApplicationListOptionByAccounts(this.value,'filter_app_id');$('button#filter').trigger('click');"  >
+                                    <select class="form-control" id="account_filter" name="account_filter" onchange="$('button#filter').trigger('click');"  >
                                         <option value="-1" selected>   Select Accounts </option>
                                         @foreach ($accountsList as $obj)
                                             <option value="{{ $obj->id }}"  {{ (isset($obj->id) && old('id')) ? "selected":"" }}>{{ $obj->name }}</option>
@@ -22,18 +22,11 @@
 
                                 </div>
 
-                                <div class="col-sm-4">
-                                    <select class="form-control" id="filter_app_id" name="filter_app_id" onchange="$('button#filter').trigger('click');">
-                                        <option value="" selected>   Select App </option>
-                                    </select>
-
-                                </div>
-
                                 <div class="col-sm-2 visiblilty-hidden">
                                     <button type="button" class="btn btn-primary" id="filter"> <i class="fa fa-filter"></i> Apply Filter </button>
                                 </div>
 
-                                <div class="col-2 text-right">
+                                <div class="col-6 text-right">
                                     @if(auth()->user()->hasRole('super-admin') || auth()->user()->can('manage-credentials'))
                                         <a class="btn btn-warning" href="javascript:window.location.reload()" id="">
                                             <i class="fa fa-spinner"></i> &nbsp; Refresh Screen
@@ -71,12 +64,11 @@
                                         <input type="checkbox" name="" id="master" />
                                     </th>
                                     <th scope="col" width="10px">#</th>
-                                    <th scope="col">Application</th>
+                                    <th scope="col">Accounts</th>
                                     <th scope="col">Server Auth Key</th>
                                     <th scope="col">App Signing key</th>
                                     <th scope="col">Minimum Version Code</th>
-                                    <th scope="col">Stream Key</th>
-                                    <th scope="col">Token Key</th>
+                                    <th scope="col">Auth Helper Key</th>
                                     <th scope="col">Action</th>
                                 </tr>
                                 </thead>
@@ -109,15 +101,15 @@
                             <div class="form-group row">
 
                                 <div class="col-sm-12">
-                                    <label for="name" class="control-label">Application</label>
-                                    <select class="form-control" id="app_detail_id" name="app_detail_id" required>
-                                        <option value="">   Select App </option>
+                                    <label for="name" class="control-label">Accounts</label>
+                                    <select class="form-control" id="account_id" name="account_id" required>
+                                        <option value="">   Select Account </option>
                                         @foreach ($remainingAppsList as $obj)
-                                            <option value="{{ $obj->id }}"  {{ (isset($obj->id) && old('id')) ? "selected":"" }}>{{ $obj->appName . ' - ' . $obj->packageId}}</option>
+                                            <option value="{{ $obj->id }}"  {{ (isset($obj->id) && old('id')) ? "selected":"" }}>{{ $obj->name}}</option>
                                         @endforeach
                                     </select>
 
-                                    <span class="text-danger" id="accounts_idError"></span>
+                                    <span class="text-danger" id="account_idError"></span>
 
                                 </div>
 
@@ -173,21 +165,9 @@
                             <div class="form-group row">
 
                                 <div class="col-sm-12">
-                                    <label for="stream_key" class="control-label d-block"> Stream Key </label>
+                                    <label for="stream_key" class="control-label d-block"> Auth Helper Key </label>
                                     <input type="text" class="form-control" id="stream_key" name="stream_key" value="" required="">
                                     <span class="text-danger" id="stream_keyError"></span>
-
-                                </div>
-
-
-                            </div>
-
-                            <div class="form-group row">
-
-                                <div class="col-sm-12">
-                                    <label for="token_key" class="control-label d-block"> Token key </label>
-                                    <input type="text" class="form-control" id="token_key" name="token_key" value="" required="">
-                                    <span class="text-danger" id="token_keyError"></span>
 
                                 </div>
 
@@ -280,12 +260,11 @@
                 columns: [
                     { data: 'checkbox', name: 'checkbox' , orderable:false , searchable:false},
                     { data: 'srno', name: 'srno' , searchable:false},
-                    { data: 'appName', name: 'appName' },
+                    { data: 'account_id', name: 'account_id' },
                     { data: 'server_auth_key', name: 'server_auth_key' },
                     { data: 'appSigningKey', name: 'appSigningKey' },
                     { data: 'versionCode', name: 'versionCode' },
                     { data: 'stream_key', name: 'stream_key' },
-                    { data: 'token_key', name: 'token_key' },
 
                     {data: 'action', name: 'action', orderable: false , searchable:false},
                 ],
@@ -298,16 +277,16 @@
         function callDataTableWithFilters(){
             $("#master").prop('checked',false);
             fetchData($('#filter_app_id').val());
-            reloadAppsList();
+            reloadAccountsList();
         }
 
-        function reloadAppsList(application_id = ""){
+        function reloadAccountsList(account_id = ""){
             $.ajax({
                 type:"POST",
                 url: "{{ url('admin/get-applist-options') }}",
-                data: { appId: application_id , accountsId : $("#account_filter").val()},
+                data: { account_id: account_id , accountsId : $("#account_filter").val()},
                 success: function(response){
-                    $("#app_detail_id").html(response);
+                    $("#account_id").html(response);
                 }
 
 
@@ -343,12 +322,12 @@
                 $('#ajaxheadingModel').html("Add Credential ");
                 $("form#addEditForm")[0].reset();
 
-                reloadAppsList();
+                reloadAccountsList();
 
                 setTimeout(function(){
-                    if($("#filter_app_id").val() > 0){
-                        $("#app_detail_id").val($("#filter_app_id").val());
-                    }
+                    // if($("#filter_app_id").val() > 0){
+                    //     $("#app_detail_id").val($("#filter_app_id").val());
+                    // }
 
                     $('#ajax-model').modal('show');
 
@@ -361,11 +340,12 @@
             $('body').on('click', '.edit', function () {
 
                 var id = $(this).data('id');
-                $('#server_auth_keyError,#stream_keyError,#token_keyError,#appSigningKeyError,#versionCodeError').text('');
+                
+                $('#server_auth_keyError,#stream_keyError,#appSigningKeyError,#versionCodeError,#account_idError').text('');
 
-                var application_id =  $(this).data('application_id');
+                var account_id =  $(this).data('account_id');
 
-                reloadAppsList(application_id)
+                reloadAccountsList(account_id)
 
 
                 $.ajax({
@@ -382,11 +362,11 @@
                         $('#id').val(res.id);
 
 
-                        $('#app_detail_id').val(res.app_detail_id);
+                        // $('#app_detail_id').val(res.app_detail_id);
+                        $('#account_id').val(res.account_id);
                         $('#server_auth_key').val(res.server_auth_key);
                         $('#stream_key').val(res.stream_key);
-                        $('#token_key').val(res.token_key);
-                        $('#appSigningKey').val(res.appSigningKey);
+                       $('#appSigningKey').val(res.appSigningKey);
                         $('#versionCode').val(res.versionCode);
                         $('#ajax-model').modal('show');
 
@@ -442,7 +422,7 @@
                 $("#btn-save"). attr("disabled", true);
 
 
-                $('#server_auth_keyError,#stream_keyError,#token_keyError,#appSigningKeyError,#versionCodeError').text('');
+                $('#server_auth_keyError,#stream_keyError,#appSigningKeyError,#versionCodeError').text('');
 
 
                 $.ajax({
@@ -499,7 +479,6 @@
                         $('#server_auth_keyError').text(response.responseJSON.errors.server_auth_key);
                         $('#versionCodeError').text(response.responseJSON.errors.versionCode);
                         $('#stream_keyError').text(response.responseJSON.errors.stream_key);
-                        $('#token_keyError').text(response.responseJSON.errors.token_key);
                         $('#appSigningKeyError').text(response.responseJSON.errors.appSigningKey);
 
                     }
