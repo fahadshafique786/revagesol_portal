@@ -209,12 +209,12 @@
                                     <label for="isScreenAdsLimit" class="col-sm-2 col-form-label">isScreenAdsLimit</label>
                                     <div class="col-sm-4">
                                         <label for="isScreenAdsLimit1" class="cursor-pointer">
-                                            <input type="radio" class="" id="isScreenAdsLimit1" name="isScreenAdsLimit" value="1"  />
+                                            <input type="radio" class="" id="isScreenAdsLimit1" name="isScreenAdsLimit" value="1" checked />
                                             <span class="">Yes</span>
                                         </label>
 
                                         <label for="isScreenAdsLimit0" class="cursor-pointer">
-                                            <input type="radio" class="" id="isScreenAdsLimit0" name="isScreenAdsLimit" value="0" checked />
+                                            <input type="radio" class="" id="isScreenAdsLimit0" name="isScreenAdsLimit" value="0"  />
                                             <span class="">No</span>
                                         </label>
 
