@@ -204,10 +204,6 @@
 
                                     </div>
 
-
-                                </div>
-
-                                <div class="form-group row">
                                     <label for="staticEmail" class="col-sm-2 col-form-label">isAdsInterval</label>
                                     <div class="col-sm-4">
 
@@ -222,6 +218,11 @@
                                         </label>
 
                                     </div>
+
+
+                                </div>
+
+                                <div class="form-group row">
 
                                     <label for="staticEmail" class="col-sm-2 col-form-label">isMessageDialogDismiss</label>
                                     <div class="col-sm-4">
@@ -239,23 +240,9 @@
                                         </label>
 
                                     </div>
-                                </div>
 
-                                <div class="form-group row">
-                                    <label for="staticEmail" class="col-sm-2 col-form-label">isSponsorAdsShow</label>
-                                    <div class="col-sm-4">
 
-                                        <label for="isSponsorAdsShow1" class="cursor-pointer">
-                                            <input type="radio" class="" id="isSponsorAdsShow1" name="isSponsorAdsShow" value="1"  />
-                                            <span class="">Yes</span>
-                                        </label>
 
-                                        <label for="isSponsorAdsShow0" class="cursor-pointer">
-                                            <input type="radio" class="" id="isSponsorAdsShow0" name="isSponsorAdsShow" value="0" checked />
-                                            <span class="">No</span>
-                                        </label>
-
-                                    </div>
 
                                     <label for="staticEmail" class="col-sm-2 col-form-label">isStartAppAdsShow</label>
                                     <div class="col-sm-4">
@@ -271,25 +258,27 @@
                                         </label>
 
                                     </div>
+                                    
+
+
                                 </div>
 
                                 <div class="form-group row">
-{{--                                    <label for="staticEmail" class="col-sm-2 col-form-label d-none">isStartAppOnline</label>--}}
-{{--                                    <div class="col-sm-4 d-none">--}}
 
+                                    <label for="staticEmail" class="col-sm-2 col-form-label">isSponsorAdsShow</label>
+                                    <div class="col-sm-4">
 
-{{--                                        <label for="isStartAppOnline1" class="cursor-pointer">--}}
-{{--                                            <input type="radio" class="" id="isStartAppOnline1" name="isStartAppOnline" value="1"  />--}}
-{{--                                            <span class="">Yes</span>--}}
-{{--                                        </label>--}}
+                                        <label for="isSponsorAdsShow1" class="cursor-pointer">
+                                            <input type="radio" class="" id="isSponsorAdsShow1" name="isSponsorAdsShow" value="1"  />
+                                            <span class="">Yes</span>
+                                        </label>
 
-{{--                                        <label for="isStartAppOnline0" class="cursor-pointer">--}}
-{{--                                            <input type="radio" class="" id="isStartAppOnline0" name="isStartAppOnline" value="0" checked />--}}
-{{--                                            <span class="">No</span>--}}
-{{--                                        </label>--}}
+                                        <label for="isSponsorAdsShow0" class="cursor-pointer">
+                                            <input type="radio" class="" id="isSponsorAdsShow0" name="isSponsorAdsShow" value="0" checked />
+                                            <span class="">No</span>
+                                        </label>
 
-{{--                                    </div>--}}
-
+                                    </div>
 
                                     <label for="staticEmail" class="col-sm-2 col-form-label">isSuspendApp</label>
 
@@ -310,16 +299,11 @@
                                 </div>
 
                                 <div class="form-group row">
+
                                     <label for="staticEmail" class="col-sm-2 col-form-label">suspendAppMessage</label>
                                     <div class="col-sm-4">
                                         <textarea class="form-control" name="suspendAppMessage" id="suspendAppMessage"></textarea>
                                     </div>
-
-{{--                                    <label for="staticEmail" class="col-sm-2 col-form-label d-none">minimumVersionSupport</label>--}}
-{{--                                    <div class="col-sm-4 d-none">--}}
-{{--                                        <input type="text" class="form-control" name="minimumVersionSupport" id="minimumVersionSupport" value="" />--}}
-{{--                                    </div>--}}
-
 
                                 </div>
 
