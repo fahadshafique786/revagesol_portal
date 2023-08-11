@@ -698,9 +698,6 @@ class Synchronization extends BaseController
                 $obj->isAdmobAdsShow = getBoolean($obj->isAdmobAdsShow);
                 $obj->isAdmobOnline = getBoolean($obj->isAdmobOnline);
                 $obj->isAdsInterval = getBoolean($obj->isAdsInterval);
-                $obj->isBannerPlayer = getBoolean($obj->isBannerPlayer);
-
-//              $obj->isIpAddressApiCall = getBoolean($obj->isIpAddressApiCall);
 
                 $obj->isMessageDialogDismiss = getBoolean($obj->isMessageDialogDismiss);
                 $obj->isSponsorAdsShow = getBoolean($obj->isSponsorAdsShow);

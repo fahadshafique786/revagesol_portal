@@ -26,7 +26,6 @@ class CreateAppDetailsTable extends Migration
             $table->enum('isAdmobAdsShow',['0','1'])->default('0');
             $table->enum('isAdmobOnline',['0','1'])->default('0');
             $table->enum('isAdsInterval',['0','1'])->default('0');
-            $table->enum('isBannerPlayer',['0','1'])->default('0');
             $table->enum('isIpAddressApiCall',['0','1'])->default('0');
             $table->enum('isMessageDialogDismiss',['0','1'])->default('0');
             $table->enum('isSponsorAdsShow',['0','1'])->default('0');

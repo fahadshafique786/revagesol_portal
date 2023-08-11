@@ -26,7 +26,6 @@ class AppDetails extends Model
         'isAdmobAdsShow',
         'isAdmobOnline',
         'isAdsInterval',
-        'isBannerPlayer',
         'isIpAddressApiCall',
         'isMessageDialogDismiss',
         'isSponsorAdsShow',

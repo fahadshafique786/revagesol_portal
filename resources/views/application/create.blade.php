@@ -190,22 +190,6 @@
 
                                 <div class="form-group row">
 
-                                    <label for="staticEmail" class="col-sm-2 col-form-label">isBannerPlayer</label>
-                                    <div class="col-sm-4">
-
-                                        <label for="isBannerPlayer1" class="cursor-pointer">
-                                            <input type="radio" class="" id="isBannerPlayer1" name="isBannerPlayer" value="1"  checked />
-                                            <span class="">Yes</span>
-                                        </label>
-
-                                        <label for="isBannerPlayer0" class="cursor-pointer">
-                                            <input type="radio" class="" id="isBannerPlayer0" name="isBannerPlayer" value="0"  />
-                                            <span class="">No</span>
-                                        </label>
-
-                                    </div>
-
-
                                     <label for="isScreenAdsLimit" class="col-sm-2 col-form-label">isScreenAdsLimit</label>
                                     <div class="col-sm-4">
                                         <label for="isScreenAdsLimit1" class="cursor-pointer">

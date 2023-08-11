@@ -199,22 +199,6 @@
 
                                 <div class="form-group row">
 
-                                    <label for="staticEmail" class="col-sm-2 col-form-label">isBannerPlayer</label>
-                                    <div class="col-sm-4">
-
-                                        <label for="isBannerPlayer1" class="cursor-pointer">
-                                            <input type="radio" class="" id="isBannerPlayer1" name="isBannerPlayer" value="1"   {{($appData->isBannerPlayer) ? 'checked' : ''}}  />
-                                            <span class="">Yes</span>
-                                        </label>
-
-                                        <label for="isBannerPlayer0" class="cursor-pointer">
-                                            <input type="radio" class="" id="isBannerPlayer0" name="isBannerPlayer" value="0"  {{(!$appData->isBannerPlayer) ? 'checked' : ''}}  />
-                                            <span class="">No</span>
-                                        </label>
-
-                                    </div>
-
-
                                     <label for="isScreenAdsLimit" class="col-sm-2 col-form-label">isScreenAdsLimit</label>
                                     <div class="col-sm-4">
                                         <label for="isScreenAdsLimit1" class="cursor-pointer">
@@ -228,11 +212,6 @@
                                         </label>
 
                                     </div>
-
-
-                                </div>
-
-                                <div class="form-group row">
 
                                     <label for="staticEmail" class="col-sm-2 col-form-label">isAdsInterval</label>
                                     
@@ -251,6 +230,11 @@
                                     </div>
 
 
+
+                                </div>
+
+                                <div class="form-group row">
+
                                     <label for="staticEmail" class="col-sm-2 col-form-label">isMessageDialogDismiss</label>
 
                                     <div class="col-sm-4">
@@ -266,6 +250,27 @@
                                         </label>
 
                                     </div>
+
+
+
+                                    <label for="staticEmail" class="col-sm-2 col-form-label">isStartAppAdsShow</label>
+                                    <div class="col-sm-4">
+
+                                        <label for="isStartAppAdsShow1" class="cursor-pointer">
+                                            <input type="radio" class="" id="isStartAppAdsShow1" name="isStartAppAdsShow" value="1"   {{($appData->isStartAppAdsShow) ? 'checked' : ''}}  />
+                                            <span class="">Yes</span>
+                                        </label>
+
+                                        <label for="isStartAppAdsShow0" class="cursor-pointer">
+                                            <input type="radio" class="" id="isStartAppAdsShow0" name="isStartAppAdsShow" value="0"  {{(!$appData->isStartAppAdsShow) ? 'checked' : ''}}  />
+                                            <span class="">No</span>
+                                        </label>
+
+
+                                    </div>
+                                    
+
+                                    
                                 </div>
 
                                 <div class="form-group row">
@@ -287,40 +292,6 @@
                                     </div>
 
 
-                                    <label for="staticEmail" class="col-sm-2 col-form-label">isStartAppAdsShow</label>
-                                    <div class="col-sm-4">
-
-                                        <label for="isStartAppAdsShow1" class="cursor-pointer">
-                                            <input type="radio" class="" id="isStartAppAdsShow1" name="isStartAppAdsShow" value="1"   {{($appData->isStartAppAdsShow) ? 'checked' : ''}}  />
-                                            <span class="">Yes</span>
-                                        </label>
-
-                                        <label for="isStartAppAdsShow0" class="cursor-pointer">
-                                            <input type="radio" class="" id="isStartAppAdsShow0" name="isStartAppAdsShow" value="0"  {{(!$appData->isStartAppAdsShow) ? 'checked' : ''}}  />
-                                            <span class="">No</span>
-                                        </label>
-
-
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-
-{{--                                    <label for="staticEmail" class="col-sm-2 col-form-label">isStartAppOnline</label>--}}
-{{--                                    <div class="col-sm-4">--}}
-
-
-{{--                                        <label for="isStartAppOnline1" class="cursor-pointer">--}}
-{{--                                            <input type="radio" class="" id="isStartAppOnline1" name="isStartAppOnline" value="1"  {{($appData->isStartAppOnline) ? 'checked' : ''}}/>--}}
-{{--                                            <span class="">Yes</span>--}}
-{{--                                        </label>--}}
-
-{{--                                        <label for="isStartAppOnline0" class="cursor-pointer">--}}
-{{--                                            <input type="radio" class="" id="isStartAppOnline0" name="isStartAppOnline" value="0" {{(!$appData->isStartAppOnline) ? 'checked' : ''}} />--}}
-{{--                                            <span class="">No</span>--}}
-{{--                                        </label>--}}
-
-{{--                                    </div>--}}
 
                                     <label for="staticEmail" class="col-sm-2 col-form-label">isSuspendApp</label>
 

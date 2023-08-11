@@ -111,7 +111,6 @@ class Applications extends BaseController
 
                         $obj->isAdmobOnline = getBoolean($obj->isAdmobOnline);
                         $obj->isAdsInterval = getBoolean($obj->isAdsInterval);
-                        $obj->isBannerPlayer = getBoolean($obj->isBannerPlayer);
 
                         $obj->isMessageDialogDismiss = getBoolean($obj->isMessageDialogDismiss);
                         $obj->isOnlineCode = getBoolean($obj->isOnlineCode);
