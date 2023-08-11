@@ -312,6 +312,8 @@
             
             $('#account_ids').val(null).trigger('change');
 
+            $("#selectAllAccountsData").prop("checked",false);
+
             var id = $(this).data('id');
 
             $('#user_nameError').text('');
@@ -388,7 +390,7 @@
                     setTimeout(() => {
                         var total_apps = $('#account_ids option').length - 1;
                         if(total_apps == $('#account_ids option:selected').length){
-                            $("#selectAllAccountsData").prop("checked",true);
+                            $("#selectAllAccountsData").prop("checked",false);
                         }
 
                     }, 3000);

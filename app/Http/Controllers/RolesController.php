@@ -134,6 +134,7 @@ class RolesController extends Controller
 
     public function destroy(Request $request)
     {
+        $user = RoleHasAccount::where('role_id',$request->id)->delete();
         $user = Role::where('id',$request->id)->delete();
 
         return response()->json(['success' => true]);
