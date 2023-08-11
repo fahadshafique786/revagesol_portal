@@ -325,9 +325,9 @@
                 reloadAccountsList();
 
                 setTimeout(function(){
-                    // if($("#filter_app_id").val() > 0){
-                    //     $("#app_detail_id").val($("#filter_app_id").val());
-                    // }
+                    if($("#account_filter").val() > 0){
+                        $("#account_id").val($("#account_filter").val());
+                    }
 
                     $('#ajax-model').modal('show');
 

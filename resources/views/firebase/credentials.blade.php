@@ -148,7 +148,7 @@
 
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <input type="text" class="form-control mb-2 key_name" id="key_name" name="key_name[]" placeholder="" value="apiKey" readonly>
+                                        <input type="text" class="form-control mb-2 key_name" id="key_name-1" name="key_name[]" placeholder="" value="apiKey" readonly>
                                     </div>
 
 
@@ -160,7 +160,7 @@
 
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <input type="text" class="form-control mb-2 key_name" id="key_name" name="key_name[]" placeholder="" value="authDomain" readonly>
+                                        <input type="text" class="form-control mb-2 key_name" id="key_name-2" name="key_name[]" placeholder="" value="authDomain" readonly>
                                     </div>
 
 
@@ -172,7 +172,7 @@
 
                                 <div class="row" >
                                     <div class="col-sm-6">
-                                        <input type="text" class="form-control mb-2 key_name" id="key_name"  name="key_name[]" placeholder="" value="databaseURL" readonly>
+                                        <input type="text" class="form-control mb-2 key_name" id="key_name-3"  name="key_name[]" placeholder="" value="databaseURL" readonly>
                                     </div>
 
                                     <div class="col-sm-6">
@@ -183,7 +183,7 @@
 
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <input type="text" class="form-control mb-2 key_name" id="key_name" name="key_name[]" placeholder="" value="projectId" readonly>
+                                        <input type="text" class="form-control mb-2 key_name" id="key_name-4" name="key_name[]" placeholder="" value="projectId" readonly>
                                     </div>
 
                                     <div class="col-sm-6">
@@ -194,7 +194,7 @@
 
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <input type="text" class="form-control mb-2 key_name" id="key_name" name="key_name[]" placeholder="" value="storageBucket" readonly>
+                                        <input type="text" class="form-control mb-2 key_name" id="key_name-5" name="key_name[]" placeholder="" value="storageBucket" readonly>
                                     </div>
 
                                     <div class="col-sm-6">
@@ -205,7 +205,7 @@
 
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <input type="text" class="form-control mb-2 key_name" id="key_name" name="key_name[]" placeholder="" value="messagingSenderId" readonly>
+                                        <input type="text" class="form-control mb-2 key_name" id="key_name-6" name="key_name[]" placeholder="" value="messagingSenderId" readonly>
                                     </div>
 
                                     <div class="col-sm-6">
@@ -216,7 +216,7 @@
 
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <input type="text" class="form-control mb-2 key_name" id="key_name" name="key_name[]" placeholder="" value="appId" readonly>
+                                        <input type="text" class="form-control mb-2 key_name" id="key_name-7" name="key_name[]" placeholder="" value="appId" readonly>
                                     </div>
 
 
@@ -228,7 +228,7 @@
 
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <input type="text" class="form-control mb-2 key_name" id="key_name" name="key_name[]" placeholder="" value="measurementId" readonly>
+                                        <input type="text" class="form-control mb-2 key_name" id="key_name-8" name="key_name[]" placeholder="" value="measurementId" readonly>
                                     </div>
 
 
@@ -404,9 +404,9 @@
 
             setTimeout(function(){
 
-                // if($("#filter_app_id").val() > 0){
-                //     $("#app_detail_id").val($("#filter_app_id").val());
-                // }
+                if($("#account_filter").val() > 0){
+                    $("#account_id").val($("#account_filter").val());
+                }
 
                 $('#ajax-model').modal('show');
 
