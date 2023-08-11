@@ -99,9 +99,9 @@ if ( ! function_exists('getAccountIdByAppId')) {
 }
 
 if ( ! function_exists('getFirebaseCredentialKeysByAppId')) {
-    function getFirebaseCredentialKeysByAppId($appDetailId)
+    function getFirebaseCredentialKeysByAccountId($accountId)
     {
-        $firebaseCredentials = FirebaseCredentials::where('app_detail_id',$appDetailId)->select(['notificationKey'])->first();
+        $firebaseCredentials = FirebaseCredentials::where('account_id',$accountId)->select(['notificationKey'])->first();
 
         return (!empty($firebaseCredentials)) ? $firebaseCredentials : null;
     }

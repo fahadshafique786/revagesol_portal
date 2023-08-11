@@ -235,7 +235,7 @@ class PushNotificationsController extends  BaseController
                 $errors = [];
                 foreach ($applicationList as $index => $obj){
 
-                    $firebaseCredentials = getFirebaseCredentialKeysByAppId($obj->application_id);
+                    $firebaseCredentials = getFirebaseCredentialKeysByAccountId($request->account_id);
 
                     if($firebaseCredentials){
 
@@ -255,7 +255,7 @@ class PushNotificationsController extends  BaseController
                     }
                     else{
 
-                        $errors[] = $obj->accountsName . ' - ' . $obj->packageId . ' : Credentials not found!';
+                        $errors[] = $obj->accountsName . ' - ' . $obj->packageId . ' : Credentials xxx not found!';
 
                     }
 
@@ -267,7 +267,7 @@ class PushNotificationsController extends  BaseController
         else{
 
             $packageId = getPackageIdByAppId($request->app_detail_id);
-            $firebaseCredentials = getFirebaseCredentialKeysByAppId($request->app_detail_id);
+            $firebaseCredentials = getFirebaseCredentialKeysByAccountId($request->account_id);
             $accountsDetail = getAccountDetailsById($request->account_id);
 
             if($firebaseCredentials){
