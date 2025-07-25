@@ -2,10 +2,10 @@
   <aside class="main-sidebar sidebar-dark-info elevation-4 custom-siderbar-dark">
 
 	<a class="brand-link" href="{{ route('dashboard') }}">
-		<img src="{{ asset('images/logo-mini.png') }}" alt="AdminLTE Logo" class="brand-image-mini"/>
-		<img src="{{ asset('images/logo.png') }}" alt="AdminLTE Logo" class="brand-image"
-           style="opacity: .8">
-		<span class="visiblilty-hidden db"> {{ config('app.name', 'Revage Solution') }} </span>
+<!--		<img src="{{ asset('images/logo-mini.png') }}" alt="AdminLTE Logo" class="brand-image-mini"/>-->
+<!--		<img src="{{ asset('images/logo.png') }}" alt="AdminLTE Logo" class="brand-image"-->
+<!--           style="opacity: .8">-->
+		<h3 class="db"> {{ config('app.name', 'Revage Solution') }} </h3>
 
 	</a>
 
