@@ -5,7 +5,7 @@
 <!--		<img src="{{ asset('images/logo-mini.png') }}" alt="AdminLTE Logo" class="brand-image-mini"/>-->
 <!--		<img src="{{ asset('images/logo.png') }}" alt="AdminLTE Logo" class="brand-image"-->
 <!--           style="opacity: .8">-->
-		<h3 class="db"> {{ config('app.name', 'Revage Solution') }} </h3>
+        <h4 class="mb-0 text-center"> {{ config('app.name', 'Revage Solution') }} </h4>
 
 	</a>
 
