@@ -116,7 +116,7 @@ function fetchData()
             render: function( data, type, full, meta,rowData ) {
             let value = "";
 		    for (let i = 0; i < data.length; i++) {
-                    value +=  "<a href='javascript:void(0)' class='badge badge-info  text-xs'>"+data[i].name +"</a>" +" ";
+                    value +=  "<a href='javascript:void(0)' class='badge badge-system  text-xs'>"+data[i].name +"</a>" +" ";
                 }
                 return value;
              //   return  "<a href='javascript:void(0)' class='badge badge-success'>"+data + "</a>" ;

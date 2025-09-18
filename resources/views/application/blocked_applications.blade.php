@@ -219,7 +219,7 @@ function fetchData()
             let value = "";
             console.log(data);
 		    for (let i = 0; i < data.length; i++) {
-                    value +=  "<a href='javascript:void(0)' class='badge badge-info  text-xs'>"+data[i] +"</a>" +" ";
+                    value +=  "<a href='javascript:void(0)' class='badge badge-system  text-xs'>"+data[i] +"</a>" +" ";
                 }
                 return value;
             },
