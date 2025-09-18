@@ -30,7 +30,7 @@ else{
                 <h2 class="heading mb-0">    Revage Solutions </h2>
 <!--                <img src="{{ asset('images/logo.png') }}" class="login-logo" width="200"/>-->
             </div>
-            <div class="card-body">
+            <div class="card-body custom-card-body">
                 <h2 class="login-box-msg text-bold">Sign <span class="site-color">In</span></h2>
 
                 @if(Session::has('message'))
