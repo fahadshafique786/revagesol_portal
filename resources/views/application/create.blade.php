@@ -258,7 +258,7 @@
                                         </label>
 
                                     </div>
-                                    
+
 
 
                                 </div>
@@ -310,7 +310,7 @@
                                 <div class="form-group row">
 
                                     <div class="col-sm-12 text-right">
-                                        <button class="btn btn-info vertical-bottom" name="submit" id="submitApp"> <i class="fa fa-save"></i> &nbsp; <span> SUBMIT </span> </button>
+                                        <button class="btn btn-dark  vertical-bottom" name="submit" id="submitApp"> <i class="fa fa-save"></i> &nbsp; <span> SUBMIT </span> </button>
                                     </div>
 
                                 </div>

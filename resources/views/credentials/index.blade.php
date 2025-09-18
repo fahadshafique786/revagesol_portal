@@ -42,7 +42,7 @@
                                 <div class="col-6 text-left">
 
                                     @if(auth()->user()->hasRole('super-admin') || auth()->user()->can('manage-credentials'))
-                                        <a class="btn btn-info d-inline-block " href="javascript:void(0)" id="addNew">
+                                        <a class="btn btn-dark  d-inline-block " href="javascript:void(0)" id="addNew">
                                             Add New Credential
                                         </a>
                                     @endif
@@ -175,7 +175,7 @@
                             </div>
 
                             <div class="col-sm-12 text-center">
-                                <button type="submit" class="btn btn-info full-width-button" id="btn-save" >
+                                <button type="submit" class="btn btn-dark  full-width-button" id="btn-save" >
                                     Save
                                 </button>
                             </div>
@@ -340,7 +340,7 @@
             $('body').on('click', '.edit', function () {
 
                 var id = $(this).data('id');
-                
+
                 $('#server_auth_keyError,#stream_keyError,#appSigningKeyError,#versionCodeError,#account_idError').text('');
 
                 var account_id =  $(this).data('account_id');
@@ -407,7 +407,7 @@
                                     icon: 'error',
                                     title: 'Network Error Occured!'
                                 });
-                                
+
                             }
                         }
                     });

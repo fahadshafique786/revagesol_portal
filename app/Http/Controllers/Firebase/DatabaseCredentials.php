@@ -28,7 +28,7 @@ class DatabaseCredentials extends BaseController
         $appsList = AppDetails::all();
 
         $this->roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
-        
+
         if(!empty($this->roleAssignedAccounts)){
             $accountsList = Accounts::whereIn('id',$this->roleAssignedAccounts)->orderBy('id','DESC')->get();
         }
@@ -192,7 +192,7 @@ class DatabaseCredentials extends BaseController
         if(!in_array($database->account_id,$roleAssignedAccounts)){
             return Response::json(["message"=>"You are not allowed to perform this action!"],403);
         }
-        
+
         FirebaseCredentials::where('id',$request->id)->delete();
         return response()->json(['success' => true]);
     }
@@ -242,7 +242,7 @@ class DatabaseCredentials extends BaseController
                     $response[$i]['notificationKey'] = $obj->notificationKey;
                     if(auth()->user()->hasRole('super-admin') || auth()->user()->can('manage-firebase_configuration'))
                     {
-                        $response[$i]['action'] = '<a href="javascript:void(0)" class="btn edit" data-account_id="'.$obj->account_id.'" data-id="'. $obj->id .'"><i class="fa fa-edit  text-info"></i></a>
+                        $response[$i]['action'] = '<a href="javascript:void(0)" class="btn edit" data-account_id="'.$obj->account_id.'" data-id="'. $obj->id .'"><i class="fa fa-edit  text-dark"></i></a>
 											<a href="javascript:void(0)" class="btn delete " data-id="'. $obj->id .'"><i class="fa fa-trash-alt text-danger"></i></a>';
                     }
                     else
@@ -271,8 +271,8 @@ class DatabaseCredentials extends BaseController
         if(isset($request->account_id) && !empty($request->account_id)){
             $accountsIdClause = " OR acc.id = ". $request->account_id;
         }
-        
-        if(!empty($this->roleAssignedAccounts)){            
+
+        if(!empty($this->roleAssignedAccounts)){
             $permissionAppIdClause .= " AND acc.id IN (".implode(",",$this->roleAssignedAccounts).")";
         }
 
@@ -290,7 +290,7 @@ class DatabaseCredentials extends BaseController
                                 FROM firebase_credentials fc
                                 WHERE fc.account_id = acc.id
                 '.$appIdClause.'
-            ) 
+            )
             '.$permissionAppIdClause.'
             '.$accountsIdClause.'
         '));

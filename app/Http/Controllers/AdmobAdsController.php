@@ -33,7 +33,7 @@ class AdmobAdsController extends Controller
         }
 
         $appsList = AppDetails::get();
-        
+
         return view('admob_ads')
             ->with('accountsList',$accountsList)
             ->with('appsList',$appsList);
@@ -47,7 +47,7 @@ class AdmobAdsController extends Controller
             return Response::json(["message"=>"You are not allowed to perform this action!"],403);
         }
 
-        
+
         if(!empty($request->id))
         {
             $validation = AdmobAds::where('adName',$request->adName)
@@ -116,7 +116,7 @@ class AdmobAdsController extends Controller
         if(!in_array($database->account_id,$roleAssignedAccounts)){
             return Response::json(["message"=>"You are not allowed to perform this action!"],403);
         }
-        
+
         AdmobAds::where('id',$request->id)->delete();
         return response()->json(['success' => true]);
     }
@@ -163,7 +163,7 @@ class AdmobAdsController extends Controller
                     $response[$i]['isAdShow'] = getBooleanStr($obj->isAdShow,true);
                     if(auth()->user()->hasRole('super-admin') || auth()->user()->can('manage-admob_ads'))
                     {
-                        $response[$i]['action'] = '<a href="javascript:void(0)" class="btn edit" data-id="'. $obj->id .'"><i class="fa fa-edit  text-info"></i></a>
+                        $response[$i]['action'] = '<a href="javascript:void(0)" class="btn edit" data-id="'. $obj->id .'"><i class="fa fa-edit  text-dark"></i></a>
 											<a href="javascript:void(0)" class="btn delete " data-id="'. $obj->id .'"><i class="fa fa-trash-alt text-danger"></i></a>';
                     }
                     else

@@ -43,7 +43,7 @@
 
                                 <div class="col-6 text-left">
                                     @if(auth()->user()->hasRole('super-admin') || auth()->user()->can('manage-app_settings'))
-                                        <a class="btn btn-info d-inline-block" href="{{route('app_setting.create')}}">
+                                        <a class="btn btn-dark  d-inline-block" href="{{route('app_setting.create')}}">
                                             Add New App Setting
                                         </a>
 

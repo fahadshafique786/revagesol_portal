@@ -24,7 +24,7 @@ class PushNotificationsController extends  BaseController
         $appsList = AppDetails::all();
 
         $this->roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
-        
+
         if(!empty($this->roleAssignedAccounts)){
             $accountsList = Accounts::whereIn('id',$this->roleAssignedAccounts)->orderBy('id','DESC')->get();
         }
@@ -69,7 +69,7 @@ class PushNotificationsController extends  BaseController
                 foreach($FilterData as $index => $obj)
                 {
 
-                    $icon =  '<a href="javascript:void(0)" class="" ><i class="fa fa-image text-xl"></i></a>';
+                    $icon =  '<a href="javascript:void(0)" class="" ><i class="fa fa-image text-xl text-dark "></i></a>';
                     if(!empty($obj->image)){
                         $file = public_path('uploads/push_notifications'.'/'.$obj->image);
                         if(file_exists($file)){
@@ -89,7 +89,7 @@ class PushNotificationsController extends  BaseController
 
                     if(auth()->user()->hasRole('super-admin') || auth()->user()->can('manage-firebase_configuration'))
                     {
-                        $response[$i]['action'] = '<a href="javascript:void(0)" class="btn edit" data-id="'. $obj->id .'"><i class="fa fa-clone  text-info"></i></a>
+                        $response[$i]['action'] = '<a href="javascript:void(0)" class="btn edit" data-id="'. $obj->id .'"><i class="fa fa-clone  text-dark"></i></a>
 											<a href="javascript:void(0)" class="btn delete " data-id="'. $obj->id .'"><i class="fa fa-trash-alt text-danger"></i></a>';
                     }
                     else

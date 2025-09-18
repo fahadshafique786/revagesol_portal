@@ -379,7 +379,7 @@
                                     </div>
 
                                     <div class="col-sm-6 text-right">
-                                        <button type="submit" class="btn btn-info" id="submitApp"> <i class="fa fa-save"></i> <span class=""> SUBMIT </span> </button>
+                                        <button type="submit" class="btn btn-dark " id="submitApp"> <i class="fa fa-save"></i> <span class=""> SUBMIT </span> </button>
                                     </div>
 
 

@@ -14,7 +14,7 @@
 								<div class="col-12 text-left">
 									<div class="pull-left">
                                         @if(auth()->user()->hasRole('super-admin') || auth()->user()->can('manage-roles'))
-										<a class="btn btn-info" href="javascript:void(0)" id="addNew">
+										<a class="btn btn-dark " href="javascript:void(0)" id="addNew">
                                             Add Role
                                         </a>
                                         @endif
@@ -84,7 +84,7 @@
                         </label>
 
                         <label for="isShowAccountList0" class="cursor-pointer">
-                            <input type="radio" class="" 
+                            <input type="radio" class=""
                              id="isShowAccountList0" name="isShowAccountList" value="0"  />
                             <span class="">No</span>
                         </label>
@@ -108,9 +108,9 @@
                         <label for="selectAllAccountsData" class="col-form-label">
                             <input type="checkbox" id="selectAllAccountsData" > &nbsp; Select All Accounts
                         </label>
-                    </div>                    
+                    </div>
 
-                    
+
                 </div>
 
 
@@ -201,7 +201,7 @@
             }else{
 
                 // $("#account_ids").val(null).trigger("change");
-                getRolesAccountsList("account_ids",true);                
+                getRolesAccountsList("account_ids",true);
 
             }
         });
@@ -224,13 +224,13 @@
 
             // $("#account_ids > option").prop("selected","selected");// Select All Options
             // $("#account_ids").trigger("change");
-            
+
 
             $('#account_ids option:eq(0)').attr('selected', 'selected');
             $("#account_ids").trigger("change");
 
 
-            // getApplicationListOptionByAccountsNoPermission($("#account_filter").val(),'account_ids','-1');            
+            // getApplicationListOptionByAccountsNoPermission($("#account_filter").val(),'account_ids','-1');
 
             // enableDisableAccountInput(1);
 
@@ -309,7 +309,7 @@
 
 
         $('body').on('click', '.editRole', function () {
-            
+
             $('#account_ids').val(null).trigger('change');
 
             $("#selectAllAccountsData").prop("checked",false);
@@ -325,7 +325,7 @@
             $("#permissionss").select2();
 
             $("#account_ids").select2();
-            
+
             $('#account_ids option:eq(0)').removeAttr('selected');
             $("#account_ids").trigger("change");
 
@@ -353,8 +353,8 @@
                     // }
 
                     setTimeout(() => {
-                        
-                    
+
+
                         $.each(res.permissions,function(key,obj){
                             $("#permissionss").select2("val", $("#permissionss").select2("val").concat(obj.id));
                         });
@@ -382,7 +382,7 @@
                                 return false;
                             }
                         }
-                        
+
                         $('#ajax-model').modal('show');
 
                     }, 2000);

@@ -190,7 +190,7 @@ class UserController extends Controller
                             $response[$i]['action'] = '';
                         }
 					    else{
-                            $response[$i]['action'] = '<a href="javascript:void(0)" class="btn edit" data-id="'. $user->id .'"><i class="fa fa-edit  text-info"></i></a>
+                            $response[$i]['action'] = '<a href="javascript:void(0)" class="btn edit" data-id="'. $user->id .'"><i class="fa fa-edit  text-dark"></i></a>
 											<a href="javascript:void(0)" class="btn delete" data-id="'. $user->id .'"><i class="fa fa-trash  text-danger"></i></a>';
                         }
 					}

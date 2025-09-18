@@ -91,7 +91,7 @@
 
                                 <div class="col-sm-6 col-md-6 pt-4">
                                     @if(auth()->user()->hasRole('super-admin') || auth()->user()->can('view-manage-sync_accounts_data'))
-                                        <button id="pushAccountsDataSubmit" type="submit" class="btn btn-info"> <i class="fa fa-paper-plane"></i> <span class=""> Push Data to Firebase </span> </button>
+                                        <button id="pushAccountsDataSubmit" type="submit" class="btn btn-dark "> <i class="fa fa-paper-plane"></i> <span class=""> Push Data to Firebase </span> </button>
                                     @endif
                                 </div>
 
@@ -225,7 +225,7 @@
 
                                     <div class="col-sm-6 col-md-6 pt-4">
                                         @if(auth()->user()->hasRole('super-admin') || auth()->user()->can('view-manage-sync_accounts_data'))
-                                            <button type="submit" class="btn btn-info" id="updateAppSettingVersions"> <i class="fa fa-paper-plane"></i> <span class="">Push Updated Version to Firebase </span> </button>
+                                            <button type="submit" class="btn btn-dark " id="updateAppSettingVersions"> <i class="fa fa-paper-plane"></i> <span class="">Push Updated Version to Firebase </span> </button>
                                         @endif
                                     </div>
 
@@ -404,7 +404,7 @@
 
                                     </div>
 
-                                    
+
                                 </div>
 
                                 <div class="col-sm-12">
@@ -435,7 +435,7 @@
 
                                 <div class="col-sm-6 col-md-6 pt-4">
                                     @if(auth()->user()->hasRole('super-admin') || auth()->user()->can('view-manage-sync_apps_data'))
-                                        <button type="submit" class="btn btn-info" id="updateAppKeys"> <i class="fa fa-paper-plane"></i> Push App Settings to Firebase  </button>
+                                        <button type="submit" class="btn btn-dark " id="updateAppKeys"> <i class="fa fa-paper-plane"></i> Push App Settings to Firebase  </button>
                                     @endif
                                 </div>
 
@@ -562,7 +562,7 @@
 
                                 <div class="col-sm-6 col-md-6 pt-4">
                                     @if(auth()->user()->hasRole('super-admin') || auth()->user()->can('view-manage-sync_apps_data'))
-                                        <button type="submit" class="btn btn-info" id="updateAppCredentials"> <i class="fa fa-save"></i> Update  </button>
+                                        <button type="submit" class="btn btn-dark " id="updateAppCredentials"> <i class="fa fa-save"></i> Update  </button>
                                     @endif
                                 </div>
 
@@ -774,7 +774,7 @@
 
                                 <div class="col-sm-6 col-md-6 pt-4">
                                     @if(auth()->user()->hasRole('super-admin') || auth()->user()->can('view-manage-sync_apps_data'))
-                                        <button type="submit" class="btn btn-info" id="updateAppDetails"> <i class="fa fa-paper-plane"></i> <span class="">Push App Details to Firebase </span> </button>
+                                        <button type="submit" class="btn btn-dark " id="updateAppDetails"> <i class="fa fa-paper-plane"></i> <span class="">Push App Details to Firebase </span> </button>
                                     @endif
                                 </div>
 
@@ -1797,7 +1797,7 @@
     }));
 
     async function pushDataToRealTimeDatabase(db,node,AppSettings,opt,package_id) {
-        
+
         var Toast = Swal.mixin({
             toast: true,
             position: 'top-end',

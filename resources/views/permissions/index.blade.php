@@ -14,7 +14,7 @@
                                   <div class="col-12 text-left">
                                       <div class="pull-left d-none">
                                           @if(auth()->user()->hasRole('super-admin') || auth()->user()->can('manage-permissions'))
-                                              <a class="btn btn-info" href="javascript:void(0)" id="addNew">
+                                              <a class="btn btn-dark " href="javascript:void(0)" id="addNew">
                                                   Add Permission
                                               </a>
                                           @endif

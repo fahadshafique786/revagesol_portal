@@ -195,11 +195,11 @@ class AppCredentialsController extends Controller
     {
         $database = AppCredentials::where('id',$request->id)->select('account_id')->first();
         $roleAssignedAccounts = getAccountsByRoleId(auth()->user()->roles()->first()->id);
-        
+
         if(!in_array($database->account_id,$roleAssignedAccounts)){
             return Response::json(["message"=>"You are not allowed to perform this action!"],403);
         }
-        
+
         AppCredentials::where('id',$request->id)->delete();
         return response()->json(['success' => true]);
     }
@@ -245,7 +245,7 @@ class AppCredentialsController extends Controller
                     $response[$i]['stream_key'] = $obj->stream_key;
                     if(auth()->user()->hasRole('super-admin') || auth()->user()->can('manage-credentials'))
                     {
-                        $response[$i]['action'] = '<a href="javascript:void(0)" class="btn edit" data-account_id="'.$obj->account_id.'" data-id="'. $obj->id .'"><i class="fa fa-edit  text-info"></i></a>
+                        $response[$i]['action'] = '<a href="javascript:void(0)" class="btn edit" data-account_id="'.$obj->account_id.'" data-id="'. $obj->id .'"><i class="fa fa-edit  text-dark"></i></a>
 											<a href="javascript:void(0)" class="btn delete " data-id="'. $obj->id .'"><i class="fa fa-trash-alt text-danger"></i></a>';
                     }
                     else
