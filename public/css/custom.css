@@ -53,12 +53,35 @@ LOGIN PAGE
 
 
 
-.custom-nav-dark,
-.primary-bg-dark{
-    background:#272d36 !Important;
+.custom-nav-background ,
+.custom-siderbar-background{
+    background: #E08E02 !important;
 }
-.custom-siderbar-dark{
-    background:#272d36 !Important;
+
+.sidebar-dark-info .nav-sidebar>.nav-item>.nav-link.active, .sidebar-light-info .nav-sidebar>.nav-item>.nav-link.active{
+    background-color: #000000 !important;
+    color: #fff !important;
+}
+
+.sidebar-dark-info .nav-sidebar>.nav-item>.nav-link.active, .sidebar-light-info .nav-sidebar>.nav-item>.nav-link.active{
+    background-color: #000000 !important;
+    color: #fff !important;
+
+}
+
+[class*=sidebar-dark-] .nav-sidebar>.nav-item.menu-open>.nav-link, [class*=sidebar-dark-] .nav-sidebar>.nav-item:hover>.nav-link, [class*=sidebar-dark-] .nav-sidebar>.nav-item>.nav-link:focus{
+    background-color: #000000 !important;
+    color: #fff !important;
+
+}
+
+.brand-link.custom {
+    border-bottom: 1px solid #ffb24a !important;
+    color: rgba(255, 255, 255, .8);
+}
+
+.nav-sidebar .nav-link{
+    color: #fff !important;
 }
 
 .visiblilty-hidden {
@@ -168,7 +191,7 @@ LOGIN PAGE
 }
 
 .custom > a.dropdown-item:hover {
-    background: #17a2b8;
+    background: #E08E02;
     color: #fff !important;
 }
 
