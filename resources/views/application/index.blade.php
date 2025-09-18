@@ -43,7 +43,7 @@
                             <div class="row">
                                 <div class="col-6 text-left">
                                     @if(auth()->user()->hasRole('super-admin') || auth()->user()->can('manage-applications'))
-                                        <a class="btn btn-info" href="{{route('app.create')}}">
+                                        <a class="btn btn-dark " href="{{route('app.create')}}">
                                             Add New Application
                                         </a>
 

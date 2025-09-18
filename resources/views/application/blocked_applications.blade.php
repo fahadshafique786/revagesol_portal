@@ -40,7 +40,7 @@
                               <div class="row">
                                   <div class="col-12 text-left">
                                           @if(auth()->user()->hasRole('super-admin') || auth()->user()->can('manage-block-app-countries'))
-                                              <a class="btn btn-info d-inline-block" href="javascript:void(0)" id="addNew">
+                                              <a class="btn btn-dark  d-inline-block" href="javascript:void(0)" id="addNew">
                                                   Block New Application
                                               </a>
                                           @endif
@@ -299,12 +299,12 @@ function fetchData()
                     icon: 'error',
                     title: 'Network Error Occured!'
                 });
-            }            
+            }
 
 				$("#btn-save").html('<i class="fa fa-save"></i> Save');
 				$("#btn-save"). attr("disabled", false);
 
-			}             
+			}
          });
 
      });
@@ -431,10 +431,10 @@ function fetchData()
                                 icon: 'error',
                                 title: 'Network Error Occured!'
                             });
-                            
-                        }                        
+
+                        }
                     }
-                    
+
                 });
             }
         })
@@ -488,7 +488,7 @@ function fetchData()
                     icon: 'error',
                     title: 'Network Error Occured!'
                 });
-            }            
+            }
 
 				$("#btn-save").html('<i class="fa fa-save"></i> Save');
 				$("#btn-save"). attr("disabled", false);

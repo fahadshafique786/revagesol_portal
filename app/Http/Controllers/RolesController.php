@@ -170,7 +170,7 @@ class RolesController extends Controller
                         }
                         else{
 
-                            $response[$i]['action'] = '<a href="javascript:void(0)" class="btn  editRole" data-id="'. $role->id .'"><i class="fa fa-edit  text-info"></i></a>
+                            $response[$i]['action'] = '<a href="javascript:void(0)" class="btn  editRole" data-id="'. $role->id .'"><i class="fa fa-edit  text-dark"></i></a>
 											<a href="javascript:void(0)" class="btn  delete" data-id="'. $role->id .'"><i class="fa fa-trash text-danger"></i></a>';
 
                         }

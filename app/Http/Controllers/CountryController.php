@@ -109,7 +109,7 @@ class CountryController extends Controller
         else{
             $accountsList = Accounts::orderBy('id','DESC')->get();
         }
-        
+
         return view('application.blocked_applications')
             ->with('applications',$remainingApplications)
             ->with('accountsList',$accountsList)
@@ -163,7 +163,7 @@ class CountryController extends Controller
 
                             $response[$i]['action'] = '
 
-                            <a href="javascript:void(0)" class="btn edit" data-id="'. $obj->app_id .'"><i class="fa fa-edit  text-info"></i></a>
+                            <a href="javascript:void(0)" class="btn edit" data-id="'. $obj->app_id .'"><i class="fa fa-edit  text-dark"></i></a>
 							<a href="javascript:void(0)" class="btn delete " data-id="'. $obj->app_id .'"><i class="fa fa-trash-alt text-danger"></i></a>';
 
 
@@ -203,7 +203,7 @@ class CountryController extends Controller
         if(!in_array($account_id,$roleAssignedAccounts)){
             return Response::json(["message"=>"You are not allowed to perform this action!"],403);
         }
-        
+
         AppDetails::where('id',$request->id)->update(['isProxyEnable'=>'0']);
         BlockedApplication::where('application_id',$request->id)->delete();
         return response()->json(['success' => true]);

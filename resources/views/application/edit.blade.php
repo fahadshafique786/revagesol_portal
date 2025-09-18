@@ -214,7 +214,7 @@
                                     </div>
 
                                     <label for="staticEmail" class="col-sm-2 col-form-label">isAdsInterval</label>
-                                    
+
                                     <div class="col-sm-4">
 
                                         <label for="isAdsInterval1" class="cursor-pointer">
@@ -268,9 +268,9 @@
 
 
                                     </div>
-                                    
 
-                                    
+
+
                                 </div>
 
                                 <div class="form-group row">
@@ -329,7 +329,7 @@
 
                                     <div class="col-sm-12 text-right">
                                         <input type="submit" class="btn bg-dark vertical-bottom" name="submit" id=submitApp"  value="SUBMIT" />
-                                        <!-- <button type="submit" class="btn btn-info" id="submitApp"> <i class="fa fa-save"></i> <span class="">  </span> </button> -->
+                                        <!-- <button type="submit" class="btn btn-dark " id="submitApp"> <i class="fa fa-save"></i> <span class="">  </span> </button> -->
                                     </div>
 
                                 </div>

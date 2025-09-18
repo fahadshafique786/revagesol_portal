@@ -51,7 +51,7 @@
                                 <div class="col-6 text-left">
 
                                     @if(auth()->user()->hasRole('super-admin') || auth()->user()->can('manage-admob_ads'))
-                                        <a class="btn btn-info d-inline-block" href="javascript:void(0)" id="addNew">
+                                        <a class="btn btn-dark  d-inline-block" href="javascript:void(0)" id="addNew">
                                             Add New Amob Ad
                                         </a>
                                     @endif
@@ -172,7 +172,7 @@
 
 
                             <div class="col-sm-12 text-center">
-                                <button type="submit" class="btn btn-info full-width-button" id="btn-save" >
+                                <button type="submit" class="btn btn-dark  full-width-button" id="btn-save" >
                                     Save
                                 </button>
                             </div>
@@ -388,7 +388,7 @@
                                     icon: 'error',
                                     title: 'Network Error Occured!'
                                 });
-                                
+
                             }
 
                         }

@@ -73,7 +73,7 @@
 
 <div class="wrapper">
   <!-- Navbar -->
-  <nav class="main-header navbar navbar-expand navbar-dark custom-nav">
+  <nav class="main-header navbar navbar-expand navbar-dark custom-nav custom-nav-background">
     <!-- Left navbar links -->
     <ul class="navbar-nav">
       <li class="nav-item">
@@ -88,14 +88,14 @@
 
         <li class="nav-item">
             <a class="nav-link"  href="javascript:void(0)" role="button">
-                <i id="fullScreenId" class="fas fa-expand-arrows-alt maximize-screen"></i>
-                <i id="defaultScreenId" class="fas fa-compress-arrows-alt minimize-screen"></i>
+                <i id="fullScreenId" class="fas fa-expand-arrows-alt maximize-screen text-white"></i>
+                <i id="defaultScreenId" class="fas fa-compress-arrows-alt minimize-screen  text-white"></i>
             </a>
         </li>
 
 		<li class="nav-item dropdown">
 			<a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-				<span id="UserProfileName"> {{ Auth::user()->name }}     </span><span class="caret"></span>
+				<span class="text-white" id="UserProfileName"> {{ Auth::user()->name }}     </span><span class="caret"></span>
                 <img id="UserProfileImg" src="{{ (Auth::user()->profile_image && (file_exists(public_path('uploads/users'.'/'.Auth::user()->profile_image)))) ? asset('uploads/users'). '/' .Auth::user()->profile_image  : asset('dist/img/avatar-custom.png')   }}" class="img-circle elevation-2 image-width-20 " alt="User Image"/>
 			</a>
 

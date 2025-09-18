@@ -156,7 +156,7 @@ class AccountsController extends Controller
                 $i = 0;
                 foreach($Filterdata as $index => $accounts)
                 {
-                    $sport_logo =  '<a href="javascript:void(0)" class="" ><i class="fa fa-image text-xl"></i></a>';
+                    $sport_logo =  '<a href="javascript:void(0)" class="" ><i class="fa fa-image text-xl text-dark "></i></a>';
                     if(!empty($accounts->icon)){
                         $file = public_path('uploads/accounts'.'/'.$accounts->icon);
                         if(file_exists($file)){
@@ -171,7 +171,7 @@ class AccountsController extends Controller
                     $response[$i]['image_required'] = getBooleanStr($accounts->image_required,true);
                     if(auth()->user()->hasRole('super-admin') || auth()->user()->can('manage-accounts'))
                     {
-                        $response[$i]['action'] = '<a href="javascript:void(0)" class="btn edit" data-id="'. $accounts->id .'"><i class="fa fa-edit  text-info"></i></a>
+                        $response[$i]['action'] = '<a href="javascript:void(0)" class="btn edit" data-id="'. $accounts->id .'"><i class="fa fa-edit  text-dark"></i></a>
 											<a href="javascript:void(0)" class="btn delete " data-id="'. $accounts->id .'"><i class="fa fa-trash-alt text-danger"></i></a>';
                     }
                     else

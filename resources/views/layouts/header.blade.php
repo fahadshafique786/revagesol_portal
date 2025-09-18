@@ -32,7 +32,7 @@
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed text-sm">
 <div class="wrapper">
   <!-- Navbar -->
-  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+  <nav class="main-header navbar navbar-expand custom-nav-background">
     <!-- Left navbar links -->
     <ul class="navbar-nav">
       <li class="nav-item">

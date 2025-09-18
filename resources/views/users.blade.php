@@ -14,7 +14,7 @@
 								<div class="col-12 text-left">
 									<div class="pull-left">
 										@if(auth()->user()->hasRole('super-admin') || auth()->user()->can('manage-users'))
-                                        <a class="btn btn-info" href="javascript:void(0)" id="addNew">
+                                        <a class="btn btn-dark " href="javascript:void(0)" id="addNew">
                                             Add User
                                         </a>
                                             @endif

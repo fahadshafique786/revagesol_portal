@@ -163,7 +163,7 @@ class SponsorsController extends Controller
         if(!in_array($database->account_id,$roleAssignedAccounts)){
             return Response::json(["message"=>"You are not allowed to perform this action!"],403);
         }
-        
+
 
         $getIcon = DB::table('sponsor_ads')->where('id',$request->id)->select('adUrlImage')->first();
 
@@ -210,7 +210,7 @@ class SponsorsController extends Controller
                 foreach($Filterdata as $index => $obj)
                 {
 
-                    $images =  '<a href="javascript:void(0)" class="" ><i class="fa fa-image text-xl"></i></a>';
+                    $images =  '<a href="javascript:void(0)" class="" ><i class="fa fa-image text-xl text-dark "></i></a>';
                     if(!empty($obj->adUrlImage)){
                         $file = public_path('uploads/sponsor_ads'.'/'.$obj->adUrlImage);
                         if(file_exists($file)){
@@ -228,7 +228,7 @@ class SponsorsController extends Controller
                     $response[$i]['isAdShow'] = getBooleanStr($obj->isAdShow,true);
                     if(auth()->user()->hasRole('super-admin') || auth()->user()->can('manage-sponsors'))
                     {
-                        $response[$i]['action'] = '<a href="javascript:void(0)" class="btn edit" data-id="'. $obj->id .'"><i class="fa fa-edit  text-info"></i></a>
+                        $response[$i]['action'] = '<a href="javascript:void(0)" class="btn edit" data-id="'. $obj->id .'"><i class="fa fa-edit  text-dark"></i></a>
 											<a href="javascript:void(0)" class="btn delete " data-id="'. $obj->id .'"><i class="fa fa-trash-alt text-danger"></i></a>';
                     }
                     else

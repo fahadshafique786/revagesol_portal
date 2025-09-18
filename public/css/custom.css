@@ -53,12 +53,35 @@ LOGIN PAGE
 
 
 
-.custom-nav-dark,
-.primary-bg-dark{
-    background:#272d36 !Important;
+.custom-nav-background ,
+.custom-siderbar-background{
+    background: #E08E02 !important;
 }
-.custom-siderbar-dark{
-    background:#272d36 !Important;
+
+.sidebar-dark-info .nav-sidebar>.nav-item>.nav-link.active, .sidebar-light-info .nav-sidebar>.nav-item>.nav-link.active{
+    background-color: #000000 !important;
+    color: #fff !important;
+}
+
+.sidebar-dark-info .nav-sidebar>.nav-item>.nav-link.active, .sidebar-light-info .nav-sidebar>.nav-item>.nav-link.active{
+    background-color: #000000 !important;
+    color: #fff !important;
+
+}
+
+[class*=sidebar-dark-] .nav-sidebar>.nav-item.menu-open>.nav-link, [class*=sidebar-dark-] .nav-sidebar>.nav-item:hover>.nav-link, [class*=sidebar-dark-] .nav-sidebar>.nav-item>.nav-link:focus{
+    background-color: #000000 !important;
+    color: #fff !important;
+
+}
+
+.brand-link.custom {
+    border-bottom: 1px solid #ffb24a !important;
+    color: rgba(255, 255, 255, .8);
+}
+
+.nav-sidebar .nav-link{
+    color: #fff !important;
 }
 
 .visiblilty-hidden {
@@ -110,8 +133,8 @@ LOGIN PAGE
 }
 
 .page-item.active .page-link{
-    background-color: #17a2b8;
-    border-color: #17a2b8;
+    background-color: #E08E02;
+    border-color: #E08E02;
 }
 
 /************* FIXED CUSTOM POPUP **************/
@@ -140,11 +163,11 @@ LOGIN PAGE
 }
 
 .nav-treeview>.nav-item>.nav-link.active, [class*=sidebar-dark-] .nav-treeview>.nav-item>.nav-link.active:focus, [class*=sidebar-dark-] .nav-treeview>.nav-item>.nav-link.active {
-    background-color:  #17a2b8 ;
+    background-color:  #E08E02 ;
     color: #343a40;
 }
 .select2-container--default .select2-selection--multiple .select2-selection__choice {
-    background-color: #17a2b8!important;
+    background-color: #E08E02!important;
 }
 
 .select2-container--default .select2-results__option[aria-disabled=true]:hover {
@@ -168,7 +191,7 @@ LOGIN PAGE
 }
 
 .custom > a.dropdown-item:hover {
-    background: #17a2b8;
+    background: #E08E02;
     color: #fff !important;
 }
 
@@ -184,7 +207,7 @@ LOGIN PAGE
 .select2-container--default .select2-results__option:hover,
 .select2-container--default .select2-results__option[aria-selected=true]:hover{
     color:#fff !important;
-    background: #17a2b8 !IMPORTANT;
+    background: #E08E02 !IMPORTANT;
 }
 
 .select2-container--default .select2-results__option {
@@ -222,12 +245,12 @@ LOGIN PAGE
 }
 
 .custom.nav-item.menu-open > a{
-    background-color:  #17a2b8 !important;
+    background-color:  #E08E02 !important;
 }
 
 .custom.nav-link.active{
     background-color: #ffffff !important;
-    color:#17a2b8 !important;
+    color:#E08E02 !important;
 }
 input[disabled]{
     cursor: not-allowed !important;
@@ -640,7 +663,7 @@ input[disabled]{
 
 
 .profile-nav-tabs .nav-link.active {
-    background: #17a2b8;
+    background: #E08E02;
     color: #fff !important;
 }
 
