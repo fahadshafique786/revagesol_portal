@@ -54,7 +54,8 @@ LOGIN PAGE
 
 
 .custom-nav-background ,
-.custom-siderbar-background {
+.custom-siderbar-background ,
+.badge-system{
     color:#fff !important;
     background: #E08E02 !important;
 }
