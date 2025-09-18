@@ -27,7 +27,7 @@ else{
         <!-- /.login-logo -->
         <div class="card card-outline card-">
             <div class="card-header text-center primary-bg-dark">
-                <h2 class="heading text-white">    Revage Solutions </h2>
+                <h2 class="heading mb-0">    Revage Solutions </h2>
 <!--                <img src="{{ asset('images/logo.png') }}" class="login-logo" width="200"/>-->
             </div>
             <div class="card-body">
